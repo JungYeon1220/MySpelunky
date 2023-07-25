@@ -23,7 +23,7 @@ Effect::~Effect()
 
 void Effect::Update()
 {
-	if (_isActive == false)
+	if (_canStand == false)
 		return;
 
 	_transform->Update();
@@ -34,7 +34,7 @@ void Effect::Update()
 
 void Effect::Render()
 {
-	if (_isActive == false)
+	if (_canStand == false)
 		return;
 
 	_transform->SetWorldBuffer(0);
@@ -43,14 +43,14 @@ void Effect::Render()
 
 void Effect::Play(Vector2 pos)
 {
-	_isActive = true;
+	_canStand = true;
 	_transform->SetPosition(pos);
 	_action->Play();
 }
 
 void Effect::End()
 {
-	_isActive = false;
+	_canStand = false;
 	_transform->SetPosition(Vector2(-10000, -10000));
 	_transform->Update();
 }

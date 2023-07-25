@@ -90,6 +90,9 @@ using namespace Microsoft::WRL;
 #include "Object/BasicObject/Sprite_Frame.h"
 #include "Object/BasicObject/Effect.h"
 
+// Spelunky
+#include "Object/Obj/Tile/Tile.h"
+
 // Scene
 #include "Scene/Scene.h"
 

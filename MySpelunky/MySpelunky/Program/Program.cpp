@@ -3,12 +3,13 @@
 
 #include "../Scene/BasicScene/TutorialScene.h"
 #include "../Scene/BasicScene/TileMapScene.h"
+#include "../Scene/BasicScene/TileTestScene.h"
 
 Program::Program()
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
 
-	_curScene = make_shared<TileMapScene>();
+	_curScene = make_shared<TileTestScene>();
 
 	Timer::GetInstance()->LockFPS(60);
 }

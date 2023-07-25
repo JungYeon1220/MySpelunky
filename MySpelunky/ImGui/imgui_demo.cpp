@@ -6966,7 +6966,7 @@ struct ExampleAppLog
             ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
             const char* buf = Buf.begin();
             const char* buf_end = Buf.end();
-            if (Filter.IsActive())
+            if (Filter.CanStand())
             {
                 // In this example we don't use the clipper when Filter is enabled.
                 // This is because we don't have random access to the result of our filter.
