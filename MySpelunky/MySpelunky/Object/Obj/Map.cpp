@@ -4,6 +4,8 @@
 #include "Tile/Unbreakable.h"
 #include "Tile/Ladder.h"
 #include "Tile/OneWay.h"
+#include "Tile/Spike.h"
+#include "Tile/Skeleton.h"
 #include "Tiles.h"
 
 Map::Map()
@@ -55,7 +57,10 @@ Map::Map()
 				tile = make_shared<Normal>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
 				if (_layout[i - 1][j] != 1 && _layout[i - 1][j] != 99)
 				{
-					dynamic_pointer_cast<Normal>(tile)->PebbleUp();
+					if (_layout[i - 1][j] == 4)
+						dynamic_pointer_cast<Normal>(tile)->SetSpikePebble();
+					else
+						dynamic_pointer_cast<Normal>(tile)->PebbleUp();
 					dynamic_pointer_cast<Normal>(tile)->CanGrab() = true;
 				}
 				if (_layout[i + 1][j] != 1 && _layout[i + 1][j] != 99)
@@ -96,6 +101,29 @@ Map::Map()
 				if (j == _poolCountX - 2 && i >= 2 && i <= _poolCountY - 3)
 				{
 					dynamic_pointer_cast<Unbreakable>(tile)->PebbleLeft();
+				}
+			}
+			else if (_layout[i][j] == 4)
+			{
+				tile = make_shared<Spike>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
+				if (_layout[i + 1][j] == 5)
+				{
+					dynamic_pointer_cast<Spike>(tile)->SetSkeletonSpike();
+				}
+			}
+			else if (_layout[i][j] == 5)
+			{
+				tile = make_shared<Skeleton>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
+				if (_layout[i - 1][j] != 5)
+				{
+					if (_layout[i - 1][j] == 4)
+					{
+						dynamic_pointer_cast<Skeleton>(tile)->SetSpikePebble();
+					}
+					else
+					{
+						dynamic_pointer_cast<Skeleton>(tile)->PebbleUp();
+					}
 				}
 			}
 

@@ -169,6 +169,7 @@
     <ClInclude Include="Framework\Utility\InputManager.h" />
     <ClInclude Include="Framework\Utility\Timer.h" />
     <ClInclude Include="Framework\Utility\tinyxml2.h" />
+    <ClInclude Include="Object\Obj\Tile\Movable.h" />
     <ClInclude Include="Object\Obj\Tile\Ladder.h" />
     <ClInclude Include="MySpelunky.h" />
     <ClInclude Include="Object\BasicObject\Effect.h" />
@@ -188,6 +189,8 @@
     <ClInclude Include="Scene\BasicScene\TileMapScene.h" />
     <ClInclude Include="Scene\BasicScene\TutorialScene.h" />
     <ClInclude Include="Scene\Scene.h" />
+    <ClInclude Include="Object\Obj\Tile\Spike.h" />
+    <ClInclude Include="Object\Obj\Tile\Skeleton.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Scene\BasicScene\TileTestScene.h" />
     <ClInclude Include="Types.h" />
@@ -222,6 +225,7 @@
     <ClCompile Include="Framework\Utility\InputManager.cpp" />
     <ClCompile Include="Framework\Utility\Timer.cpp" />
     <ClCompile Include="Framework\Utility\tinyxml2.cpp" />
+    <ClCompile Include="Object\Obj\Tile\Movable.cpp" />
     <ClCompile Include="Object\Obj\Tile\Ladder.cpp" />
     <ClCompile Include="MySpelunky.cpp" />
     <ClCompile Include="Object\BasicObject\Effect.cpp" />
@@ -241,6 +245,8 @@
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Scene\BasicScene\TileTestScene.cpp" />
     <ClCompile Include="Object\Obj\Tile\Unbreakable.cpp" />
+    <ClCompile Include="Object\Obj\Tile\Spike.cpp" />
+    <ClCompile Include="Object\Obj\Tile\Skeleton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MySpelunky.rc" />

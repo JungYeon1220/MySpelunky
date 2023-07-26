@@ -128,3 +128,9 @@ void Normal::Render()
 		_leftPebbleSprite->Render();
 	}
 }
+
+void Normal::SetSpikePebble()
+{
+	_upPebble = true;
+	_upPebbleSprite->SetCurClip(Vector2(5 + rand() % 3, 8));
+}

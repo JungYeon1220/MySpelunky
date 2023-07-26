@@ -7,10 +7,10 @@ public:
 		EMPTY,
 		NORMAL,
 		LADDER,
-
 		ONE_WAY,
-
 		UNBREAKABLE,
+		SPIKE,
+		SKELETON
 	};
 	Tile();
 	Tile(Vector2 pos);
@@ -34,6 +34,8 @@ protected:
 	Vector2 _pos = Vector2(0.0f, 0.0f);
 	Vector2 _selected = Vector2(0, 0);
 	Type _type = EMPTY;
+
+	bool _isActive = true;
 
 };
 

@@ -8,7 +8,6 @@
 
 TileTestScene::TileTestScene()
 {
-
 	_map = make_shared<Map>();
 }
 

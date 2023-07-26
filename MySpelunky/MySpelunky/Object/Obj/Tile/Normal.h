@@ -16,6 +16,8 @@ public:
 	void PebbleLeft() { _leftPebble = true; }
 	void PebbleGrabLeft() { _leftPebbleSprite->SetCurClip(Vector2(7, 5)); }
 
+	void SetSpikePebble();
+
 	bool& CanGrab() { return _canGrab; }
 private:
 	bool _canGrab = false;
