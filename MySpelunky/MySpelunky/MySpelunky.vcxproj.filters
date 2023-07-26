@@ -174,6 +174,9 @@
     <ClInclude Include="Object\Obj\Tile\Movable.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Object\Obj\Tile\Wooden.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MySpelunky.cpp">
@@ -317,6 +320,9 @@
     <ClCompile Include="Object\Obj\Tile\Movable.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Obj\Tile\Wooden.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MySpelunky.rc">
@@ -343,6 +349,12 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="Resource\Texture\winter.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Resource\Texture\bg_cave.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Resource\Texture\floorstyled_wood.png">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>
