@@ -5,7 +5,7 @@ Ladder::Ladder()
 	:Tile()
 {
 	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/floor_cave.png", Vector2(12, 12), Vector2(100.0f, 100.0f));
-	_sprite->SetCurClip(Vector2(4, 0));
+	_sprite->SetCurClip(Vector2(4, 1));
 	_type = Tile::Type::LADDER;
 }
 
@@ -13,7 +13,7 @@ Ladder::Ladder(Vector2 pos)
 	:Tile(pos)
 {
 	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/floor_cave.png", Vector2(12, 12), Vector2(100.0f, 100.0f));
-	_sprite->SetCurClip(Vector2(4, 0));
+	_sprite->SetCurClip(Vector2(4, 1));
 	_type = Tile::Type::LADDER;
 }
 

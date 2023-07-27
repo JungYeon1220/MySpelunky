@@ -21,13 +21,15 @@ public:
 	Vector2 PoolCount() { return Vector2(_poolCountX, _poolCountY); }
 private:
 	void CreateRooms();
+	void CreateRoomLayout();
 
 	shared_ptr<Transform> _bgTrans;
 	shared_ptr<Quad> _bg;
 
-	int _poolCountX = 24;
-	int _poolCountY = 20;
+	int _poolCountX = 44;
+	int _poolCountY = 36;
 
+	vector<vector<int>> _roomLayout;
 	vector<vector<int>> _layout;
 	vector<vector<shared_ptr<class Tile>>> _tileMap;
 

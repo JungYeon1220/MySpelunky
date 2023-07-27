@@ -9,6 +9,7 @@
 TileTestScene::TileTestScene()
 {
 	_map = make_shared<Map>();
+	CAMERA->SetScale(Vector2(0.3f, 0.3f));
 }
 
 TileTestScene::~TileTestScene()
