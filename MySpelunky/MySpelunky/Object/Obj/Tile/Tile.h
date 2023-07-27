@@ -10,7 +10,9 @@ public:
 		ONE_WAY,
 		UNBREAKABLE,
 		SPIKE,
-		SKELETON
+		SKELETON,
+		MOVABLE,
+		WOODEN
 	};
 	Tile();
 	Tile(Vector2 pos);
