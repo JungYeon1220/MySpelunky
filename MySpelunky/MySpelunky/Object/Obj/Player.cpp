@@ -326,16 +326,16 @@ void Player::Update()
 	{
 		if (_curState == State::LOOK_UP)
 		{
-			CAMERA->SetTarget(_upTransform);
+			//CAMERA->SetTarget(_upTransform);
 		}
 		else if (_curState == State::LAY_DOWN)
 		{
-			CAMERA->SetTarget(_downTransform);
+			//CAMERA->SetTarget(_downTransform);
 		}
 	}
 	else
 	{
-		CAMERA->SetTarget(_col->GetTransform());
+		//CAMERA->SetTarget(_col->GetTransform());
 	}
 
 	_whip->Update();
@@ -395,6 +395,15 @@ void Player::EndAttack()
 	else
 	{
 		SetAction(State::JUMP);
+	}
+}
+
+void Player::TakeDamage(int value)
+{
+	_hp -= value;
+	if (_hp <= 0)
+	{
+		_hp = 0;
 	}
 }
 

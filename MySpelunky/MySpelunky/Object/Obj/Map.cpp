@@ -41,11 +41,21 @@ Map::Map()
 				temp = GetWrongRoom();
 			else if(type == 1)
 				temp = GetRightRoom();
-			else if(type == 2)
-				temp = GetUpRoom();
-			else if(type == 3)
-				temp = GetDownRoom();
-			else if(type == 4)
+            else if (type == 2)
+            {
+                temp = GetUpRoom();
+            }
+            else if (type == 3)
+            {
+                temp = GetDownRoom();
+                if (_roomLayout[i - 1][j] == 4)
+                {
+                    temp = GetRightRoom();
+                    temp[0][4] = 0;
+                    temp[0][5] = 0;
+                }
+            }
+            else if(type == 4)
 			{
 				temp = GetStartRoom();
 				if (j == 0)
@@ -78,9 +88,11 @@ Map::Map()
 				temp = GetEndRoom();
 				if (_roomLayout[i - 1][j] == 2)
 				{
-					temp[0].resize(8);
-					temp[1].resize(8);
-					temp[2].resize(8);
+                    for (int i = 0; i < 3; i++)
+                    {
+                        for (int j = 0; j < 10; j++)
+                            temp[i][j] = 0;
+                    }
 				}
 			}
 
@@ -89,6 +101,10 @@ Map::Map()
 				for (int n = x; n < x + 10; n++)
 				{
 					int a = temp[(m - 2) % 8][(n - 2) % 10];
+                    if (a == 6)
+                        _startPos = Vector2(n, m);
+                    if (a == 7)
+                        _endPos = Vector2(n, m);
 					_layout[m][n] = a;
 				}
 			}
@@ -308,7 +324,7 @@ void Map::CreateRooms()
     };
 
     //아래 불가능
-    vector<vector<int>> start4 =
+    vector<vector<int>> start3 =
     {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
         {0, 0, 0, 1, 1, 1, 1, 0, 0, 0},

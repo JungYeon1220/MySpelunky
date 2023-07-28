@@ -38,6 +38,7 @@ public:
 		SetAction(State::IDLE);
 	}
 	void EndAttack();
+	void TakeDamage(int value);
 
 	shared_ptr<RectCollider> GetCollider() { return _col; }
 	shared_ptr<CircleCollider> GetFeetCollider() { return _feetCol; }
@@ -46,6 +47,7 @@ public:
 	State GetState() { return _curState; }
 	float& GetJumpPower() { return _jumpPower; }
 	Vector2 GetSize() { return _playerSize; }
+	int GetHp() { return _hp; }
 
 	bool& IsFalling() { return _isFalling; }
 	bool& isClimb() { return _isClimb; }
@@ -93,5 +95,7 @@ private:
 	bool _onOneWay = false;
 
 	bool _isGrabLedge = false;
+
+	int _hp = 3;
 };
 

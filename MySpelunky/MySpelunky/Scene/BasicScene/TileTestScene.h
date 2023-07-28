@@ -15,5 +15,6 @@ private:
 	shared_ptr<Tile> _unbreakable;
 	shared_ptr<Tile> _unbreakable2;
 	shared_ptr<class Map> _map;
+	shared_ptr<class Player> _player;
 };
 

@@ -9,7 +9,8 @@ public:
 	virtual void Update() override;
 	virtual void Render() override;
 
+	bool& CanGrab() { return _canGrab; }
 private:
-	
+	bool _canGrab = true;
 };
 

@@ -17,6 +17,7 @@ public:
 	void SetOneWay();
 
 	bool& CanStand() { return _canStand; }
+	bool IsOneWay() { return _isOneWay; }
 private:
 	bool _isOneWay = false;
 	bool _canStand = true;

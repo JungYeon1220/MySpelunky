@@ -36,8 +36,8 @@ bool Tile::Block(shared_ptr<Collider> col)
 	Vector2 pos = _col->GetWorldPos();
 	Vector2 halfSize = Vector2(50.0f, 50.0f);
 
-	if ((colPos.x < pos.x + halfSize.x && colPos.x > pos.x - halfSize.x)
-		|| (colPos.y < pos.y + halfSize.y && colPos.y > pos.y - halfSize.y))
+	if ((colPos.x <= pos.x + halfSize.x && colPos.x >= pos.x - halfSize.x)
+		|| (colPos.y <= pos.y + halfSize.y && colPos.y >= pos.y - halfSize.y))
 	{
 		return _col->Block(col);
 	}
