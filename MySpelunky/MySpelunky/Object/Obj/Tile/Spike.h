@@ -14,10 +14,12 @@ public:
 	void SetSkeletonSpike();
 	void SetBlood() { _isBlood = true; }
 
+	bool& CanSpike() { return _CanSpike; }
 private:
 	shared_ptr<Sprite_Frame> _bloodSprite;
 	bool _isBlood = false;
 	bool _isSkeleton = false;
+	bool _CanSpike = true;
 
 };
 

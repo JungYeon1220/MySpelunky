@@ -23,6 +23,7 @@ public:
 private:
 	void CreateRooms();
 	void CreateRoomLayout();
+	void CreateLevelLayout();
 
 	shared_ptr<Transform> _bgTrans;
 	shared_ptr<Quad> _bg;

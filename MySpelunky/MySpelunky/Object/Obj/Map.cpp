@@ -16,100 +16,7 @@ Map::Map()
 
     CreateRooms();
     CreateRoomLayout();
-
-	_layout.resize(_poolCountY);
-	for (int i = 0; i < _poolCountY; i++)
-	{
-		_layout[i].resize(_poolCountX);
-		for (int j = 0; j < _poolCountX; j++)
-		{
-			if (i < 2 || i > _poolCountY - 3 || j < 2 || j > _poolCountX - 3)
-				_layout[i][j] = 50;
-		}
-	}
-
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 4; j++)
-		{
-			int y = i * 8 + 2;
-			int x = j * 10 + 2;
-
-			vector<vector<int>> temp;
-			int type = _roomLayout[i][j];
-			if(type == 0)
-				temp = GetWrongRoom();
-			else if(type == 1)
-				temp = GetRightRoom();
-            else if (type == 2)
-            {
-                temp = GetUpRoom();
-            }
-            else if (type == 3)
-            {
-                temp = GetDownRoom();
-                if (_roomLayout[i - 1][j] == 4)
-                {
-                    temp = GetRightRoom();
-                    temp[0][4] = 0;
-                    temp[0][5] = 0;
-                }
-            }
-            else if(type == 4)
-			{
-				temp = GetStartRoom();
-				if (j == 0)
-				{
-					if(_roomLayout[i][j + 1] == 0)
-					{
-						temp = _startRooms[1];
-						temp[7][4] = 0;
-						temp[7][5] = 0;
-					}
-				}
-				else if (j == 3)
-				{
-					if (_roomLayout[i][j - 1] == 0)
-					{
-						temp = _startRooms[1];
-						temp[7][4] = 0;
-						temp[7][5] = 0;
-					}
-				}
-				else if (_roomLayout[i][j + 1] == 0 && _roomLayout[i][j - 1] == 0)
-				{
-					temp = _startRooms[1];
-					temp[7][4] = 0;
-					temp[7][5] = 0;
-				}
-			}
-			else if(type == 5)
-			{
-				temp = GetEndRoom();
-				if (_roomLayout[i - 1][j] == 2)
-				{
-                    for (int i = 0; i < 3; i++)
-                    {
-                        for (int j = 0; j < 10; j++)
-                            temp[i][j] = 0;
-                    }
-				}
-			}
-
-			for (int m = y; m < y + 8; m++)
-			{
-				for (int n = x; n < x + 10; n++)
-				{
-					int a = temp[(m - 2) % 8][(n - 2) % 10];
-                    if (a == 6)
-                        _startPos = Vector2(n, m);
-                    if (a == 7)
-                        _endPos = Vector2(n, m);
-					_layout[m][n] = a;
-				}
-			}
-		}
-	}
+	CreateLevelLayout();
 
 	_tileMap.resize(_poolCountY);
 	for (int i = 0; i < _poolCountY; i++)
@@ -511,7 +418,7 @@ void Map::CreateRooms()
     _startRooms.push_back(start0);
     _startRooms.push_back(start1);
     _startRooms.push_back(start2);
-    _startRooms.push_back(start4);
+    _startRooms.push_back(start3);
 
     _endRooms.push_back(end0);
     _endRooms.push_back(end1);
@@ -595,4 +502,101 @@ void Map::CreateRoomLayout()
     }
 
     _roomLayout[0][start] = 4;
+}
+
+void Map::CreateLevelLayout()
+{
+	_layout.resize(_poolCountY);
+	for (int i = 0; i < _poolCountY; i++)
+	{
+		_layout[i].resize(_poolCountX);
+		for (int j = 0; j < _poolCountX; j++)
+		{
+			if (i < 2 || i > _poolCountY - 3 || j < 2 || j > _poolCountX - 3)
+				_layout[i][j] = 50;
+		}
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			int y = i * 8 + 2;
+			int x = j * 10 + 2;
+
+			vector<vector<int>> temp;
+			int type = _roomLayout[i][j];
+			if (type == 0)
+				temp = GetWrongRoom();
+			else if (type == 1)
+				temp = GetRightRoom();
+			else if (type == 2)
+			{
+				temp = GetUpRoom();
+			}
+			else if (type == 3)
+			{
+				temp = GetDownRoom();
+				if (_roomLayout[i - 1][j] == 4)
+				{
+					temp = GetRightRoom();
+					temp[0][4] = 0;
+					temp[0][5] = 0;
+				}
+			}
+			else if (type == 4)
+			{
+				temp = GetStartRoom();
+				if (j == 0)
+				{
+					if (_roomLayout[i][j + 1] == 0)
+					{
+						temp = _startRooms[1];
+						temp[7][4] = 0;
+						temp[7][5] = 0;
+					}
+				}
+				else if (j == 3)
+				{
+					if (_roomLayout[i][j - 1] == 0)
+					{
+						temp = _startRooms[1];
+						temp[7][4] = 0;
+						temp[7][5] = 0;
+					}
+				}
+				else if (_roomLayout[i][j + 1] == 0 && _roomLayout[i][j - 1] == 0)
+				{
+					temp = _startRooms[1];
+					temp[7][4] = 0;
+					temp[7][5] = 0;
+				}
+			}
+			else if (type == 5)
+			{
+				temp = GetEndRoom();
+				if (_roomLayout[i - 1][j] == 2)
+				{
+					for (int i = 0; i < 3; i++)
+					{
+						for (int j = 0; j < 10; j++)
+							temp[i][j] = 0;
+					}
+				}
+			}
+
+			for (int m = y; m < y + 8; m++)
+			{
+				for (int n = x; n < x + 10; n++)
+				{
+					int a = temp[(m - 2) % 8][(n - 2) % 10];
+					if (a == 6)
+						_startPos = Vector2(n, m);
+					if (a == 7)
+						_endPos = Vector2(n, m);
+					_layout[m][n] = a;
+				}
+			}
+		}
+	}
 }

@@ -197,6 +197,22 @@ void TileTestScene::Update()
 				}
 			}
 			break;
+			case Tile::Type::SPIKE:
+			{
+				if ((_player->GetJumpPower() <= 0.0f))
+				{
+					if (tile->GetCollider()->IsCollision(_player->GetCollider()) == true)
+					{
+						
+
+						dynamic_pointer_cast<Spike>(tile)->CanSpike() = false;
+					}
+
+					if (tile->GetCollider()->IsCollision(_player->GetCollider()) == false)
+						dynamic_pointer_cast<Spike>(tile)->CanSpike() = true;
+				}
+			}
+			break;
 			default:
 				break;
 			}
