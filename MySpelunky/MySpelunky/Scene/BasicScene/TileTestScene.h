@@ -7,6 +7,7 @@ public:
 
 	virtual void Update() override;
 	virtual void Render() override;
+	virtual void PostRender() override;
 private:
 	shared_ptr<Tile> _normal;
 	shared_ptr<Tile> _normal2;

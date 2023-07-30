@@ -35,7 +35,7 @@ public:
 	void SetReverse(bool value) { _isReverse = value; }
 
 	Clip GetCurClip() { return _clips[_curClipIndex]; }
-	UINT GetCurIndex() { return _curClipIndex; }
+	UINT& GetCurIndex() { return _curClipIndex; }
 
 	void SetEndEvent(CallBack event_) { _endEvent = event_; }
 	void SetFourIndexEvent(CallBack event_) { _fourIndexEvent = event_; }

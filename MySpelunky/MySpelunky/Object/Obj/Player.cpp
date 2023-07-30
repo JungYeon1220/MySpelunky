@@ -5,7 +5,7 @@
 Player::Player()
 {
 	_col = make_shared<RectCollider>(_playerSize);
-	_crouchCol = make_shared<RectCollider>(Vector2(60.0f, 40.0f));
+	_layDownCol = make_shared<RectCollider>(Vector2(60.0f, 40.0f));
 	_feetCol = make_shared<CircleCollider>(15.0f);
 	_headCol = make_shared<CircleCollider>(10.0f);
 	_grabCol = make_shared<CircleCollider>(10.0f);
@@ -24,8 +24,8 @@ Player::Player()
 	_downTransform->SetParent(_col->GetTransform());
 	_downTransform->SetPosition(Vector2(0.0f, -300.0f));
 	
-	_crouchCol->GetTransform()->SetParent(_col->GetTransform());
-	_crouchCol->GetTransform()->SetPosition(Vector2(0.0f, -20.0f));
+	_layDownCol->GetTransform()->SetParent(_col->GetTransform());
+	_layDownCol->GetTransform()->SetPosition(Vector2(0.0f, -20.0f));
 	_feetCol->GetTransform()->SetParent(_col->GetTransform());
 	_feetCol->GetTransform()->SetPosition(Vector2(0.0f, -40.0f));
 	_headCol->GetTransform()->SetParent(_col->GetTransform());
@@ -48,6 +48,8 @@ Player::~Player()
 
 void Player::Input()
 {
+	if (_isStun == true)
+		return;
 
 	if (KEY_DOWN('X'))
 	{
@@ -172,9 +174,9 @@ void Player::Input()
 
 void Player::Jump()
 {
-	if (_isFalling == true && _isAttack == false)
+	if (_isFalling == true && _isAttack == false && _isStun == false)
 		SetAction(State::JUMP);
-	else if (_curState == JUMP && _isFalling == false && _isAttack == false)
+	else if (_curState == JUMP && _isFalling == false && _isAttack == false && _isStun == false)
 		SetAction(State::IDLE);
 
 	if (_actions[State::JUMP]->GetCurIndex() == 7)
@@ -198,7 +200,7 @@ void Player::Jump()
 		}
 	}
 
-	if (KEY_DOWN('Z') && _isFalling == false)
+	if (KEY_DOWN('Z') && _isFalling == false && _isStun == false)
 	{
 		_jumpPower = 1200.0f;
 		_isFalling = true;
@@ -300,6 +302,26 @@ void Player::GrabLedge()
 
 void Player::Update()
 {
+	if (_isStun == true)
+	{
+		if (_isFalling == true)
+		{
+			SetAction(State::STUN_AIR);
+			_actions[State::STUN_AIR]->Pause();
+			if (_jumpPower > 0)
+			{
+				_actions[State::STUN_AIR]->GetCurIndex() = 3;
+			}
+			else
+			{
+				_actions[State::STUN_AIR]->GetCurIndex() = 2;
+			}
+		}
+		else
+		{
+			SetAction(State::STUN_GROUND);
+		}
+	}
 	Input();
 	Jump();
 	if (_canClimb == false)
@@ -340,7 +362,7 @@ void Player::Update()
 
 	_whip->Update();
 	_col->Update();
-	_crouchCol->Update();
+	_layDownCol->Update();
 	_feetCol->Update();
 	_headCol->Update();
 	_grabCol->Update();
@@ -358,7 +380,7 @@ void Player::Render()
 	_whip->Render();
 	_transform->SetWorldBuffer(0);
 	_sprite->Render();
-	_crouchCol->Render();
+	_layDownCol->Render();
 	_feetCol->Render();
 	_headCol->Render();
 	_grabCol->Render();
@@ -371,6 +393,10 @@ void Player::PostRender()
 	ImGui::Text("y pos : %f", _col->GetWorldPos().y);
 	ImGui::Text("jump power : %f", _jumpPower);
 	ImGui::Text("is falling : %d", _isFalling);
+	if (ImGui::Button("Kill", { 50,50 }))
+	{
+		Dead();
+	}
 }
 
 void Player::SetAction(State state)
@@ -404,6 +430,25 @@ void Player::TakeDamage(int value)
 	if (_hp <= 0)
 	{
 		_hp = 0;
+	}
+}
+
+void Player::Dead()
+{
+	_isStun = true;
+	_isDead = true;
+	_hp = 0;
+}
+
+shared_ptr<RectCollider> Player::GetHitCollider()
+{
+	if (_isLaying == true)
+	{
+		return _layDownCol;
+	}
+	else
+	{
+		return _col;
 	}
 }
 
@@ -444,19 +489,6 @@ void Player::CreateAction()
 
 	{
 		vector<Action::Clip> clips;
-		for (int i = 9; i < 10; i++)
-		{
-			Vector2 startPos = Vector2((i * imageSize.x) / maxFrame.x, imageSize.y * 0.0f / maxFrame.y);
-			Action::Clip clip = Action::Clip(startPos.x, startPos.y, size.x, size.y, srv);
-			clips.push_back(clip);
-		}
-
-		shared_ptr<Action> action = make_shared<Action>(clips, "DEAD", Action::LOOP);
-		_actions.push_back(action);
-	}
-
-	{
-		vector<Action::Clip> clips;
 		for (int i = 2; i < 3; i++)
 		{
 			Vector2 startPos = Vector2((i * imageSize.x) / maxFrame.x, imageSize.y * 1.0f / maxFrame.y);
@@ -490,7 +522,7 @@ void Player::CreateAction()
 			clips.push_back(clip);
 		}
 
-		shared_ptr<Action> action = make_shared<Action>(clips, "STUN", Action::END);
+		shared_ptr<Action> action = make_shared<Action>(clips, "STUN_AIR", Action::END);
 		_actions.push_back(action);
 	}
 
@@ -557,6 +589,19 @@ void Player::CreateAction()
 		}
 
 		shared_ptr<Action> action = make_shared<Action>(clips, "LOOK_UP", Action::LOOP);
+		_actions.push_back(action);
+	}
+
+	{
+		vector<Action::Clip> clips;
+		for (int i = 9; i < 10; i++)
+		{
+			Vector2 startPos = Vector2((i * imageSize.x) / maxFrame.x, imageSize.y * 0.0f / maxFrame.y);
+			Action::Clip clip = Action::Clip(startPos.x, startPos.y, size.x, size.y, srv);
+			clips.push_back(clip);
+		}
+
+		shared_ptr<Action> action = make_shared<Action>(clips, "STUN_GROUND", Action::LOOP);
 		_actions.push_back(action);
 	}
 }

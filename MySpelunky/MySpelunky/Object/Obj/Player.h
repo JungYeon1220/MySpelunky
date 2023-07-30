@@ -6,15 +6,15 @@ public:
 	{
 		IDLE,
 		RUN,
-		DEAD,
 		LAY_DOWN,
 		CRAWL,
-		STUN,
+		STUN_AIR,
 		JUMP,
 		ATTACK,
 		CLIMB_RADDER,
 		LEDGE_GRAB,
-		LOOK_UP
+		LOOK_UP,
+		STUN_GROUND
 	};
 
 	Player();
@@ -39,21 +39,25 @@ public:
 	}
 	void EndAttack();
 	void TakeDamage(int value);
+	void Dead();
 
 	shared_ptr<RectCollider> GetCollider() { return _col; }
 	shared_ptr<CircleCollider> GetFeetCollider() { return _feetCol; }
 	shared_ptr<CircleCollider> GetHeadCollider() { return _headCol; }
 	shared_ptr<CircleCollider> GetGrabCollider() { return _grabCol; }
+	shared_ptr<RectCollider> GetHitCollider();
 	State GetState() { return _curState; }
 	float& GetJumpPower() { return _jumpPower; }
 	Vector2 GetSize() { return _playerSize; }
 	int GetHp() { return _hp; }
 
 	bool& IsFalling() { return _isFalling; }
-	bool& isClimb() { return _isClimb; }
+	bool& IsClimb() { return _isClimb; }
 	bool& CanClimb() { return _canClimb; }
-	bool& isOnOneWay() { return _onOneWay; }
-	bool& isGrab() { return _isGrabLedge; }
+	bool& IsOnOneWay() { return _onOneWay; }
+	bool& IsGrab() { return _isGrabLedge; }
+	bool& IsStun() {return _isStun;}
+	bool& IsDead() {return _isDead;}
 
 private:
 	void CreateAction();
@@ -63,7 +67,7 @@ private:
 	Vector2 _playerSize = Vector2(60.0f, 80.0f);
 
 	shared_ptr<RectCollider> _col;
-	shared_ptr<RectCollider> _crouchCol;
+	shared_ptr<RectCollider> _layDownCol;
 	shared_ptr<CircleCollider> _feetCol;
 	shared_ptr<CircleCollider> _headCol;
 	shared_ptr<CircleCollider> _grabCol;
@@ -88,6 +92,8 @@ private:
 
 	bool _isAttack = false;
 	bool _isClimb = false;
+	bool _isDead = false;
+	bool _isStun = false;
 
 	bool _canClimb = true;
 	float _climbTime = 0.0f;

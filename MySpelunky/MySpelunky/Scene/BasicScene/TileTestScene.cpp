@@ -15,7 +15,6 @@ TileTestScene::TileTestScene()
 	_map = make_shared<Map>();
 	_player = make_shared<Player>();
 	_player->GetCollider()->GetTransform()->SetPosition(Vector2(_map->GetStartPos().x * 100.0f, (_map->PoolCount().y - 1 - _map->GetStartPos().y) * 100.0f));
-	CAMERA->SetScale(Vector2(0.3f, 0.3f));
 	CAMERA->FreeMode();
 }
 
@@ -29,7 +28,7 @@ void TileTestScene::Update()
 
 	bool check = false;
 	bool ladderCheck = false;
-	_player->isOnOneWay() = false;
+	_player->IsOnOneWay() = false;
 
 	for (auto tileArr : _map->GetTiles())
 	{
@@ -60,7 +59,7 @@ void TileTestScene::Update()
 								if (KEY_PRESS(VK_LEFT) || KEY_PRESS(VK_RIGHT))
 								{
 									_player->GetCollider()->GetTransform()->SetPosition(Vector2(_player->GetCollider()->GetWorldPos().x, tilePos.y + 20.0f));
-									_player->isGrab() = true;
+									_player->IsGrab() = true;
 								}
 							}
 						}
@@ -86,7 +85,7 @@ void TileTestScene::Update()
 					if (tile->Block(_player->GetCollider()))
 					{
 						check = true;
-						_player->isOnOneWay() = true;
+						_player->IsOnOneWay() = true;
 
 						if (KEY_PRESS(VK_DOWN) && KEY_DOWN('Z'))
 						{
@@ -112,12 +111,12 @@ void TileTestScene::Update()
 						{
 							if (_player->CanClimb() == true)
 								_player->GetCollider()->GetTransform()->SetPosition(Vector2(tile->GetCollider()->GetWorldPos().x, _player->GetCollider()->GetWorldPos().y));
-							_player->isClimb() = true;
+							_player->IsClimb() = true;
 						}
 						ladderCheck = true;
 					}
 				}
-				if (_player->isClimb() == false)
+				if (_player->IsClimb() == false)
 				{
 					if (dynamic_pointer_cast<Ladder>(tile)->IsOneWay() == true)
 					{
@@ -126,7 +125,7 @@ void TileTestScene::Update()
 							if (tile->Block(_player->GetCollider()))
 							{
 								check = true;
-								_player->isOnOneWay() = true;
+								_player->IsOnOneWay() = true;
 
 								if (KEY_PRESS(VK_DOWN) && KEY_DOWN('Z'))
 								{
@@ -161,7 +160,7 @@ void TileTestScene::Update()
 								if (KEY_PRESS(VK_LEFT) || KEY_PRESS(VK_RIGHT))
 								{
 									_player->GetCollider()->GetTransform()->SetPosition(Vector2(_player->GetCollider()->GetWorldPos().x, tilePos.y + 20.0f));
-									_player->isGrab() = true;
+									_player->IsGrab() = true;
 								}
 							}
 						}
@@ -189,7 +188,7 @@ void TileTestScene::Update()
 								if (KEY_PRESS(VK_LEFT) || KEY_PRESS(VK_RIGHT))
 								{
 									_player->GetCollider()->GetTransform()->SetPosition(Vector2(_player->GetCollider()->GetWorldPos().x, tilePos.y + 20.0f));
-									_player->isGrab() = true;
+									_player->IsGrab() = true;
 								}
 							}
 						}
@@ -199,13 +198,22 @@ void TileTestScene::Update()
 			break;
 			case Tile::Type::SPIKE:
 			{
-				if ((_player->GetJumpPower() <= 0.0f))
+				if ((_player->GetJumpPower() < 0.0f))
 				{
 					if (tile->GetCollider()->IsCollision(_player->GetCollider()) == true)
 					{
-						
+						if(_player->GetCollider()->GetWorldPos().y > tile->GetCollider()->GetWorldPos().y)
+						{
+							if (_player->GetCollider()->GetWorldPos().x >= tile->GetCollider()->GetWorldPos().x - 50.0f && _player->GetCollider()->GetWorldPos().x <= tile->GetCollider()->GetWorldPos().x + 50.0f)
+							{
+								if (dynamic_pointer_cast<Spike>(tile)->CanSpike() == true)
+								{
+									_player->Dead();
+								}
 
-						dynamic_pointer_cast<Spike>(tile)->CanSpike() = false;
+								dynamic_pointer_cast<Spike>(tile)->CanSpike() = false;
+							}
+						}
 					}
 
 					if (tile->GetCollider()->IsCollision(_player->GetCollider()) == false)
@@ -227,15 +235,20 @@ void TileTestScene::Update()
 	{
 		_player->IsFalling() = false;
 		if (KEY_PRESS(VK_DOWN))
-			_player->isClimb() = false;
+			_player->IsClimb() = false;
 	}
 
 	if (ladderCheck == false)
-		_player->isClimb() = false;
+		_player->IsClimb() = false;
 }
 
 void TileTestScene::Render()
 {
 	_player->Render();
 	_map->Render();
+}
+
+void TileTestScene::PostRender()
+{
+	_player->PostRender();
 }

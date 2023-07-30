@@ -10,5 +10,7 @@ public:
 	virtual void Render() override;
 
 private:
+	bool _isFalling = false;
+	float _jumpPower = 0.0f;
+	float _maxFalling = 700.0f;
 };
-
