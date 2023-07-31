@@ -14,7 +14,8 @@ public:
 		CLIMB_RADDER,
 		LEDGE_GRAB,
 		LOOK_UP,
-		STUN_GROUND
+		STUN_GROUND,
+		PUSH
 	};
 
 	Player();
@@ -25,6 +26,7 @@ public:
 	void Attack();
 	void ClimbRadder();
 	void GrabLedge();
+	void Push();
 
 	void Update();
 	void Render();
@@ -58,6 +60,7 @@ public:
 	bool& IsGrab() { return _isGrabLedge; }
 	bool& IsStun() {return _isStun;}
 	bool& IsDead() {return _isDead;}
+	bool& IsPush() { return _isPush; }
 
 private:
 	void CreateAction();
@@ -94,6 +97,7 @@ private:
 	bool _isClimb = false;
 	bool _isDead = false;
 	bool _isStun = false;
+	bool _isPush = false;
 
 	bool _canClimb = true;
 	float _climbTime = 0.0f;

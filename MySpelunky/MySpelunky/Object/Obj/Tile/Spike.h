@@ -14,9 +14,12 @@ public:
 	void SetSkeletonSpike();
 	void SetBlood() { _isBlood = true; }
 
+	shared_ptr<RectCollider> GetSpikeCol() { return _spikeCol; }
+
 	bool& CanSpike() { return _CanSpike; }
 private:
 	shared_ptr<Sprite_Frame> _bloodSprite;
+	shared_ptr<RectCollider> _spikeCol;
 	bool _isBlood = false;
 	bool _isSkeleton = false;
 	bool _CanSpike = true;

@@ -158,14 +158,20 @@ void Player::Input()
 
 	if (KEY_PRESS(VK_LEFT))
 	{
-		SetAction(State::RUN);
+		if (_isPush == true)
+			SetAction(State::PUSH);
+		else
+			SetAction(State::RUN);
 	}
 	else if (KEY_UP(VK_LEFT))
 		SetAction(State::IDLE);
 
 	if (KEY_PRESS(VK_RIGHT))
 	{
-		SetAction(State::RUN);
+		if (_isPush == true)
+			SetAction(State::PUSH);
+		else
+			SetAction(State::RUN);
 	}
 	else if (KEY_UP(VK_RIGHT))
 		SetAction(State::IDLE);
@@ -298,6 +304,11 @@ void Player::GrabLedge()
 	{
 		_isGrabLedge = false;
 	}
+}
+
+void Player::Push()
+{
+
 }
 
 void Player::Update()
@@ -602,6 +613,19 @@ void Player::CreateAction()
 		}
 
 		shared_ptr<Action> action = make_shared<Action>(clips, "STUN_GROUND", Action::LOOP);
+		_actions.push_back(action);
+	}
+
+	{
+		vector<Action::Clip> clips;
+		for (int i = 6; i < 12; i++)
+		{
+			Vector2 startPos = Vector2((i * imageSize.x) / maxFrame.x, imageSize.y * 6.0f / maxFrame.y);
+			Action::Clip clip = Action::Clip(startPos.x, startPos.y, size.x, size.y, srv);
+			clips.push_back(clip);
+		}
+
+		shared_ptr<Action> action = make_shared<Action>(clips, "PUSH", Action::LOOP);
 		_actions.push_back(action);
 	}
 }

@@ -209,6 +209,7 @@ void TileTestScene::Update()
 								if (dynamic_pointer_cast<Spike>(tile)->CanSpike() == true)
 								{
 									_player->Dead();
+									dynamic_pointer_cast<Spike>(tile)->SetBlood();
 								}
 
 								dynamic_pointer_cast<Spike>(tile)->CanSpike() = false;

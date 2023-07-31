@@ -23,6 +23,7 @@ Movable::~Movable()
 
 void Movable::Update()
 {
+	Tile::Update();
 	if (_isFalling == true)
 		_jumpPower -= GRAVITY * 8;
 	else
@@ -36,4 +37,5 @@ void Movable::Update()
 
 void Movable::Render()
 {
+	Tile::Render();
 }
