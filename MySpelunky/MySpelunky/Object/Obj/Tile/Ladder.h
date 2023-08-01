@@ -4,7 +4,7 @@ class Ladder : public Tile
 public:
 	Ladder();
 	Ladder(Vector2 pos);
-	~Ladder();
+	virtual ~Ladder();
 
 	virtual bool Block(shared_ptr<Collider> col) override;
 

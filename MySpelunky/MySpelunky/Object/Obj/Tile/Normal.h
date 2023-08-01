@@ -4,7 +4,7 @@ class Normal : public Tile
 public:
 	Normal();
 	Normal(Vector2 pos);
-	~Normal();
+	virtual ~Normal();
 
 	virtual void Update() override;
 	virtual void Render() override;

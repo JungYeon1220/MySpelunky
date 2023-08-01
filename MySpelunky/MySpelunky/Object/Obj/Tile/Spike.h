@@ -4,7 +4,7 @@ class Spike : public Tile
 public:
 	Spike();
 	Spike(Vector2 pos);
-	~Spike();
+	virtual ~Spike();
 
 	virtual bool Block(shared_ptr<Collider> col) override;
 

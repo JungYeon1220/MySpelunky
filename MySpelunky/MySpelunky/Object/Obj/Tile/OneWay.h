@@ -4,7 +4,7 @@ class OneWay : public Tile
 public:
 	OneWay();
 	OneWay(Vector2 pos);
-	~OneWay();
+	virtual ~OneWay();
 
 	bool Block(shared_ptr<Collider> col) override;
 

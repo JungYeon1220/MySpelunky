@@ -7,6 +7,7 @@
 #include "../../Object/Obj/Tile/Wooden.h"
 #include "../../Object/Obj/Tile/Skeleton.h"
 #include "../../Object/Obj/Tile/Spike.h"
+#include "../../Object/Obj/Tile/Movable.h"
 #include "../../Object/Obj/Map.h"
 #include "../../Object/Obj/Player.h"
 
@@ -16,6 +17,7 @@ TileTestScene::TileTestScene()
 	_player = make_shared<Player>();
 	_player->GetCollider()->GetTransform()->SetPosition(Vector2(_map->GetStartPos().x * 100.0f, (_map->PoolCount().y - 1 - _map->GetStartPos().y) * 100.0f));
 	CAMERA->FreeMode();
+	CAMERA->SetScale(Vector2(0.3f, 0.3f));
 }
 
 TileTestScene::~TileTestScene()
@@ -25,6 +27,7 @@ TileTestScene::~TileTestScene()
 void TileTestScene::Update()
 {
 	_player->Update();
+	_map->Update();
 
 	bool check = false;
 	bool ladderCheck = false;
@@ -222,6 +225,58 @@ void TileTestScene::Update()
 				}
 			}
 			break;
+			case Tile::Type::MOVABLE:
+			{
+				if (tile->Block(_player->GetCollider()))
+				{
+					if (tile->GetCollider()->IsCollision(_player->GetFeetCollider()))
+						check = true;
+					if (tile->GetCollider()->IsCollision(_player->GetHeadCollider()))
+						_player->GetJumpPower() = 0.0f;
+
+					Vector2 tilePos = tile->GetCollider()->GetWorldPos();
+
+					if (dynamic_pointer_cast<Movable>(tile)->CanGrab() == true)
+					{
+						if (_player->GetGrabCollider()->IsCollision(tilePos + Vector2(50.0f, 50.0f)) || _player->GetGrabCollider()->IsCollision(tilePos + Vector2(-50.0f, 50.0f)))
+						{
+							if (_player->GetJumpPower() <= 0.0f)
+							{
+								if (KEY_PRESS(VK_LEFT) || KEY_PRESS(VK_RIGHT))
+								{
+									_player->GetCollider()->GetTransform()->SetPosition(Vector2(_player->GetCollider()->GetWorldPos().x, tilePos.y + 20.0f));
+									_player->IsGrab() = true;
+								}
+							}
+						}
+					}
+					if (dynamic_pointer_cast<Movable>(tile)->IsFalling() == false)
+					{
+						if (_player->GetCollider()->GetWorldPos().y < tile->GetCollider()->GetWorldPos().y + 50.0f && _player->GetCollider()->GetWorldPos().y > tile->GetCollider()->GetWorldPos().y - 50.0f)
+						{
+							if (_player->IsFalling() == false)
+							{
+								if (KEY_PRESS(VK_LEFT))
+								{
+									tile->GetCollider()->GetTransform()->AddVector2(-RIGHT_VECTOR * 100.0f * DELTA_TIME);
+									_player->IsPush() = true;
+								}
+
+								if (KEY_PRESS(VK_RIGHT))
+								{
+									tile->GetCollider()->GetTransform()->AddVector2(RIGHT_VECTOR * 100.0f * DELTA_TIME);
+									_player->IsPush() = true;
+
+								}
+							}
+						}
+					}
+				}
+				else
+					_player->IsPush() = false;
+
+			}
+			break;
 			default:
 				break;
 			}
@@ -252,4 +307,5 @@ void TileTestScene::Render()
 void TileTestScene::PostRender()
 {
 	_player->PostRender();
+	_map->PostRender();
 }

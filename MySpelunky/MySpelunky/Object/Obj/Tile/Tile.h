@@ -16,7 +16,7 @@ public:
 	};
 	Tile();
 	Tile(Vector2 pos);
-	~Tile();
+	virtual ~Tile();
 
 	void SetType(Type value);
 	void SetPosition(Vector2 pos) { _pos = pos; }

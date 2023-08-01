@@ -4,7 +4,7 @@ class Skeleton : public Tile
 public:
 	Skeleton();
 	Skeleton(Vector2 pos);
-	~Skeleton();
+	virtual ~Skeleton();
 
 	virtual void Update() override;
 	virtual void Render() override;

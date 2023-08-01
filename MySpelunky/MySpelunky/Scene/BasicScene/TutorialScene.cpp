@@ -40,6 +40,7 @@ TutorialScene::~TutorialScene()
 void TutorialScene::Update()
 {
 	_player->Update();
+
 	bool check = false;
 	bool ladderCheck = false;
 	_player->IsOnOneWay() = false;
@@ -50,8 +51,6 @@ void TutorialScene::Update()
 	{
 		if (tile == nullptr)
 			continue;
-
-
 
 		switch (tile->GetType())
 		{
@@ -295,7 +294,6 @@ void TutorialScene::Update()
 			break;
 		}
 		tile->Update();
-
 	}
 
 	if (check == false)

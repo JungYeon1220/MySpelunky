@@ -4,7 +4,7 @@ class Movable : public Tile
 public:
 	Movable();
 	Movable(Vector2 pos);
-	~Movable();
+	virtual ~Movable();
 
 	virtual void Update() override;
 	virtual void Render() override;

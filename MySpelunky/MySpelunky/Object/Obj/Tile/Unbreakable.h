@@ -4,7 +4,7 @@ class Unbreakable : public Tile
 public:
 	Unbreakable();
 	Unbreakable(Vector2 pos);
-	~Unbreakable();
+	virtual ~Unbreakable();
 
 	void SetRandomTile(int x, int y);
 

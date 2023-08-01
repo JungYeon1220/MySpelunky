@@ -7,6 +7,7 @@ public:
 
 	void Update();
 	void Render();
+	void PostRender();
 
 	vector<vector<int>> GetStartRoom() { return _startRooms[rand() % (_startRooms.size())]; }
 	vector<vector<int>> GetEndRoom() { return _endRooms[rand() % (_endRooms.size())]; }
@@ -17,6 +18,7 @@ public:
 
 	shared_ptr<class Tile> GetTile(int x, int y) { return _tileMap[y][x]; }
 	vector<vector<shared_ptr<class Tile>>>& GetTiles() { return _tileMap; }
+	vector<shared_ptr<class Tile>>& GetMovables() { return _movables; }
 	Vector2 GetStartPos() { return _startPos; }
 
 	Vector2 PoolCount() { return Vector2(_poolCountX, _poolCountY); }
@@ -34,6 +36,8 @@ private:
 	vector<vector<int>> _roomLayout;
 	vector<vector<int>> _layout;
 	vector<vector<shared_ptr<class Tile>>> _tileMap;
+
+	vector<shared_ptr<class Tile>> _movables;
 
 	Vector2 _startPos;
 	Vector2 _endPos;

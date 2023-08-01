@@ -7,6 +7,7 @@
 #include "Tile/Spike.h"
 #include "Tile/Skeleton.h"
 #include "Tile/Wooden.h"
+#include "Tile/Movable.h"
 #include "Tiles.h"
 
 Map::Map()
@@ -25,7 +26,7 @@ Map::Map()
 		for (int j = 0; j < _poolCountX; j++)
 		{
 			int type = _layout[i][j];
-			if (type == 0 || type == 3 || type == 6 || type == 7 || type == 8 || type == 99)
+			if (type == 0 || type == 3 || type == 6 || type == 7 || type == 99)
 			{
 				_tileMap[i].push_back(nullptr);
 				continue;
@@ -128,6 +129,11 @@ Map::Map()
             {
                 tile = make_shared<Wooden>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
             }
+            else if (type == 8)
+            {
+                tile = make_shared<Movable>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
+                _movables.push_back(tile);
+            }
 
 			_tileMap[i].push_back(tile);
 			tile->Update();
@@ -141,15 +147,35 @@ Map::~Map()
 
 void Map::Update()
 {
-	//for (auto tileArr : _tileMap)
-	//{
-	//	for (auto tile : tileArr)
-	//	{
-	//		if (tile == nullptr)
-	//			continue;
-	//		tile->Update();
-	//	}
-	//}
+    for (auto movable : _movables)
+    {
+        movable->Update();
+        bool check = false;
+        for (auto tileArr : _tileMap)
+        {
+            for (auto tile : tileArr)
+            {
+                if (tile == nullptr)
+                    continue;
+                if (tile->GetType() == Tile::Type::MOVABLE)
+                    continue;
+
+                if (tile->Block(movable->GetCollider()))
+                {
+                    check = true;
+                }
+            }
+        }
+
+        if (check == false)
+        {
+            dynamic_pointer_cast<Movable>(movable)->IsFalling() = true;
+        }
+        else
+        {
+            dynamic_pointer_cast<Movable>(movable)->IsFalling() = false;
+        }
+    }
 }
 
 void Map::Render()
@@ -175,6 +201,11 @@ void Map::Render()
 				tile->Render();
 		}
 	}
+}
+
+void Map::PostRender()
+{
+    ImGui::Text("movable x : %.0f y : %.0f", _movables[0]->GetCollider()->GetWorldPos().x, _movables[0]->GetCollider()->GetWorldPos());
 }
 
 void Map::CreateRooms()
