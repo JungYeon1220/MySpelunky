@@ -369,6 +369,24 @@
     <Image Include="Resource\Texture\floorstyled_wood.png">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="Resource\Texture\bat.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Resource\Texture\horned_lizard.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Resource\Texture\mole.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Resource\Texture\mosquito.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Resource\Texture\snake.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Resource\Texture\spider.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\ActionFilterPS.hlsl" />

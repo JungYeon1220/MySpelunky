@@ -157,6 +157,12 @@ void Map::Update()
             {
                 if (tile == nullptr)
                     continue;
+
+                float x = movable->GetCollider()->GetWorldPos().x - tile->GetCollider()->GetWorldPos().x;
+                float y = movable->GetCollider()->GetWorldPos().y - tile->GetCollider()->GetWorldPos().y;
+                if (x * x + y * y > 40000.0f)
+                    continue;
+
                 if (tile->GetType() == Tile::Type::MOVABLE)
                     continue;
 

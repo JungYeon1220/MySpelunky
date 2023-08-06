@@ -40,6 +40,11 @@ void TileTestScene::Update()
 			if (tile == nullptr)
 				continue;
 
+			float x = _player->GetCollider()->GetWorldPos().x - tile->GetCollider()->GetWorldPos().x;
+			float y = _player->GetCollider()->GetWorldPos().y - tile->GetCollider()->GetWorldPos().y;
+			if (x * x + y * y > 40000.0f)
+				continue;
+
 			switch (tile->GetType())
 			{
 			case Tile::Type::NORMAL:

@@ -259,12 +259,18 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="MySpelunky.ico" />
+    <Image Include="Resource\Texture\bat.png" />
     <Image Include="Resource\Texture\bg_cave.png" />
     <Image Include="Resource\Texture\border_main.png" />
     <Image Include="Resource\Texture\char_yellow.png" />
     <Image Include="Resource\Texture\floormisc.png" />
     <Image Include="Resource\Texture\floorstyled_wood.png" />
     <Image Include="Resource\Texture\floor_cave.png" />
+    <Image Include="Resource\Texture\horned_lizard.png" />
+    <Image Include="Resource\Texture\mole.png" />
+    <Image Include="Resource\Texture\mosquito.png" />
+    <Image Include="Resource\Texture\snake.png" />
+    <Image Include="Resource\Texture\spider.png" />
     <Image Include="Resource\Texture\winter.png" />
     <Image Include="small.ico" />
   </ItemGroup>
