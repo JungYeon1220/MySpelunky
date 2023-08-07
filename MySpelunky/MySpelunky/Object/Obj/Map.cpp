@@ -211,7 +211,6 @@ void Map::Render()
 
 void Map::PostRender()
 {
-    ImGui::Text("movable x : %.0f y : %.0f", _movables[0]->GetCollider()->GetWorldPos().x, _movables[0]->GetCollider()->GetWorldPos());
 }
 
 void Map::CreateRooms()
