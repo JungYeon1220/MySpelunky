@@ -13,7 +13,7 @@
 Map::Map()
 {
 	_bgTrans = make_shared<Transform>();
-	_bg = make_shared<Quad>(Vector2(400.0f,400.0f),L"Resource/Texture/bg_cave.png");
+	_bg = make_shared<Quad>(Vector2(400.0f * 10.0f,400.0f * 8.0f),L"Resource/Texture/bg_cave.png",Vector2(10.0f, 8.0f));
 
     CreateRooms();
     CreateRoomLayout();
@@ -139,6 +139,8 @@ Map::Map()
 			tile->Update();
 		}
 	}
+
+    _bgTrans->SetPosition(Vector2(_tileMap[0][_poolCountX - 1]->GetCollider()->GetWorldPos().x / 2, _tileMap[0][_poolCountX - 1]->GetCollider()->GetWorldPos().y / 2));
 }
 
 Map::~Map()
@@ -147,6 +149,8 @@ Map::~Map()
 
 void Map::Update()
 {
+    _bgTrans->Update();
+    _bg->Update();
     for (auto movable : _movables)
     {
         movable->Update();
@@ -166,9 +170,12 @@ void Map::Update()
                 if (tile->GetType() == Tile::Type::MOVABLE)
                     continue;
 
-                if (tile->Block(movable->GetCollider()))
+                if (tile->GetCollider()->IsCollision(dynamic_pointer_cast<Movable>(movable)->GetMovableCollider()))
                 {
-                    check = true;
+                    if (tile->GetCollider()->Block(movable->GetCollider()))
+                    {
+                        check = true;
+                    }
                 }
             }
         }
@@ -186,6 +193,8 @@ void Map::Update()
 
 void Map::Render()
 {
+    _bgTrans->SetWorldBuffer(0);
+    _bg->Render();
 	for (auto tileArr : _tileMap)
 	{
 		for (auto tile : tileArr)

@@ -305,8 +305,8 @@ void TileTestScene::Update()
 
 void TileTestScene::Render()
 {
-	_player->Render();
 	_map->Render();
+	_player->Render();
 }
 
 void TileTestScene::PostRender()

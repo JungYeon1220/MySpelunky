@@ -19,6 +19,15 @@ Quad::Quad(Vector2 size, wstring path)
     CreateData(path);
 }
 
+Quad::Quad(Vector2 size, wstring path, Vector2 scale)
+    : _size(size)
+{
+    _srv = ADD_SRV(path);
+
+    CreateVertices(scale);
+    CreateData(path);
+}
+
 Quad::~Quad()
 {
 }
@@ -45,7 +54,6 @@ void Quad::Render()
 
 void Quad::CreateVertices()
 {
-
     Vertex_Texture v;
 
     Vector2 halfSize = _size * 0.5f;
@@ -68,6 +76,41 @@ void Quad::CreateVertices()
     v.pos = { -halfSize.x, -halfSize.y, 0.0f }; // 왼쪽 아래
     v.color = { 0.0f, 0.0f, 0.0f, 1.0f };
     v.uv = { 0.0f, 1.0f };
+    _vertices.push_back(v);
+
+    _indices.push_back(0);
+    _indices.push_back(1);
+    _indices.push_back(2);
+
+    _indices.push_back(0);
+    _indices.push_back(2);
+    _indices.push_back(3);
+}
+
+void Quad::CreateVertices(Vector2 scale)
+{
+    Vertex_Texture v;
+
+    Vector2 halfSize = _size * 0.5f;
+
+    v.pos = { -halfSize.x, halfSize.y, 0.0f }; // 왼쪽 위
+    v.color = { 1.0f, 0.0f, 0.0f, 1.0f };
+    v.uv = { 0.0f, 0.0f };
+    _vertices.push_back(v);
+
+    v.pos = { halfSize.x, halfSize.y, 0.0f }; // 오른쪽 위
+    v.color = { 0.0f, 1.0f, 0.0f, 1.0f };
+    v.uv = { scale.x, 0.0f };
+    _vertices.push_back(v);
+
+    v.pos = { halfSize.x, -halfSize.y, 0.0f }; // 오른쪽 아래
+    v.color = { 0.0f, 0.0f, 1.0f, 1.0f };
+    v.uv = { scale.x, scale.y };
+    _vertices.push_back(v);
+
+    v.pos = { -halfSize.x, -halfSize.y, 0.0f }; // 왼쪽 아래
+    v.color = { 0.0f, 0.0f, 0.0f, 1.0f };
+    v.uv = { 0.0f, scale.y};
     _vertices.push_back(v);
 
     _indices.push_back(0);
