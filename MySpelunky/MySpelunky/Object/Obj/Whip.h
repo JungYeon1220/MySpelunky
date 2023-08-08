@@ -5,7 +5,7 @@ public:
 	Whip();
 	~Whip();
 
-	void Attack();
+	void SetTarget();
 	void End();
 
 	void Update();

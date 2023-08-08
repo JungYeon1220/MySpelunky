@@ -1,9 +1,12 @@
 #include "framework.h"
 #include "Monster.h"
+#include "../Player.h"
 
 Monster::Monster()
 {
 	_col = make_shared<RectCollider>(Vector2(40.0f, 40.0f));
+	_rangeCol = make_shared<RectCollider>(Vector2(500.0f, 300.0f));
+	_rangeCol->GetTransform()->SetParent(_col->GetTransform());
 	_transform = make_shared<Transform>();
 	_transform->SetParent(_col->GetTransform());
 	_transform->SetPosition(Vector2(0.0f, 2.0f));
@@ -22,7 +25,23 @@ void Monster::Update()
 {
 	Jump();
 
+	if (_canJump == false)
+	{
+		_curJumpTime += DELTA_TIME;
+	}
+	if (_curJumpTime >= _jumpCoolTime)
+	{
+		_canJump = true;
+		_curJumpTime = 0.0f;
+	}
+
+	if (_isFalling == true)
+	{
+		_col->GetTransform()->AddVector2(_dir * _speed * DELTA_TIME);
+	}
+
 	_col->Update();
+	_rangeCol->Update();
 	_transform->Update();
 	_actions[_curState]->Update();
 
@@ -35,6 +54,7 @@ void Monster::Render()
 {
 	_transform->SetWorldBuffer(0);
 	_sprite->Render();
+	_rangeCol->Render();
 	_col->Render();
 }
 
@@ -42,14 +62,19 @@ void Monster::Jump()
 {
 	if (_isFalling == true)
 		SetAction(State::JUMP);
-	else if (_isFalling == false && _curState != State::JUMP)
+	if (_isFalling == false && _isJumping == false)
 		SetAction(State::IDLE);
 
-	if (_actions[State::JUMP]->GetCurIndex() == 7)
+	if (_actions[State::JUMP]->GetCurIndex() == 6)
 	{
+		_speed = 200.0f;
 		_jumpPower = 1200.0f;
 		_isFalling = true;
 		_col->GetTransform()->AddVector2(Vector2(0.0f, 0.01f));
+		_canJump = false;
+	}
+	if(_actions[State::JUMP]->GetCurIndex() == 7)
+	{
 		_actions[State::JUMP]->Pause();
 	}
 
@@ -62,10 +87,31 @@ void Monster::Jump()
 		_jumpPower = -_maxFalling;
 
 	_col->GetTransform()->AddVector2(Vector2(0.0f, _jumpPower * DELTA_TIME));
+}
 
-	if (KEY_DOWN('Z') && _isFalling == false)
+void Monster::SetTarget(shared_ptr<Player> player)
+{
+	if (_rangeCol->IsCollision(player->GetCollider()))
 	{
-		SetAction(State::JUMP);
+		_inRange = true;
+		if (_canJump == true && _isFalling == false && _inRange == true)
+		{
+			SetAction(State::JUMP);
+			_isJumping = true;
+			if (player->GetCollider()->GetWorldPos().x < _col->GetWorldPos().x)
+			{
+				_dir = -RIGHT_VECTOR;
+			}
+			else
+			{
+				_dir = RIGHT_VECTOR;
+			}
+		}
+
+	}
+	else
+	{
+		_inRange = false;
 	}
 }
 

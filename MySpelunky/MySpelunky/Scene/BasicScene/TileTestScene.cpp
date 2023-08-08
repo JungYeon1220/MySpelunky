@@ -16,8 +16,11 @@ TileTestScene::TileTestScene()
 	_map = make_shared<Map>();
 	_player = make_shared<Player>();
 	_player->GetCollider()->GetTransform()->SetPosition(Vector2(_map->GetStartPos().x * 100.0f, (_map->PoolCount().y - 1 - _map->GetStartPos().y) * 100.0f));
-	CAMERA->FreeMode();
-	CAMERA->SetScale(Vector2(0.3f, 0.3f));
+	CAMERA->SetTarget(_player->GetCollider()->GetTransform());
+	CAMERA->SetLeftBottom(_map->GetTiles()[_map->PoolCount().y - 1][0]->GetCollider()->GetWorldPos());
+	CAMERA->SetRightTop(_map->GetTiles()[0][_map->PoolCount().x - 1]->GetCollider()->GetWorldPos());
+	//CAMERA->FreeMode();
+	//CAMERA->SetScale(Vector2(0.3f, 0.3f));
 }
 
 TileTestScene::~TileTestScene()

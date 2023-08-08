@@ -16,6 +16,7 @@
 TutorialScene::TutorialScene()
 {
 	_player = make_shared<Player>();
+	_player->GetCollider()->GetTransform()->AddVector2(Vector2(100.0f, 0.0f));
 	_monster = make_shared<Monster>();
 
 	for (int i = 0; i < 10; i++)
@@ -43,6 +44,13 @@ void TutorialScene::Update()
 {
 	_player->Update();
 	_monster->Update();
+
+	_monster->SetTarget(_player);
+	if (_monster->GetCollider()->IsCollision(_player->GetHitCollider()))
+	{
+		_player->TakeDamage(1);
+	}
+
 
 	{
 		bool check = false;
@@ -323,6 +331,7 @@ void TutorialScene::Update()
 		if (ladderCheck == false)
 			_player->IsClimb() = false;
 	}
+
 	{
 		bool check = false;
 		for (auto tile : _tiles)
@@ -330,13 +339,17 @@ void TutorialScene::Update()
 			if (tile->Block(_monster->GetCollider()))
 				check = true;
 		}
+
 		if (check == false)
 		{
 			_monster->IsFalling() = true;
 		}
 		else
 		{
+			if (_monster->IsFalling() == true)
+				_monster->IsJumping() = false;
 			_monster->IsFalling() = false;
+			_monster->GetSpeed() = 0.0f;
 		}
 	}
 }
@@ -351,5 +364,7 @@ void TutorialScene::Render()
 
 void TutorialScene::PostRender()
 {
+	_player->PostRender();
 	ImGui::Text("mosnter falling : %d", _monster->IsFalling());
+	ImGui::Text("mosnter jumping : %d", _monster->IsJumping());
 }

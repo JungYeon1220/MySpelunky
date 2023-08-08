@@ -31,7 +31,7 @@ Whip::~Whip()
 {
 }
 
-void Whip::Attack()
+void Whip::SetTarget()
 {
 	_canStand = true;
 	_action->Reset();

@@ -23,7 +23,7 @@ public:
 
 	void Input();
 	void Jump();
-	void Attack();
+	void SetTarget();
 	void ClimbRadder();
 	void GrabLedge();
 	void Push();
@@ -33,12 +33,7 @@ public:
 	void PostRender();
 
 	void SetAction(State state);
-	void SetIdle()
-	{
-		if (_isAttack == true)
-			return;
-		SetAction(State::IDLE);
-	}
+	void SetIdle();
 	void EndAttack();
 	void TakeDamage(int value);
 	void Dead();
@@ -99,6 +94,9 @@ private:
 	bool _isStun = false;
 	bool _isPush = false;
 
+	float _curStunTime = 0.0f;
+	float _stunCoolTime = 0.5f;
+
 	bool _canClimb = true;
 	float _climbTime = 0.0f;
 
@@ -107,5 +105,8 @@ private:
 	bool _isGrabLedge = false;
 
 	int _hp = 3;
+	bool _isDamaged = false;
+	float _curDamagedTime = 0.0f;
+	float _damagedCoolTime = 2.0f;
 };
 

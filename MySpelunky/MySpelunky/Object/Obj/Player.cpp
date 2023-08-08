@@ -53,7 +53,7 @@ void Player::Input()
 
 	if (KEY_DOWN('X'))
 	{
-		Attack();
+		SetTarget();
 	}
 
 	if (_isClimb == true && _canClimb == true)
@@ -214,7 +214,7 @@ void Player::Jump()
 	}
 }
 
-void Player::Attack()
+void Player::SetTarget()
 {
 	if (_isClimb == true)
 		_isClimb = false;
@@ -225,7 +225,7 @@ void Player::Attack()
 	if (_curState == State::LAY_DOWN || _curState == State::CRAWL)
 		return;
 
-	_whip->Attack();
+	_whip->SetTarget();
 
 	if (_isAttack == true)
 	{
@@ -371,6 +371,29 @@ void Player::Update()
 		//CAMERA->SetTarget(_col->GetTransform());
 	}
 
+	if (_isDamaged == true)
+	{
+		_curDamagedTime += DELTA_TIME;
+	}
+	if (_curDamagedTime >= _damagedCoolTime)
+	{
+		_isDamaged = false;
+		_curDamagedTime = 0.0f;
+	}
+
+	if (_isDead == false)
+	{
+		if (_isStun == true)
+		{
+			_curStunTime += DELTA_TIME;
+		}
+		if (_curStunTime >= _stunCoolTime)
+		{
+			_isStun = false;
+			_curStunTime = 0.0f;
+		}
+	}
+
 	_whip->Update();
 	_col->Update();
 	_layDownCol->Update();
@@ -404,6 +427,8 @@ void Player::PostRender()
 	ImGui::Text("y pos : %f", _col->GetWorldPos().y);
 	ImGui::Text("jump power : %f", _jumpPower);
 	ImGui::Text("is falling : %d", _isFalling);
+	ImGui::Text("hp : %d", _hp);
+	ImGui::Text("is Damaged : %d", _isDamaged);
 	if (ImGui::Button("Kill", { 50,50 }))
 	{
 		Dead();
@@ -423,6 +448,13 @@ void Player::SetAction(State state)
 	_actions[_curState]->Play();
 }
 
+void Player::SetIdle()
+{
+	if (_isAttack == true)
+		return;
+	SetAction(State::IDLE);
+}
+
 void Player::EndAttack()
 {
 	_isAttack = false;
@@ -437,11 +469,29 @@ void Player::EndAttack()
 
 void Player::TakeDamage(int value)
 {
+	if (_isDamaged == true)
+		return;
+
 	_hp -= value;
 	if (_hp <= 0)
 	{
 		_hp = 0;
+		_isDead = true;
 	}
+	if (_isStun == true)
+	{
+		_curDamagedTime = 0.0f;
+	}
+
+	if (value <= 1)
+	{
+
+	}
+	else
+	{
+		_isStun = true;
+	}
+	_isDamaged = true;
 }
 
 void Player::Dead()
