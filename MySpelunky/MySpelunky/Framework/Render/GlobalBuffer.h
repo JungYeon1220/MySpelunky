@@ -135,3 +135,22 @@ public:
 
 	Data _data;
 };
+
+class DamagedBuffer : public ConstantBuffer
+{
+public:
+	struct Data
+	{
+		int damaged = 0;
+		int padding[3];
+	};
+
+	DamagedBuffer()
+		: ConstantBuffer(&_data, sizeof(_data))
+	{
+	}
+
+	virtual ~DamagedBuffer() {}
+
+	Data _data;
+};

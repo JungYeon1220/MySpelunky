@@ -15,6 +15,9 @@ Player::Player()
 	_downTransform = make_shared<Transform>();
 
 	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/char_yellow.png", Vector2(16, 16));
+	_damagedBuffer = make_shared<DamagedBuffer>();
+	_playerPS = ADD_PS(L"Shader/PlayerPS.hlsl");
+	_sprite->SetPS(_playerPS);
 	_whip = make_shared<Whip>();
 
 	_transform->SetParent(_col->GetTransform());
@@ -53,7 +56,7 @@ void Player::Input()
 
 	if (KEY_DOWN('X'))
 	{
-		SetTarget();
+		Attack();
 	}
 
 	if (_isClimb == true && _canClimb == true)
@@ -90,23 +93,34 @@ void Player::Input()
 	{
 		if (KEY_PRESS(VK_DOWN) && _isFalling == false)
 		{
-			_col->GetTransform()->AddVector2(-RIGHT_VECTOR * _speed * DELTA_TIME * 0.5f);
+			_col->GetTransform()->AddVector2(-RIGHT_VECTOR * 150.0f * DELTA_TIME);
 		}
 		else
 		{
-			_col->GetTransform()->AddVector2(-RIGHT_VECTOR * _speed * DELTA_TIME);
+			_curSpeed -= 30.0f;
+			if (_curSpeed < -_maxSpeed)
+				_curSpeed = -_maxSpeed;
 		}
 	}
 	if (KEY_PRESS(VK_RIGHT))
 	{
 		if (KEY_PRESS(VK_DOWN) && _isFalling == false)
 		{
-			_col->GetTransform()->AddVector2(RIGHT_VECTOR * _speed * DELTA_TIME * 0.5f);
+			_col->GetTransform()->AddVector2(RIGHT_VECTOR * 150.0f * DELTA_TIME);
 		}
 		else
 		{
-			_col->GetTransform()->AddVector2(RIGHT_VECTOR * _speed * DELTA_TIME);
+			_curSpeed += 30.0f;
+			if (_curSpeed > _maxSpeed)
+				_curSpeed = _maxSpeed;
 		}
+	}
+
+	if (!KEY_PRESS(VK_LEFT) && !KEY_PRESS(VK_RIGHT))
+	{
+		_curSpeed *= 0.9f;
+		if (_curSpeed < 0.01f && _curSpeed > -0.01f)
+			_curSpeed = 0.0f;
 	}
 
 	if (_curState == State::JUMP)
@@ -176,6 +190,7 @@ void Player::Input()
 	else if (KEY_UP(VK_RIGHT))
 		SetAction(State::IDLE);
 
+
 }
 
 void Player::Jump()
@@ -214,7 +229,7 @@ void Player::Jump()
 	}
 }
 
-void Player::SetTarget()
+void Player::Attack()
 {
 	if (_isClimb == true)
 		_isClimb = false;
@@ -225,7 +240,7 @@ void Player::SetTarget()
 	if (_curState == State::LAY_DOWN || _curState == State::CRAWL)
 		return;
 
-	_whip->SetTarget();
+	_whip->Attack();
 
 	if (_isAttack == true)
 	{
@@ -254,7 +269,7 @@ void Player::ClimbRadder()
 	if (KEY_PRESS(VK_UP))
 	{
 		_actions[State::CLIMB_RADDER]->SetReverse(false);
-		_col->GetTransform()->AddVector2(UP_VECTOR * _speed * DELTA_TIME * 0.5f);
+		_col->GetTransform()->AddVector2(UP_VECTOR * 150.0f * DELTA_TIME);
 	}
 	else if (KEY_UP(VK_UP))
 	{
@@ -264,7 +279,7 @@ void Player::ClimbRadder()
 	if (KEY_PRESS(VK_DOWN))
 	{
 		_actions[State::CLIMB_RADDER]->SetReverse(true);
-		_col->GetTransform()->AddVector2(-UP_VECTOR * _speed * DELTA_TIME * 0.5f);
+		_col->GetTransform()->AddVector2(-UP_VECTOR * 150.0f * DELTA_TIME);
 	}
 	else if (KEY_UP(VK_DOWN))
 	{
@@ -394,6 +409,7 @@ void Player::Update()
 		}
 	}
 
+	_col->GetTransform()->AddVector2(RIGHT_VECTOR * _curSpeed * DELTA_TIME);
 	_whip->Update();
 	_col->Update();
 	_layDownCol->Update();
@@ -404,6 +420,8 @@ void Player::Update()
 	_upTransform->Update();
 	_downTransform->Update();
 	_actions[_curState]->Update();
+	_damagedBuffer->_data.damaged = _isDamaged;
+	_damagedBuffer->Update_Resource();
 
 	_sprite->SetCurClip(_actions[_curState]->GetCurClip());
 	_sprite->Update();
@@ -413,6 +431,7 @@ void Player::Render()
 {
 	_whip->Render();
 	_transform->SetWorldBuffer(0);
+	_damagedBuffer->SetPS_Buffer(2);
 	_sprite->Render();
 	_layDownCol->Render();
 	_feetCol->Render();
@@ -469,6 +488,9 @@ void Player::EndAttack()
 
 void Player::TakeDamage(int value)
 {
+	if (_isDead == true)
+		return;
+
 	if (_isDamaged == true)
 		return;
 
@@ -476,28 +498,30 @@ void Player::TakeDamage(int value)
 	if (_hp <= 0)
 	{
 		_hp = 0;
-		_isDead = true;
+		Dead();
 	}
 	if (_isStun == true)
 	{
 		_curDamagedTime = 0.0f;
 	}
 
-	if (value <= 1)
-	{
-
-	}
-	else
+	if(value > 1)
 	{
 		_isStun = true;
 	}
 	_isDamaged = true;
 }
 
+void Player::KockBack(Vector2 pos, float value)
+{
+	
+}
+
 void Player::Dead()
 {
 	_isStun = true;
 	_isDead = true;
+	_curSpeed = 0.0f;
 	_hp = 0;
 }
 

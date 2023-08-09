@@ -23,7 +23,7 @@ public:
 
 	void Input();
 	void Jump();
-	void SetTarget();
+	void Attack();
 	void ClimbRadder();
 	void GrabLedge();
 	void Push();
@@ -36,6 +36,7 @@ public:
 	void SetIdle();
 	void EndAttack();
 	void TakeDamage(int value);
+	void KockBack(Vector2 pos, float value);
 	void Dead();
 
 	shared_ptr<RectCollider> GetCollider() { return _col; }
@@ -43,8 +44,10 @@ public:
 	shared_ptr<CircleCollider> GetHeadCollider() { return _headCol; }
 	shared_ptr<CircleCollider> GetGrabCollider() { return _grabCol; }
 	shared_ptr<RectCollider> GetHitCollider();
+	shared_ptr<class Whip> GetWhip() { return _whip; }
 	State GetState() { return _curState; }
 	float& GetJumpPower() { return _jumpPower; }
+	float& GetSpeed() { return _curSpeed; }
 	Vector2 GetSize() { return _playerSize; }
 	int GetHp() { return _hp; }
 
@@ -74,6 +77,8 @@ private:
 	shared_ptr<Transform> _downTransform;
 	vector<shared_ptr<Action>> _actions;
 	shared_ptr<Sprite_Frame> _sprite;
+	shared_ptr<PixelShader> _playerPS;
+	shared_ptr<DamagedBuffer> _damagedBuffer;
 
 	shared_ptr<class Whip> _whip;
 
@@ -81,7 +86,8 @@ private:
 
 	float _lookTime = 0.0f;
 
-	float _speed = 300.0f;
+	float _curSpeed = 0.0f;
+	float _maxSpeed = 300.0f;
 	bool _isLaying = false;
 
 	bool _isFalling = false;

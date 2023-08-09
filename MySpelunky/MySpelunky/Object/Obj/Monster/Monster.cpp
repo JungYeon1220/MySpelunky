@@ -23,6 +23,9 @@ Monster::~Monster()
 
 void Monster::Update()
 {
+	if (_isDead == true)
+		return;
+
 	Jump();
 
 	if (_canJump == false)
@@ -52,10 +55,23 @@ void Monster::Update()
 
 void Monster::Render()
 {
+	if (_isDead == true)
+		return;
+
 	_transform->SetWorldBuffer(0);
 	_sprite->Render();
 	_rangeCol->Render();
 	_col->Render();
+}
+
+void Monster::TakeDamage(int value)
+{
+	_hp -= value;
+	if (_hp <= 0)
+	{
+		_hp = 0;
+		_isDead = true;
+	}
 }
 
 void Monster::Jump()

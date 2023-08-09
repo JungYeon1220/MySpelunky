@@ -1,6 +1,7 @@
 #include "framework.h"
 #include "TutorialScene.h"
 #include "../../Object/Obj/Player.h"
+#include "../../Object/Obj/Whip.h"
 #include "../../Object/Obj/Monster/Monster.h"
 #include "../../Object/Obj/Tile/Tile.h"
 #include "../../Object/Obj/Tile/Normal.h"
@@ -45,10 +46,21 @@ void TutorialScene::Update()
 	_player->Update();
 	_monster->Update();
 
-	_monster->SetTarget(_player);
-	if (_monster->GetCollider()->IsCollision(_player->GetHitCollider()))
+	if (_player->GetWhip()->IsActive() == true)
 	{
-		_player->TakeDamage(1);
+		if (_player->GetWhip()->GetCollider()->IsCollision(_monster->GetCollider()))
+		{
+			_monster->TakeDamage(1);
+		}
+	}
+
+	if (_monster->IsDead() == false)
+	{
+		_monster->SetTarget(_player);
+		if (_monster->GetCollider()->IsCollision(_player->GetHitCollider()))
+		{
+			_player->TakeDamage(1);
+		}
 	}
 
 

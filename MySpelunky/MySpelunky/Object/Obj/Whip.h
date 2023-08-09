@@ -5,7 +5,7 @@ public:
 	Whip();
 	~Whip();
 
-	void SetTarget();
+	void Attack();
 	void End();
 
 	void Update();
@@ -15,6 +15,8 @@ public:
 	void SetRight();
 
 	shared_ptr<Transform> GetTransform() { return _transform; }
+	shared_ptr<RectCollider> GetCollider() { return _col; }
+	bool& IsActive() { return _isActive; }
 
 private:
 	shared_ptr<Transform> _transform;
@@ -26,7 +28,7 @@ private:
 
 	shared_ptr<RectCollider> _col;
 
-	bool _canStand = false;
+	bool _isActive = false;
 	bool _isLeft = false;
 };
 

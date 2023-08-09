@@ -13,7 +13,7 @@ cbuffer ActionBuffer : register(b1)
 	float2 size;
 	float2 imageSize;
 	int padding[2];
-};
+}
 
 struct PixelInput
 {

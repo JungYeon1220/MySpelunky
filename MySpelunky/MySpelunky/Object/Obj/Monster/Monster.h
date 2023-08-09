@@ -3,7 +3,7 @@ class Monster
 {
 public:
 	Monster();
-	~Monster();
+	virtual ~Monster();
 
 	enum State
 	{
@@ -14,25 +14,30 @@ public:
 	void Update();
 	void Render();
 
+	void TakeDamage(int value);
+
 	void Jump();
 	void SetTarget(shared_ptr<class Player> player);
 	void SetAction(State state);
 
 	shared_ptr<RectCollider> GetCollider() { return _col; }
 	shared_ptr<RectCollider> GetRangeCol() { return _rangeCol; }
+	bool& IsDead() { return _isDead; }
 	float& GetSpeed() { return _speed; }
 	bool& IsFalling() { return _isFalling; }
 	bool& IsJumping() { return _isJumping; }
 	bool& CanJump() { return _canJump; }
 	bool& InRange() { return _inRange; }
 
-private:
+protected:
 	void CreateAction();
 	shared_ptr<Transform> _transform;
 	shared_ptr<RectCollider> _col;
 	shared_ptr<RectCollider> _rangeCol;
 	shared_ptr<Sprite_Frame> _sprite;
 	vector<shared_ptr<Action>> _actions;
+
+	bool _isDead = false;
 
 	bool _inRange = false;
 
@@ -50,6 +55,8 @@ private:
 
 	State _curState = State::IDLE;
 	State _oldState = State::IDLE;
+
+	int _hp = 1;
 
 };
 

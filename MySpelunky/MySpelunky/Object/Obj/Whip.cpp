@@ -31,21 +31,21 @@ Whip::~Whip()
 {
 }
 
-void Whip::SetTarget()
+void Whip::Attack()
 {
-	_canStand = true;
+	_isActive = true;
 	_action->Reset();
 	_action->Play();
 }
 
 void Whip::End()
 {
-	_canStand = false;
+	_isActive = false;
 }
 
 void Whip::Update()
 {
-	if (_canStand == false)
+	if (_isActive == false)
 		return;
 
 	_action->Update();
@@ -80,7 +80,7 @@ void Whip::Update()
 
 void Whip::Render()
 {
-	if (_canStand == false)
+	if (_isActive == false)
 		return;
 
 	_transform->SetWorldBuffer(0);
