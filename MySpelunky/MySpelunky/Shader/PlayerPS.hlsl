@@ -42,7 +42,7 @@ float4 PS(PixelInput input) : SV_TARGET
     
     if (damaged == 1)
     {
-		color.rgba *= 0.7f;
+		color.rgb *= 0.6f;
 	}
 
     return color;

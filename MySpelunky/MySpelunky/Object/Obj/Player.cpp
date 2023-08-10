@@ -82,7 +82,6 @@ void Player::Input()
 	if (KEY_PRESS(VK_RIGHT))
 	{
 		//_col->GetTransform()->SetScale(Vector2(+1, +1));
-
 		_sprite->SetRight();
 		_whip->SetRight();
 		_grabCol->GetTransform()->SetPosition(Vector2(25.0f, 30.0f));
@@ -93,7 +92,12 @@ void Player::Input()
 	{
 		if (KEY_PRESS(VK_DOWN) && _isFalling == false)
 		{
+			_curSpeed = 0.0f;
 			_col->GetTransform()->AddVector2(-RIGHT_VECTOR * 150.0f * DELTA_TIME);
+		}
+		else if (_isPush == true)
+		{
+			_col->GetTransform()->AddVector2(-RIGHT_VECTOR * 101.0F * DELTA_TIME);
 		}
 		else
 		{
@@ -106,7 +110,12 @@ void Player::Input()
 	{
 		if (KEY_PRESS(VK_DOWN) && _isFalling == false)
 		{
+			_curSpeed = 0.0f;
 			_col->GetTransform()->AddVector2(RIGHT_VECTOR * 150.0f * DELTA_TIME);
+		}
+		else if (_isPush == true)
+		{
+			_col->GetTransform()->AddVector2(RIGHT_VECTOR * 101.0F * DELTA_TIME);
 		}
 		else
 		{
@@ -119,7 +128,7 @@ void Player::Input()
 	if (!KEY_PRESS(VK_LEFT) && !KEY_PRESS(VK_RIGHT))
 	{
 		_curSpeed *= 0.9f;
-		if (_curSpeed < 0.01f && _curSpeed > -0.01f)
+		if (_curSpeed < 10.0f && _curSpeed > -10.0f)
 			_curSpeed = 0.0f;
 	}
 
@@ -170,34 +179,26 @@ void Player::Input()
 	if (_curState == State::ATTACK)
 		return;
 
-	if (KEY_PRESS(VK_LEFT))
+	if (_isPush == true)
 	{
-		if (_isPush == true)
-			SetAction(State::PUSH);
-		else
-			SetAction(State::RUN);
+		SetAction(State::PUSH);
+		return;
 	}
-	else if (KEY_UP(VK_LEFT))
-		SetAction(State::IDLE);
 
-	if (KEY_PRESS(VK_RIGHT))
+	if (_curSpeed <= 15.0f && _curSpeed >= -15.0f && !KEY_PRESS(VK_LEFT) && !KEY_PRESS(VK_RIGHT))
 	{
-		if (_isPush == true)
-			SetAction(State::PUSH);
-		else
-			SetAction(State::RUN);
+		if (_curState != State::LOOK_UP)
+			SetAction(State::IDLE);
 	}
-	else if (KEY_UP(VK_RIGHT))
-		SetAction(State::IDLE);
-
-
+	else
+		SetAction(State::RUN);
 }
 
 void Player::Jump()
 {
 	if (_isFalling == true && _isAttack == false && _isStun == false)
 		SetAction(State::JUMP);
-	else if (_curState == JUMP && _isFalling == false && _isAttack == false && _isStun == false)
+	else if (_curState == State::JUMP && _isFalling == false && _isAttack == false && _isStun == false)
 		SetAction(State::IDLE);
 
 	if (_actions[State::JUMP]->GetCurIndex() == 7)
@@ -208,10 +209,10 @@ void Player::Jump()
 	else
 		_jumpPower = 0.0f;
 
+	_col->GetTransform()->AddVector2(Vector2(0.0f, _jumpPower * DELTA_TIME));
+
 	if (_jumpPower < -_maxFalling)
 		_jumpPower = -_maxFalling;
-
-	_col->GetTransform()->AddVector2(Vector2(0.0f, _jumpPower * DELTA_TIME));
 
 	if (_onOneWay == true)
 	{
@@ -319,11 +320,6 @@ void Player::GrabLedge()
 	{
 		_isGrabLedge = false;
 	}
-}
-
-void Player::Push()
-{
-
 }
 
 void Player::Update()
@@ -512,9 +508,25 @@ void Player::TakeDamage(int value)
 	_isDamaged = true;
 }
 
-void Player::KockBack(Vector2 pos, float value)
+void Player::KnockBack(Vector2 pos, float value)
 {
-	
+	if (_isDead == true)
+		return;
+	if (_isDamaged == true)
+		return;
+
+	_jumpPower = value;
+	_isFalling = true;
+	_col->GetTransform()->AddVector2(Vector2(0.0f, 0.01f));
+
+	if (_col->GetWorldPos().x < pos.x)
+	{
+		_curSpeed = -value;
+	}
+	else
+	{
+		_curSpeed = value;
+	}
 }
 
 void Player::Dead()

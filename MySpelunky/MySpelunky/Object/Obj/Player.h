@@ -26,7 +26,6 @@ public:
 	void Attack();
 	void ClimbRadder();
 	void GrabLedge();
-	void Push();
 
 	void Update();
 	void Render();
@@ -36,7 +35,7 @@ public:
 	void SetIdle();
 	void EndAttack();
 	void TakeDamage(int value);
-	void KockBack(Vector2 pos, float value);
+	void KnockBack(Vector2 pos, float value);
 	void Dead();
 
 	shared_ptr<RectCollider> GetCollider() { return _col; }

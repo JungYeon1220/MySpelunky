@@ -3,6 +3,7 @@
 #include "../../Object/Obj/Player.h"
 #include "../../Object/Obj/Whip.h"
 #include "../../Object/Obj/Monster/Monster.h"
+#include "../../Object/Obj/Monster/Spider.h"
 #include "../../Object/Obj/Tile/Tile.h"
 #include "../../Object/Obj/Tile/Normal.h"
 #include "../../Object/Obj/Tile/Ladder.h"
@@ -18,7 +19,7 @@ TutorialScene::TutorialScene()
 {
 	_player = make_shared<Player>();
 	_player->GetCollider()->GetTransform()->AddVector2(Vector2(100.0f, 0.0f));
-	_monster = make_shared<Monster>();
+	_spider = make_shared<Spider>();
 
 	for (int i = 0; i < 10; i++)
 	{
@@ -44,25 +45,7 @@ TutorialScene::~TutorialScene()
 void TutorialScene::Update()
 {
 	_player->Update();
-	_monster->Update();
-
-	if (_player->GetWhip()->IsActive() == true)
-	{
-		if (_player->GetWhip()->GetCollider()->IsCollision(_monster->GetCollider()))
-		{
-			_monster->TakeDamage(1);
-		}
-	}
-
-	if (_monster->IsDead() == false)
-	{
-		_monster->SetTarget(_player);
-		if (_monster->GetCollider()->IsCollision(_player->GetHitCollider()))
-		{
-			_player->TakeDamage(1);
-		}
-	}
-
+	_spider->Update();
 
 	{
 		bool check = false;
@@ -88,6 +71,12 @@ void TutorialScene::Update()
 						_player->GetJumpPower() = 0.0f;
 
 					Vector2 tilePos = tile->GetCollider()->GetWorldPos();
+
+					if (_player->GetCollider()->GetWorldPos().y + _player->GetSize().y * 0.5f > tilePos.y - 50.0f
+						&& _player->GetCollider()->GetWorldPos().y - _player->GetSize().y * 0.5f < tilePos.y + 50.0f)
+					{
+						_player->GetSpeed() = 0.0f;
+					}
 
 					if (dynamic_pointer_cast<Normal>(tile)->CanGrab() == true)
 					{
@@ -117,6 +106,14 @@ void TutorialScene::Update()
 						check = true;
 					if (tile->GetCollider()->IsCollision(_player->GetHeadCollider()))
 						_player->GetJumpPower() = 0.0f;
+
+					Vector2 tilePos = tile->GetCollider()->GetWorldPos();
+
+					if (_player->GetCollider()->GetWorldPos().y + _player->GetSize().y * 0.5f > tilePos.y - 50.0f
+						&& _player->GetCollider()->GetWorldPos().y - _player->GetSize().y * 0.5f < tilePos.y + 50.0f)
+					{
+						_player->GetSpeed() = 0.0f;
+					}
 				}
 			}
 			break;
@@ -193,6 +190,12 @@ void TutorialScene::Update()
 
 					Vector2 tilePos = tile->GetCollider()->GetWorldPos();
 
+					if (_player->GetCollider()->GetWorldPos().y + _player->GetSize().y * 0.5f > tilePos.y - 50.0f
+						&& _player->GetCollider()->GetWorldPos().y - _player->GetSize().y * 0.5f < tilePos.y + 50.0f)
+					{
+						_player->GetSpeed() = 0.0f;
+					}
+
 					if (dynamic_pointer_cast<Wooden>(tile)->CanGrab() == true)
 					{
 						if (_player->GetGrabCollider()->IsCollision(tilePos + Vector2(50.0f, 50.0f)) || _player->GetGrabCollider()->IsCollision(tilePos + Vector2(-50.0f, 50.0f)))
@@ -220,6 +223,12 @@ void TutorialScene::Update()
 						_player->GetJumpPower() = 0.0f;
 
 					Vector2 tilePos = tile->GetCollider()->GetWorldPos();
+
+					if (_player->GetCollider()->GetWorldPos().y + _player->GetSize().y * 0.5f > tilePos.y - 50.0f
+						&& _player->GetCollider()->GetWorldPos().y - _player->GetSize().y * 0.5f < tilePos.y + 50.0f)
+					{
+						_player->GetSpeed() = 0.0f;
+					}
 
 					if (dynamic_pointer_cast<Skeleton>(tile)->CanGrab() == true)
 					{
@@ -274,6 +283,12 @@ void TutorialScene::Update()
 
 					Vector2 tilePos = tile->GetCollider()->GetWorldPos();
 
+					if (_player->GetCollider()->GetWorldPos().y + _player->GetSize().y * 0.5f > tilePos.y - 50.0f
+					&& _player->GetCollider()->GetWorldPos().y - _player->GetSize().y * 0.5f < tilePos.y + 50.0f)
+					{
+						_player->GetSpeed() = 0.0f;
+					}
+
 					if (dynamic_pointer_cast<Movable>(tile)->CanGrab() == true)
 					{
 						if (_player->GetGrabCollider()->IsCollision(tilePos + Vector2(50.0f, 50.0f)) || _player->GetGrabCollider()->IsCollision(tilePos + Vector2(-50.0f, 50.0f)))
@@ -291,18 +306,24 @@ void TutorialScene::Update()
 
 					if (_player->GetCollider()->GetWorldPos().y < tile->GetCollider()->GetWorldPos().y + 50.0f && _player->GetCollider()->GetWorldPos().y > tile->GetCollider()->GetWorldPos().y - 50.0f)
 					{
-						if (_player->IsFalling() == false)
+						if (_player->IsFalling() == false && _player->IsGrab() == false)
 						{
 							if (KEY_PRESS(VK_LEFT))
 							{
-								tile->GetCollider()->GetTransform()->AddVector2(-RIGHT_VECTOR * 100.0f * DELTA_TIME);
-								_player->IsPush() = true;
+								if (_player->GetCollider()->GetWorldPos().x > tile->GetCollider()->GetWorldPos().x)
+								{
+									tile->GetCollider()->GetTransform()->AddVector2(-RIGHT_VECTOR * 100.0f * DELTA_TIME);
+									_player->IsPush() = true;
+								}
 							}
 
 							if (KEY_PRESS(VK_RIGHT))
 							{
-								tile->GetCollider()->GetTransform()->AddVector2(RIGHT_VECTOR * 100.0f * DELTA_TIME);
-								_player->IsPush() = true;
+								if (_player->GetCollider()->GetWorldPos().x < tile->GetCollider()->GetWorldPos().x)
+								{
+									tile->GetCollider()->GetTransform()->AddVector2(RIGHT_VECTOR * 100.0f * DELTA_TIME);
+									_player->IsPush() = true;
+								}
 
 							}
 						}
@@ -348,28 +369,52 @@ void TutorialScene::Update()
 		bool check = false;
 		for (auto tile : _tiles)
 		{
-			if (tile->Block(_monster->GetCollider()))
-				check = true;
+			if (tile->Block(_spider->GetCollider()))
+			{
+				Vector2 tilePos = tile->GetCollider()->GetWorldPos();
+				if ((_spider->GetCollider()->GetWorldPos().y + _spider->GetSize().y * 0.5f > tilePos.y - 50.0f
+					&& _spider->GetCollider()->GetWorldPos().y - _spider->GetSize().y * 0.5f < tilePos.y + 50.0f) == false)
+					check = true;
+			}
 		}
 
 		if (check == false)
 		{
-			_monster->IsFalling() = true;
+			_spider->IsFalling() = true;
 		}
 		else
 		{
-			if (_monster->IsFalling() == true)
-				_monster->IsJumping() = false;
-			_monster->IsFalling() = false;
-			_monster->GetSpeed() = 0.0f;
+			if (_spider->IsFalling() == true)
+				_spider->IsJumping() = false;
+			_spider->IsFalling() = false;
+			_spider->GetSpeed() = 0.0f;
 		}
 	}
+
+	if (_player->GetWhip()->IsActive() == true)
+	{
+		if (_player->GetWhip()->GetCollider()->IsCollision(_spider->GetCollider()))
+		{
+			_spider->TakeDamage(1);
+		}
+	}
+
+	if (_spider->IsDead() == false)
+	{
+		_spider->SetTarget(_player);
+		if (_spider->GetCollider()->IsCollision(_player->GetHitCollider()))
+		{
+			_player->KnockBack(_spider->GetCollider()->GetWorldPos(), 300.0f);
+			_player->TakeDamage(0);
+		}
+	}
+
 }
 
 void TutorialScene::Render()
 {
 	_player->Render();
-	_monster->Render();
+	_spider->Render();
 	for (auto tile : _tiles)
 		tile->Render();
 }
@@ -377,6 +422,6 @@ void TutorialScene::Render()
 void TutorialScene::PostRender()
 {
 	_player->PostRender();
-	ImGui::Text("mosnter falling : %d", _monster->IsFalling());
-	ImGui::Text("mosnter jumping : %d", _monster->IsJumping());
+	ImGui::Text("mosnter falling : %d", _spider->IsFalling());
+	ImGui::Text("mosnter jumping : %d", _spider->IsJumping());
 }
