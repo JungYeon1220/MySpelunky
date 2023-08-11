@@ -194,6 +194,7 @@
     <ClInclude Include="Object\Obj\Tile\Spike.h" />
     <ClInclude Include="Object\Obj\Tile\Skeleton.h" />
     <ClInclude Include="Object\Obj\Monster\Spider.h" />
+    <ClInclude Include="Object\Obj\Monster\Snake.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Scene\BasicScene\TileTestScene.h" />
     <ClInclude Include="Types.h" />
@@ -255,6 +256,7 @@
     <ClCompile Include="Object\Obj\Tile\Skeleton.cpp" />
     <ClCompile Include="Object\Obj\Tile\Wooden.cpp" />
     <ClCompile Include="Object\Obj\Monster\Spider.cpp" />
+    <ClCompile Include="Object\Obj\Monster\Snake.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MySpelunky.rc" />

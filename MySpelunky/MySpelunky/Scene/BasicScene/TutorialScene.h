@@ -12,6 +12,7 @@ public:
 private:
 	shared_ptr<class Player> _player;
 	shared_ptr<class Spider> _spider;
+	shared_ptr<class Snake> _snake;
 	vector<shared_ptr<class Tile>> _tiles;
 	shared_ptr<class Tile> _spike;
 	shared_ptr<class Tile> _movable;

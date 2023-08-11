@@ -5,8 +5,12 @@ public:
 	Monster();
 	virtual ~Monster();
 
-	void Update();
-	void Render();
+	virtual void Update();
+	virtual void Render();
+
+	virtual void Left();
+	virtual void Right();
+	virtual void Reverse() {}
 
 	void TakeDamage(int value);
 
@@ -24,7 +28,8 @@ protected:
 	shared_ptr<RectCollider> _rangeCol;
 	shared_ptr<Sprite_Frame> _sprite;
 	vector<shared_ptr<Action>> _actions;
-	Vector2 _size = Vector2(40.0f, 40.0f);
+	Vector2 _size;
+	bool _isLeft = false;
 
 	bool _isDead = false;
 
@@ -35,9 +40,9 @@ protected:
 	float _maxFalling = 700.0f;
 
 	float _speed = 0.0f;
+	float _maxSpeed;
 	Vector2 _dir = RIGHT_VECTOR;
 
-	int _hp = 1;
-
+	int _hp;
 };
 

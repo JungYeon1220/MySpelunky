@@ -22,10 +22,7 @@ void Monster::Update()
 
 	_col->GetTransform()->AddVector2(Vector2(0.0f, _jumpPower * DELTA_TIME));
 
-	if (_isFalling == true)
-	{
-		_col->GetTransform()->AddVector2(_dir * _speed * DELTA_TIME);
-	}
+	_col->GetTransform()->AddVector2(_dir * _speed * DELTA_TIME);
 
 	_col->Update();
 	_rangeCol->Update();
@@ -44,6 +41,14 @@ void Monster::Render()
 	_sprite->Render();
 	_rangeCol->Render();
 	_col->Render();
+}
+
+void Monster::Left()
+{
+}
+
+void Monster::Right()
+{
 }
 
 void Monster::TakeDamage(int value)

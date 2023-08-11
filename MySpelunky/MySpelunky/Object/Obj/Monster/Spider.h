@@ -11,7 +11,6 @@ public:
 		JUMP
 	};
 
-
 	virtual void Update();
 	virtual void Render();
 

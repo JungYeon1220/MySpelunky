@@ -4,6 +4,7 @@
 #include "../../Object/Obj/Whip.h"
 #include "../../Object/Obj/Monster/Monster.h"
 #include "../../Object/Obj/Monster/Spider.h"
+#include "../../Object/Obj/Monster/Snake.h"
 #include "../../Object/Obj/Tile/Tile.h"
 #include "../../Object/Obj/Tile/Normal.h"
 #include "../../Object/Obj/Tile/Ladder.h"
@@ -20,6 +21,7 @@ TutorialScene::TutorialScene()
 	_player = make_shared<Player>();
 	_player->GetCollider()->GetTransform()->AddVector2(Vector2(100.0f, 0.0f));
 	_spider = make_shared<Spider>();
+	_snake = make_shared<Snake>();
 
 	for (int i = 0; i < 10; i++)
 	{
@@ -46,6 +48,7 @@ void TutorialScene::Update()
 {
 	_player->Update();
 	_spider->Update();
+	_snake->Update();
 
 	{
 		bool check = false;
@@ -375,6 +378,10 @@ void TutorialScene::Update()
 				if ((_spider->GetCollider()->GetWorldPos().y + _spider->GetSize().y * 0.5f > tilePos.y - 50.0f
 					&& _spider->GetCollider()->GetWorldPos().y - _spider->GetSize().y * 0.5f < tilePos.y + 50.0f) == false)
 					check = true;
+				else
+				{
+					_spider->GetSpeed() = 0.0f;
+				}
 			}
 		}
 
@@ -388,6 +395,30 @@ void TutorialScene::Update()
 				_spider->IsJumping() = false;
 			_spider->IsFalling() = false;
 			_spider->GetSpeed() = 0.0f;
+		}
+	}
+
+	{
+		bool check = false;
+		for (auto tile : _tiles)
+		{
+			if (tile->Block(_snake->GetCollider()))
+			{
+				Vector2 tilePos = tile->GetCollider()->GetWorldPos();
+				if ((_snake->GetCollider()->GetWorldPos().y + _snake->GetSize().y * 0.5f > tilePos.y - 50.0f
+					&& _snake->GetCollider()->GetWorldPos().y - _snake->GetSize().y * 0.5f < tilePos.y + 50.0f) == false)
+					check = true;
+			}
+		}
+
+		if (check == false)
+		{
+			_snake->IsFalling() = true;
+		}
+		else
+		{
+			_snake->IsFalling() = false;
+			_snake->GetSpeed() = 0.0f;
 		}
 	}
 
@@ -415,6 +446,7 @@ void TutorialScene::Render()
 {
 	_player->Render();
 	_spider->Render();
+	_snake->Render();
 	for (auto tile : _tiles)
 		tile->Render();
 }
@@ -424,4 +456,5 @@ void TutorialScene::PostRender()
 	_player->PostRender();
 	ImGui::Text("mosnter falling : %d", _spider->IsFalling());
 	ImGui::Text("mosnter jumping : %d", _spider->IsJumping());
+	ImGui::Text("mosnter speed : %f", _spider->GetSpeed());
 }

@@ -4,17 +4,21 @@
 
 Spider::Spider()
 {
+	_size = Vector2(40.0f, 40.0f);
 	_col = make_shared<RectCollider>(_size);
 	_rangeCol = make_shared<RectCollider>(Vector2(500.0f, 300.0f));
 	_rangeCol->GetTransform()->SetParent(_col->GetTransform());
 	_transform = make_shared<Transform>();
 	_transform->SetParent(_col->GetTransform());
-	_transform->SetPosition(Vector2(0.0f, 2.0f));
+	_transform->SetPosition(Vector2(0.0f, 3.0f));
 	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/spider.png", Vector2(4, 4), Vector2(50.0f, 50.0f));
+
+	CreateAction();
 
 	SetAction(State::IDLE);
 
-	CreateAction();
+	_hp = 1;
+	_maxSpeed = 200.0f;
 }
 
 Spider::~Spider()
@@ -30,6 +34,9 @@ void Spider::Update()
 		SetAction(State::JUMP);
 	if (_isFalling == false && _isJumping == false)
 		SetAction(State::IDLE);
+
+	if (_isFalling == false)
+		_speed = 0.0f;
 
 	Jump();
 
@@ -70,7 +77,7 @@ void Spider::Jump()
 {
 	if (_actions[State::JUMP]->GetCurIndex() == 6)
 	{
-		_speed = 200.0f;
+		_speed = _maxSpeed;
 		_jumpPower = 1200.0f;
 		_isFalling = true;
 		_col->GetTransform()->AddVector2(Vector2(0.0f, 0.01f));
