@@ -94,7 +94,7 @@ void Spider::SetTarget(shared_ptr<Player> player)
 	if (_rangeCol->IsCollision(player->GetCollider()))
 	{
 		_inRange = true;
-		if (_canJump == true && _isFalling == false && _inRange == true)
+		if (_canJump == true && _isFalling == false)
 		{
 			SetAction(State::JUMP);
 			_isJumping = true;

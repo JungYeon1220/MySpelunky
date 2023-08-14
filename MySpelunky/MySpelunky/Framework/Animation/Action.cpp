@@ -86,6 +86,11 @@ void Action::Pause()
 	_isPlay = false;
 }
 
+void Action::Resume()
+{
+	_isPlay = true;
+}
+
 void Action::Stop()
 {
 	_isPlay = false;

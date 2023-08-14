@@ -8,7 +8,8 @@ public:
 	enum State
 	{
 		IDLE,
-		MOVE
+		MOVE,
+		ATTACK
 	};
 
 	virtual void Update();
@@ -18,6 +19,12 @@ public:
 	virtual void Right();
 	virtual void Reverse();
 
+	void Move();
+	virtual void SetTarget(shared_ptr<class Player> player);
+	virtual void EndAttack();
+
+	bool& IsMoving() { return _isMoving; }
+
 	void SetAction(State state);
 private:
 	void CreateAction();
@@ -25,6 +32,8 @@ private:
 	bool _isMoving = false;
 	float _duration = 0.0f;
 	float _maxDuration;
+
+	float _attackTime = 0.0f;
 
 	State _curState = State::IDLE;
 	State _oldState = State::IDLE;

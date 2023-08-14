@@ -30,6 +30,7 @@ public:
 
 	void Play();
 	void Pause();
+	void Resume();
 	void Stop();
 	void Reset();
 	void SetReverse(bool value) { _isReverse = value; }

@@ -12,6 +12,9 @@ public:
 	virtual void Right();
 	virtual void Reverse() {}
 
+	virtual void Attack(shared_ptr<class Player> player) {}
+	virtual void EndAttack() {}
+
 	void TakeDamage(int value);
 
 	shared_ptr<RectCollider> GetCollider() { return _col; }
@@ -34,6 +37,8 @@ protected:
 	bool _isDead = false;
 
 	bool _inRange = false;
+
+	bool _isAttack = false;
 
 	bool _isFalling = false;
 	float _jumpPower = 0.0f;

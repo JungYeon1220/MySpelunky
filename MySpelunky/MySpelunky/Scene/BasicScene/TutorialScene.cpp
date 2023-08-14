@@ -23,7 +23,7 @@ TutorialScene::TutorialScene()
 	_spider = make_shared<Spider>();
 	_snake = make_shared<Snake>();
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 15; i++)
 	{
 		shared_ptr<Tile> tile = make_shared<Normal>(Vector2((i + 0.5f) * 100.0f, 50.0f) - CENTER);
 		_tiles.push_back(tile);
@@ -408,6 +408,11 @@ void TutorialScene::Update()
 				if ((_snake->GetCollider()->GetWorldPos().y + _snake->GetSize().y * 0.5f > tilePos.y - 50.0f
 					&& _snake->GetCollider()->GetWorldPos().y - _snake->GetSize().y * 0.5f < tilePos.y + 50.0f) == false)
 					check = true;
+				else
+				{
+					if(_snake->IsMoving() == true)
+						_snake->Reverse();
+				}
 			}
 		}
 
@@ -440,6 +445,7 @@ void TutorialScene::Update()
 		}
 	}
 
+	_snake->SetTarget(_player);
 }
 
 void TutorialScene::Render()

@@ -1,5 +1,6 @@
 #include "framework.h"
 #include "Snake.h"
+#include "../Player.h"
 
 Snake::Snake()
 {
@@ -30,33 +31,8 @@ Snake::~Snake()
 
 void Snake::Update()
 {
-	_duration += DELTA_TIME;
-	if (_duration >= _maxDuration)
-	{
-		if (_isMoving == false)
-		{
-			_isMoving = true;
-			int random = rand() % 2;
-			if (random == 0)
-				Reverse();
-		}
-		else
-			_isMoving = false;
+	Move();
 
-		_duration = 0.0f;
-		_maxDuration = (float)(rand() % 3 + 1);
-	}
-
-	if (_isMoving == true)
-	{
-		SetAction(State::MOVE);
-		_speed = _maxSpeed;
-	}
-	else
-	{
-		SetAction(State::IDLE);
-		_speed = 0.0f;
-	}
 
 	_actions[_curState]->Update();
 	_sprite->SetCurClip(_actions[_curState]->GetCurClip());
@@ -90,6 +66,70 @@ void Snake::Reverse()
 		Right();
 	else
 		Left();
+}
+
+void Snake::Move()
+{
+	if (_isAttack == true)
+	{
+		if (_actions[State::ATTACK]->GetCurIndex() == 2)
+		{
+			_speed = 500.0f;
+		}
+
+		return;
+	}
+
+	_duration += DELTA_TIME;
+	if (_duration >= _maxDuration)
+	{
+		if (_isMoving == false)
+		{
+			_isMoving = true;
+			int random = rand() % 2;
+			if (random == 0)
+				Reverse();
+		}
+		else
+			_isMoving = false;
+
+		_duration = 0.0f;
+		_maxDuration = (float)(rand() % 3 + 1);
+	}
+
+	if (_isMoving == true)
+	{
+		SetAction(State::MOVE);
+		_speed = _maxSpeed;
+	}
+	else
+	{
+		SetAction(State::IDLE);
+		_speed = 0.0f;
+	}
+}
+
+void Snake::SetTarget(shared_ptr<class Player> player)
+{
+	if (_rangeCol->IsCollision(player->GetHitCollider()))
+	{
+		if (_inRange == false)
+		{
+			_isAttack = true;
+			SetAction(State::ATTACK);
+			_inRange = true;
+			_isMoving = false;
+			_duration = 0.0f;
+		}
+	}
+	else
+		_inRange = false;
+}
+
+void Snake::EndAttack()
+{
+	_isAttack = false;
+	SetAction(State::IDLE);
 }
 
 void Snake::SetAction(State state)
@@ -136,6 +176,24 @@ void Snake::CreateAction()
 		}
 
 		shared_ptr<Action> action = make_shared<Action>(clips, "MOVE", Action::LOOP);
+		_actions.push_back(action);
+	}
+
+	{
+		vector<Action::Clip> clips;
+
+		for (int j = 1; j < 3; j++)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				Vector2 startPos = Vector2((i * imageSize.x) / maxFrame.x, imageSize.y * j / maxFrame.y);
+				Action::Clip clip = Action::Clip(startPos.x, startPos.y, size.x, size.y, srv);
+				clips.push_back(clip);
+			}
+		}
+
+		shared_ptr<Action> action = make_shared<Action>(clips, "ATTACK	", Action::END);
+		action->SetEndEvent(std::bind(&Snake::EndAttack, this));
 		_actions.push_back(action);
 	}
 }

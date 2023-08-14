@@ -189,6 +189,9 @@
     <ClInclude Include="Object\Obj\Monster\Snake.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Object\Obj\Monster\Mosquito.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MySpelunky.cpp">
@@ -345,6 +348,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Object\Obj\Monster\Snake.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Obj\Monster\Mosquito.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
