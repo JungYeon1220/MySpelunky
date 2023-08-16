@@ -27,6 +27,7 @@ public:
 
 	shared_ptr<RectCollider> GetCollider() { return _col; }
 	Type GetType() { return _type; }
+	bool& CanGrab() { return _canGrab; }
 
 protected:
 	shared_ptr<RectCollider> _col;
@@ -38,6 +39,8 @@ protected:
 	Type _type = EMPTY;
 
 	bool _isActive = true;
+
+	bool _canGrab = false;
 
 };
 

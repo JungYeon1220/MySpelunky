@@ -11,7 +11,6 @@ Mosquito::Mosquito()
 	_rangeCol->GetTransform()->SetPosition(Vector2(120.0f, 0.0f));
 	_transform = make_shared<Transform>();
 	_transform->SetParent(_col->GetTransform());
-	_transform->SetPosition(Vector2(0.0f, 7.0f));
 	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/mosquito.png", Vector2(3, 3), Vector2(70.0f, 70.0f));
 
 	CreateAction();

@@ -515,6 +515,11 @@ void Player::KnockBack(Vector2 pos, float value)
 	if (_isDamaged == true)
 		return;
 
+	if (_isGrabLedge == true)
+		_isGrabLedge = false;
+	if (_isClimb == true)
+		_isClimb = false;
+
 	_jumpPower = value;
 	_isFalling = true;
 	_col->GetTransform()->AddVector2(Vector2(0.0f, 0.01f));

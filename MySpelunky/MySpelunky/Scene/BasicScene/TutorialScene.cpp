@@ -40,7 +40,7 @@ TutorialScene::TutorialScene()
 	_tiles.push_back(_spike);
 	_movable = make_shared<Movable>(Vector2(250.0f, 250.0f) - CENTER);
 	_tiles.push_back(_movable);
-	dynamic_pointer_cast<Movable>(_movable)->CanGrab() = true;
+	_movable->CanGrab() = true;
 
 	CAMERA->SetTarget(_player->GetCollider()->GetTransform());
 	CAMERA->SetLeftBottom(Vector2(-10000.0f, -10000.0f));
@@ -89,7 +89,7 @@ void TutorialScene::Update()
 						_player->GetSpeed() = 0.0f;
 					}
 
-					if (dynamic_pointer_cast<Normal>(tile)->CanGrab() == true)
+					if (tile->CanGrab() == true)
 					{
 						if (_player->GetGrabCollider()->IsCollision(tilePos + Vector2(50.0f, 50.0f)) || _player->GetGrabCollider()->IsCollision(tilePos + Vector2(-50.0f, 50.0f)))
 						{
@@ -207,7 +207,7 @@ void TutorialScene::Update()
 						_player->GetSpeed() = 0.0f;
 					}
 
-					if (dynamic_pointer_cast<Wooden>(tile)->CanGrab() == true)
+					if (tile->CanGrab() == true)
 					{
 						if (_player->GetGrabCollider()->IsCollision(tilePos + Vector2(50.0f, 50.0f)) || _player->GetGrabCollider()->IsCollision(tilePos + Vector2(-50.0f, 50.0f)))
 						{
@@ -241,7 +241,7 @@ void TutorialScene::Update()
 						_player->GetSpeed() = 0.0f;
 					}
 
-					if (dynamic_pointer_cast<Skeleton>(tile)->CanGrab() == true)
+					if (tile->CanGrab() == true)
 					{
 						if (_player->GetGrabCollider()->IsCollision(tilePos + Vector2(50.0f, 50.0f)) || _player->GetGrabCollider()->IsCollision(tilePos + Vector2(-50.0f, 50.0f)))
 						{
@@ -300,7 +300,7 @@ void TutorialScene::Update()
 						_player->GetSpeed() = 0.0f;
 					}
 
-					if (dynamic_pointer_cast<Movable>(tile)->CanGrab() == true)
+					if (tile->CanGrab() == true)
 					{
 						if (_player->GetGrabCollider()->IsCollision(tilePos + Vector2(50.0f, 50.0f)) || _player->GetGrabCollider()->IsCollision(tilePos + Vector2(-50.0f, 50.0f)))
 						{
@@ -363,6 +363,9 @@ void TutorialScene::Update()
 				_player->IsClimb() = false;
 		}
 
+		if (ladderCheck == false)
+			_player->IsClimb() = false;
+
 		if (movableCheck == false)
 		{
 			dynamic_pointer_cast<Movable>(_movable)->IsFalling() = true;
@@ -371,9 +374,6 @@ void TutorialScene::Update()
 		{
 			dynamic_pointer_cast<Movable>(_movable)->IsFalling() = false;
 		}
-
-		if (ladderCheck == false)
-			_player->IsClimb() = false;
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -458,10 +458,25 @@ void TutorialScene::Update()
 	if (_spider->IsDead() == false)
 	{
 		_spider->SetTarget(_player);
+
 		if (_spider->GetCollider()->IsCollision(_player->GetHitCollider()))
 		{
-			_player->KnockBack(_spider->GetCollider()->GetWorldPos(), 300.0f);
-			_player->TakeDamage(0);
+			if (_spider->GetCollider()->IsCollision(_player->GetFeetCollider()))
+			{
+				if (_player->IsFalling() == true)
+				{
+					if (KEY_PRESS('Z'))
+						_player->GetJumpPower() = 1300.0f;
+					else
+						_player->GetJumpPower() = 800.0f;
+					_spider->TakeDamage(1);
+				}
+			}
+			else
+			{
+				_player->KnockBack(_spider->GetCollider()->GetWorldPos(), 300.0f);
+				_player->TakeDamage(0);
+			}
 		}
 	}
 
