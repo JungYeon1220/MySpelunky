@@ -21,7 +21,7 @@ public:
 	shared_ptr<RectCollider> GetRangeCol() { return _rangeCol; }
 	Vector2 GetSize() { return _size; }
 	bool& IsDead() { return _isDead; }
-	float& GetSpeed() { return _speed; }
+	float& GetSpeed() { return _curSpeed; }
 	bool& IsFalling() { return _isFalling; }
 	bool& InRange() { return _inRange; }
 
@@ -44,8 +44,8 @@ protected:
 	float _jumpPower = 0.0f;
 	float _maxFalling = 700.0f;
 
-	float _speed = 0.0f;
-	float _maxSpeed;
+	float _curSpeed = 0.0f;
+	float _moveSpeed;
 	Vector2 _dir = RIGHT_VECTOR;
 
 	int _hp;

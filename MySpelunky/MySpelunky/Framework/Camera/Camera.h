@@ -69,7 +69,7 @@ private:
 	shared_ptr<MatrixBuffer> _projection;
 
 	//Free Mode
-	float _speed = 700.0f;
+	float _curSpeed = 700.0f;
 
 	//Follow Mode
 	weak_ptr<Transform> _target;

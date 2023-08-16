@@ -102,8 +102,8 @@ void Player::Input()
 		else
 		{
 			_curSpeed -= 30.0f;
-			if (_curSpeed < -_maxSpeed)
-				_curSpeed = -_maxSpeed;
+			if (_curSpeed < -_moveSpeed)
+				_curSpeed = -_moveSpeed;
 		}
 	}
 	if (KEY_PRESS(VK_RIGHT))
@@ -120,8 +120,8 @@ void Player::Input()
 		else
 		{
 			_curSpeed += 30.0f;
-			if (_curSpeed > _maxSpeed)
-				_curSpeed = _maxSpeed;
+			if (_curSpeed > _moveSpeed)
+				_curSpeed = _moveSpeed;
 		}
 	}
 
@@ -527,6 +527,11 @@ void Player::KnockBack(Vector2 pos, float value)
 	{
 		_curSpeed = value;
 	}
+}
+
+void Player::StepOn(shared_ptr<Monster> monster)
+{
+
 }
 
 void Player::Dead()

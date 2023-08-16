@@ -33,8 +33,6 @@ private:
 	float _duration = 0.0f;
 	float _maxDuration;
 
-	float _attackTime = 0.0f;
-
 	State _curState = State::IDLE;
 	State _oldState = State::IDLE;
 

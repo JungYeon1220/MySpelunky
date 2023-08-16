@@ -22,7 +22,7 @@ void Monster::Update()
 
 	_col->GetTransform()->AddVector2(Vector2(0.0f, _jumpPower * DELTA_TIME));
 
-	_col->GetTransform()->AddVector2(_dir * _speed * DELTA_TIME);
+	_col->GetTransform()->AddVector2(_dir * _curSpeed * DELTA_TIME);
 
 	_col->Update();
 	_rangeCol->Update();

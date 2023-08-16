@@ -19,8 +19,10 @@ Snake::Snake()
 	SetAction(State::IDLE);
 
 	_hp = 1;
-	_maxSpeed = 80.0f;
-	_maxDuration = (float)(rand() % 2 + 1);
+	_moveSpeed = 80.0f;
+	_maxDuration = (float)(rand() % 2) + rand() / static_cast<float>(RAND_MAX);
+	if (_maxDuration < 0.5f)
+		_maxDuration = 0.5f;
 
 	Left();
 }
@@ -74,7 +76,7 @@ void Snake::Move()
 	{
 		if (_actions[State::ATTACK]->GetCurIndex() == 2)
 		{
-			_speed = 500.0f;
+			_curSpeed = 500.0f;
 		}
 
 		return;
@@ -94,18 +96,18 @@ void Snake::Move()
 			_isMoving = false;
 
 		_duration = 0.0f;
-		_maxDuration = (float)(rand() % 3 + 1);
+		_maxDuration = MathUtility::RandomFloat(0.5f, 2.0f);
 	}
 
 	if (_isMoving == true)
 	{
 		SetAction(State::MOVE);
-		_speed = _maxSpeed;
+		_curSpeed = _moveSpeed;
 	}
 	else
 	{
 		SetAction(State::IDLE);
-		_speed = 0.0f;
+		_curSpeed = 0.0f;
 	}
 }
 

@@ -51,7 +51,7 @@ private:
 	UINT _curClipIndex = 0;
 
 	float _time = 0.0f;
-	float _speed = 0.0f;
+	float _curSpeed = 0.0f;
 
 	bool _isReverse = false;
 

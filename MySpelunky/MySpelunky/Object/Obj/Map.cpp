@@ -170,13 +170,14 @@ void Map::Update()
                 if (tile->GetType() == Tile::Type::MOVABLE)
                     continue;
 
-                if (tile->GetCollider()->IsCollision(dynamic_pointer_cast<Movable>(movable)->GetMovableCollider()))
-                {
-                    if (tile->GetCollider()->Block(movable->GetCollider()))
-                    {
-                        check = true;
-                    }
-                }
+				if (tile->GetCollider()->IsCollision(dynamic_pointer_cast<Movable>(movable)->GetMovableCollider()))
+				{
+					if (tile->GetCollider()->Block(movable->GetCollider()))
+					{
+						if (tile->GetCollider()->GetWorldPos().y < movable->GetCollider()->GetWorldPos().y)
+							check = true;
+					}
+				}
             }
         }
 

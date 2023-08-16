@@ -35,7 +35,9 @@ public:
 	void SetIdle();
 	void EndAttack();
 	void TakeDamage(int value);
+
 	void KnockBack(Vector2 pos, float value);
+	void StepOn(shared_ptr<Monster> monster);
 	void Dead();
 
 	shared_ptr<RectCollider> GetCollider() { return _col; }
@@ -86,7 +88,7 @@ private:
 	float _lookTime = 0.0f;
 
 	float _curSpeed = 0.0f;
-	float _maxSpeed = 300.0f;
+	float _moveSpeed = 300.0f;
 	bool _isLaying = false;
 
 	bool _isFalling = false;

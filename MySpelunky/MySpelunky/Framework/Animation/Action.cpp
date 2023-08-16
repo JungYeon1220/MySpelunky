@@ -5,7 +5,7 @@ Action::Action(vector<Clip> clips, string name, Type type, float speed)
 	: _clips(clips)
 	, _name(name)
 	, _repeatType(type)
-	, _speed(speed)
+	, _curSpeed(speed)
 {
 
 }
@@ -21,7 +21,7 @@ void Action::Update()
 
 	_time += DELTA_TIME;
 
-	if (_time > _speed)
+	if (_time > _curSpeed)
 	{
 		_time = 0.0f;
 

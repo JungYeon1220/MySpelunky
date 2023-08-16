@@ -5,6 +5,7 @@
 #include "../../Object/Obj/Monster/Monster.h"
 #include "../../Object/Obj/Monster/Spider.h"
 #include "../../Object/Obj/Monster/Snake.h"
+#include "../../Object/Obj/Monster/Mosquito.h"
 #include "../../Object/Obj/Tile/Tile.h"
 #include "../../Object/Obj/Tile/Normal.h"
 #include "../../Object/Obj/Tile/Ladder.h"
@@ -19,19 +20,25 @@
 TutorialScene::TutorialScene()
 {
 	_player = make_shared<Player>();
-	_player->GetCollider()->GetTransform()->AddVector2(Vector2(100.0f, 0.0f));
+	_player->GetCollider()->GetTransform()->AddVector2(Vector2(100.0f, -100.0f));
 	_spider = make_shared<Spider>();
 	_snake = make_shared<Snake>();
+	_mosquito = make_shared<Mosquito>();
 
-	for (int i = 0; i < 15; i++)
+	for (int j = 0; j < 5; j++)
 	{
-		shared_ptr<Tile> tile = make_shared<Normal>(Vector2((i + 0.5f) * 100.0f, 50.0f) - CENTER);
-		_tiles.push_back(tile);
+		for (int i = 0; i < 15; i++)
+		{
+			if (j > 0 && j < 4 && i > 0 && i < 14)
+				continue;
+			shared_ptr<Tile> tile = make_shared<Normal>(Vector2((i + 0.5f) * 100.0f, 50.0f + (100.0f * j)) - CENTER);
+			_tiles.push_back(tile);
+		}
 	}
 
 	_spike = make_shared<Spike>(Vector2(150.0f, 150.0f) - CENTER);
 	_tiles.push_back(_spike);
-	_movable = make_shared<Movable>(Vector2(250.0f, 350.0f) - CENTER);
+	_movable = make_shared<Movable>(Vector2(250.0f, 250.0f) - CENTER);
 	_tiles.push_back(_movable);
 	dynamic_pointer_cast<Movable>(_movable)->CanGrab() = true;
 
@@ -49,6 +56,7 @@ void TutorialScene::Update()
 	_player->Update();
 	_spider->Update();
 	_snake->Update();
+	_mosquito->Update();
 
 	{
 		bool check = false;
@@ -368,6 +376,8 @@ void TutorialScene::Update()
 			_player->IsClimb() = false;
 	}
 
+	//////////////////////////////////////////////////////////////////////////////////
+
 	{
 		bool check = false;
 		for (auto tile : _tiles)
@@ -398,6 +408,7 @@ void TutorialScene::Update()
 		}
 	}
 
+
 	{
 		bool check = false;
 		for (auto tile : _tiles)
@@ -427,6 +438,15 @@ void TutorialScene::Update()
 		}
 	}
 
+	{
+		for (auto tile : _tiles)
+		{
+			tile->Block(_mosquito->GetCollider());
+		}
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+
 	if (_player->GetWhip()->IsActive() == true)
 	{
 		if (_player->GetWhip()->GetCollider()->IsCollision(_spider->GetCollider()))
@@ -446,6 +466,7 @@ void TutorialScene::Update()
 	}
 
 	_snake->SetTarget(_player);
+	_mosquito->SetTarget(_player);
 }
 
 void TutorialScene::Render()
@@ -453,6 +474,7 @@ void TutorialScene::Render()
 	_player->Render();
 	_spider->Render();
 	_snake->Render();
+	_mosquito->Render();
 	for (auto tile : _tiles)
 		tile->Render();
 }

@@ -157,22 +157,22 @@ void Camera::FreeMode()
 	{
 		if (KEY_PRESS('W'))
 		{
-			AddVector2(UP_VECTOR * DELTA_TIME * _speed);
+			AddVector2(UP_VECTOR * DELTA_TIME * _curSpeed);
 		}
 
 		if (KEY_PRESS('S'))
 		{
-			AddVector2(-UP_VECTOR * DELTA_TIME * _speed);
+			AddVector2(-UP_VECTOR * DELTA_TIME * _curSpeed);
 		}
 
 		if (KEY_PRESS('D'))
 		{
-			AddVector2(RIGHT_VECTOR * DELTA_TIME * _speed);
+			AddVector2(RIGHT_VECTOR * DELTA_TIME * _curSpeed);
 		}
 
 		if (KEY_PRESS('A'))
 		{
-			AddVector2(-RIGHT_VECTOR * DELTA_TIME * _speed);
+			AddVector2(-RIGHT_VECTOR * DELTA_TIME * _curSpeed);
 		}
 	}
 }

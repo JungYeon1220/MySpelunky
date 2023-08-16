@@ -18,7 +18,7 @@ Spider::Spider()
 	SetAction(State::IDLE);
 
 	_hp = 1;
-	_maxSpeed = 200.0f;
+	_moveSpeed = 200.0f;
 }
 
 Spider::~Spider()
@@ -36,7 +36,7 @@ void Spider::Update()
 		SetAction(State::IDLE);
 
 	if (_isFalling == false)
-		_speed = 0.0f;
+		_curSpeed = 0.0f;
 
 	Jump();
 
@@ -77,7 +77,7 @@ void Spider::Jump()
 {
 	if (_actions[State::JUMP]->GetCurIndex() == 6)
 	{
-		_speed = _maxSpeed;
+		_curSpeed = _moveSpeed;
 		_jumpPower = 1200.0f;
 		_isFalling = true;
 		_col->GetTransform()->AddVector2(Vector2(0.0f, 0.01f));
