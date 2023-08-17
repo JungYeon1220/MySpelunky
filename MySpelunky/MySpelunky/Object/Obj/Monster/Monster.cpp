@@ -6,11 +6,6 @@ Monster::Monster()
 {
 }
 
-Monster::Monster(Vector2 pos)
-{
-	SetPosition(pos);
-}
-
 Monster::~Monster()
 {
 }

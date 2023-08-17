@@ -22,10 +22,10 @@ Spider::Spider()
 }
 
 Spider::Spider(Vector2 pos)
-	:Monster(pos)
 {
 	_size = Vector2(40.0f, 40.0f);
 	_col = make_shared<RectCollider>(_size);
+	_col->GetTransform()->SetPosition(pos);
 	_rangeCol = make_shared<RectCollider>(Vector2(500.0f, 300.0f));
 	_rangeCol->GetTransform()->SetParent(_col->GetTransform());
 	_transform = make_shared<Transform>();

@@ -3,13 +3,12 @@ class Monster
 {
 public:
 	Monster();
-	Monster(Vector2 pos);
 	virtual ~Monster();
 
 	virtual void Update();
 	virtual void Render();
 
-	virtual bool TileInteract(shared_ptr<Tile> tile) {}
+	virtual bool TileInteract(shared_ptr<Tile> tile) { return false; }
 	virtual void Land(bool check) {}
 
 	void SetPosition(Vector2 pos);

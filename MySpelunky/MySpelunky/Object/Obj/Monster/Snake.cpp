@@ -28,10 +28,10 @@ Snake::Snake()
 }
 
 Snake::Snake(Vector2 pos)
-	:Monster(pos)
 {
 	_size = Vector2(50.0f, 50.0f);
 	_col = make_shared<RectCollider>(_size);
+	_col->GetTransform()->SetPosition(pos);
 	_rangeCol = make_shared<RectCollider>(Vector2(100.0f, 50.0f));
 	_rangeCol->GetTransform()->SetParent(_col->GetTransform());
 	_rangeCol->GetTransform()->SetPosition(Vector2(50.0f, 0.0f));

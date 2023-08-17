@@ -50,12 +50,12 @@ TileTestScene::TileTestScene()
 		}
 	}
 
-	CAMERA->SetTarget(_player->GetCollider()->GetTransform());
-	CAMERA->SetLeftBottom(_map->GetTiles()[_map->PoolCount().y - 1][0]->GetCollider()->GetWorldPos());
-	CAMERA->SetRightTop(_map->GetTiles()[0][_map->PoolCount().x - 1]->GetCollider()->GetWorldPos());
+	//CAMERA->SetTarget(_player->GetCollider()->GetTransform());
+	//CAMERA->SetLeftBottom(_map->GetTiles()[_map->PoolCount().y - 1][0]->GetCollider()->GetWorldPos());
+	//CAMERA->SetRightTop(_map->GetTiles()[0][_map->PoolCount().x - 1]->GetCollider()->GetWorldPos());
 	 
-	//CAMERA->FreeMode();
-	//CAMERA->SetScale(Vector2(0.3f, 0.3f));
+	CAMERA->FreeMode();
+	CAMERA->SetScale(Vector2(0.3f, 0.3f));
 }
 
 TileTestScene::~TileTestScene()
@@ -256,6 +256,7 @@ void TileTestScene::Update()
 								{
 									_player->Dead();
 									dynamic_pointer_cast<Spike>(tile)->SetBlood();
+									tile->Update();
 								}
 
 								dynamic_pointer_cast<Spike>(tile)->CanSpike() = false;
@@ -339,12 +340,27 @@ void TileTestScene::Update()
 
 	if (ladderCheck == false)
 		_player->IsClimb() = false;
+	for (auto monster : _monsters)
+	{
+		bool check = false;
+		for (auto tiles : _map->GetTiles())
+		{
+			for (auto tile : tiles)
+			{
+				check = monster->TileInteract(tile);
+			}
+		}
+		monster->Land(check);
+		monster->Update();
+	}
 }
 
 void TileTestScene::Render()
 {
 	_map->Render();
 	_player->Render();
+	for (auto monster : _monsters)
+		monster->Render();
 }
 
 void TileTestScene::PostRender()

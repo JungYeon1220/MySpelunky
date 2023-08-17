@@ -28,10 +28,10 @@ Mosquito::Mosquito()
 }
 
 Mosquito::Mosquito(Vector2 pos)
-	:Monster(pos)
 {
 	_size = Vector2(50.0f, 50.0f);
 	_col = make_shared<RectCollider>(_size);
+	_col->GetTransform()->SetPosition(pos);
 	_rangeCol = make_shared<RectCollider>(Vector2(240.0f, 50.0f));
 	_rangeCol->GetTransform()->SetParent(_col->GetTransform());
 	_rangeCol->GetTransform()->SetPosition(Vector2(120.0f, 0.0f));
@@ -51,6 +51,7 @@ Mosquito::Mosquito(Vector2 pos)
 	float angle = MathUtility::RandomFloat(0.0f, 2.0f) * PI;
 	_dir = Vector2(cosf(angle) - sinf(angle), sinf(angle) + cosf(angle));
 	_dir.Normalize();
+	
 }
 
 Mosquito::~Mosquito()

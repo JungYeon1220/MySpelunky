@@ -12,7 +12,7 @@ public:
 	virtual void Render() override;
 
 	void SetSkeletonSpike();
-	void SetBlood() { _isBlood = true; Update(); }
+	void SetBlood() { _isBlood = true; }
 
 	shared_ptr<RectCollider> GetSpikeCol() { return _spikeCol; }
 
