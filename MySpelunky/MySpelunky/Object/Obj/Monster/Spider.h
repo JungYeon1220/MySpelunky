@@ -3,6 +3,7 @@ class Spider : public Monster
 {
 public:
 	Spider();
+	Spider(Vector2 pos);
 	virtual ~Spider();
 
 	enum State
@@ -13,6 +14,9 @@ public:
 
 	virtual void Update();
 	virtual void Render();
+
+	virtual bool TileInteract(shared_ptr<Tile> tile);
+	virtual void Land(bool check);
 
 	void SetAction(State state);
 

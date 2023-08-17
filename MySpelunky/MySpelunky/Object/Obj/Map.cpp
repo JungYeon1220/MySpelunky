@@ -26,13 +26,16 @@ Map::Map()
 		for (int j = 0; j < _poolCountX; j++)
 		{
 			int type = _layout[i][j];
-			if (type == 0 || type == 3 || type == 6 || type == 7 || type == 99)
-			{
-				_tileMap[i].push_back(nullptr);
-				continue;
-			}
 
 			shared_ptr<Tile> tile;
+
+			if (type == 0 || type == 3 || type == 6 || type == 7 || type == 99)
+			{
+				tile = make_shared<Tile>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
+				tile->SetType(Tile::Type::EMPTY);
+				_tileMap[i].push_back(tile);
+				continue;
+			}
 
 			if (type == 1)
 			{
@@ -141,6 +144,8 @@ Map::Map()
 	}
 
     _bgTrans->SetPosition(Vector2(_tileMap[0][_poolCountX - 1]->GetCollider()->GetWorldPos().x / 2, _tileMap[0][_poolCountX - 1]->GetCollider()->GetWorldPos().y / 2));
+	_bgTrans->Update();
+	_bg->Update();
 }
 
 Map::~Map()
@@ -149,8 +154,6 @@ Map::~Map()
 
 void Map::Update()
 {
-    _bgTrans->Update();
-    _bg->Update();
     for (auto movable : _movables)
     {
         movable->Update();

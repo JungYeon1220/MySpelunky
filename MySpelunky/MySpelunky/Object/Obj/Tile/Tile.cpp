@@ -47,6 +47,9 @@ bool Tile::Block(shared_ptr<Collider> col)
 
 void Tile::Update()
 {
+	if (_type == EMPTY)
+		return;
+
 	_transform->Update();
 	_sprite->Update();
 	_col->Update();
@@ -54,6 +57,9 @@ void Tile::Update()
 
 void Tile::Render()
 {
+	if (_type == EMPTY)
+		return;
+
 	_transform->SetWorldBuffer(0);
 	_sprite->Render();
 	//_col->Render();

@@ -55,6 +55,7 @@ public:
 
 	Vector2 GetWorldMousePos();
 	Vector2 GetScreenMousePos();
+	Vector2 GetCameraPos();
 
 	void FreeMode();
 	void FollowMode();

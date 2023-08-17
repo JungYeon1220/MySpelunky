@@ -6,6 +6,11 @@ Monster::Monster()
 {
 }
 
+Monster::Monster(Vector2 pos)
+{
+	SetPosition(pos);
+}
+
 Monster::~Monster()
 {
 }
@@ -41,6 +46,11 @@ void Monster::Render()
 	_sprite->Render();
 	_rangeCol->Render();
 	_col->Render();
+}
+
+void Monster::SetPosition(Vector2 pos)
+{
+	_col->GetTransform()->SetPosition(pos);
 }
 
 void Monster::Left()

@@ -3,6 +3,7 @@ class Mosquito : public Monster
 {
 public:
 	Mosquito();
+	Mosquito(Vector2 pos);
 	virtual ~Mosquito();
 
 	enum State
@@ -13,6 +14,8 @@ public:
 
 	virtual void Update();
 	virtual void Render();
+
+	virtual bool TileInteract(shared_ptr<Tile> tile);
 
 	void Move();
 

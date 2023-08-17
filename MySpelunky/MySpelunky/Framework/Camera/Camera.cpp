@@ -125,6 +125,11 @@ Vector2 Camera::GetScreenMousePos()
 	return WIN_MOUSE_POS - CENTER;
 }
 
+Vector2 Camera::GetCameraPos()
+{
+	return _view->GetWorldPos();
+}
+
 void Camera::Shake()
 {
 	if (_duration <= 0.0f)

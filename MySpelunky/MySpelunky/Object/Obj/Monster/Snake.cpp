@@ -27,6 +27,32 @@ Snake::Snake()
 	Left();
 }
 
+Snake::Snake(Vector2 pos)
+	:Monster(pos)
+{
+	_size = Vector2(50.0f, 50.0f);
+	_col = make_shared<RectCollider>(_size);
+	_rangeCol = make_shared<RectCollider>(Vector2(100.0f, 50.0f));
+	_rangeCol->GetTransform()->SetParent(_col->GetTransform());
+	_rangeCol->GetTransform()->SetPosition(Vector2(50.0f, 0.0f));
+	_transform = make_shared<Transform>();
+	_transform->SetParent(_col->GetTransform());
+	_transform->SetPosition(Vector2(0.0f, 7.0f));
+	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/snake.png", Vector2(4, 3), Vector2(70.0f, 70.0f));
+
+	CreateAction();
+
+	SetAction(State::IDLE);
+
+	_hp = 1;
+	_moveSpeed = 80.0f;
+	_maxDuration = (float)(rand() % 2) + rand() / static_cast<float>(RAND_MAX);
+	if (_maxDuration < 0.5f)
+		_maxDuration = 0.5f;
+
+	Left();
+}
+
 Snake::~Snake()
 {
 }
@@ -44,6 +70,39 @@ void Snake::Update()
 void Snake::Render()
 {
 	Monster::Render();
+}
+
+bool Snake::TileInteract(shared_ptr<Tile> tile)
+{
+	bool Landcheck = false;
+
+	if (tile->Block(_col))
+	{
+		Vector2 tilePos = tile->GetCollider()->GetWorldPos();
+		if ((_col->GetWorldPos().y + _size.y * 0.5f > tilePos.y - 50.0f
+			&& _col->GetWorldPos().y - _size.y * 0.5f < tilePos.y + 50.0f) == false)
+			Landcheck = true;
+		else
+		{
+			if (_isMoving == true)
+				Reverse();
+		}
+	}
+
+	return Landcheck;
+}
+
+void Snake::Land(bool check)
+{
+	if (check == false)
+	{
+		_isFalling = true;
+	}
+	else
+	{
+		_isFalling = false;
+		_curSpeed = 0.0f;
+	}
 }
 
 void Snake::Left()

@@ -3,6 +3,7 @@ class Snake : public Monster
 {
 public:
 	Snake();
+	Snake(Vector2 pos);
 	virtual ~Snake();
 
 	enum State
@@ -14,6 +15,9 @@ public:
 
 	virtual void Update();
 	virtual void Render();
+
+	virtual bool TileInteract(shared_ptr<Tile> tile);
+	virtual void Land(bool check);
 
 	virtual void Left();
 	virtual void Right();

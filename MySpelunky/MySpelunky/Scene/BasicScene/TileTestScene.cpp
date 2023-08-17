@@ -10,15 +10,50 @@
 #include "../../Object/Obj/Tile/Movable.h"
 #include "../../Object/Obj/Map.h"
 #include "../../Object/Obj/Player.h"
+#include "../../Object/Obj/Monster/Monster.h"
+#include "../../Object/Obj/Monster/Mosquito.h"
+#include "../../Object/Obj/Monster/Snake.h"
+#include "../../Object/Obj/Monster/Spider.h"
 
 TileTestScene::TileTestScene()
 {
 	_map = make_shared<Map>();
 	_player = make_shared<Player>();
 	_player->GetCollider()->GetTransform()->SetPosition(Vector2(_map->GetStartPos().x * 100.0f, (_map->PoolCount().y - 1 - _map->GetStartPos().y) * 100.0f));
+
+	for (int i = 0; i < _map->PoolCount().y; i++)
+	{
+		for (int j = 0; j < _map->PoolCount().x; j++)
+		{
+			if (_map->GetTiles()[i][j]->GetType() == Tile::Type::NORMAL)
+			{
+				if (_map->GetTiles()[i - 1][j]->GetType() == Tile::Type::EMPTY)
+				{
+					int random = MathUtility::RandomInt(0, 9);
+
+					if (random < 3)
+					{
+						shared_ptr<Monster> monster;
+
+						if (random == 0)
+							monster = make_shared<Spider>(_map->GetTile(j, i - 1)->GetCollider()->GetWorldPos());
+						else if (random == 1)
+							monster = make_shared<Snake>(_map->GetTile(j, i - 1)->GetCollider()->GetWorldPos());
+						else if (random == 2)
+							monster = make_shared<Mosquito>(_map->GetTile(j, i - 1)->GetCollider()->GetWorldPos());
+
+						_monsters.push_back(monster);
+					}
+
+				}
+			}
+		}
+	}
+
 	CAMERA->SetTarget(_player->GetCollider()->GetTransform());
 	CAMERA->SetLeftBottom(_map->GetTiles()[_map->PoolCount().y - 1][0]->GetCollider()->GetWorldPos());
 	CAMERA->SetRightTop(_map->GetTiles()[0][_map->PoolCount().x - 1]->GetCollider()->GetWorldPos());
+	 
 	//CAMERA->FreeMode();
 	//CAMERA->SetScale(Vector2(0.3f, 0.3f));
 }

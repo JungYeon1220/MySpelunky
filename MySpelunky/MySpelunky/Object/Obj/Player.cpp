@@ -263,6 +263,7 @@ void Player::ClimbRadder()
 	_isFalling = false;
 	_whip->End();
 	_jumpPower = 0.0f;
+	_curSpeed = 0.0f;
 
 	if(KEY_DOWN(VK_UP) || KEY_DOWN(VK_DOWN))
 		_actions[State::CLIMB_RADDER]->Play();
@@ -299,6 +300,7 @@ void Player::GrabLedge()
 {
 	SetAction(State::LEDGE_GRAB);
 
+	_curSpeed = 0.0f;
 	_isAttack = false;
 	_isFalling = false;
 	_whip->End();

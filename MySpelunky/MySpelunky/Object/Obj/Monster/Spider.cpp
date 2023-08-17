@@ -21,6 +21,26 @@ Spider::Spider()
 	_moveSpeed = 200.0f;
 }
 
+Spider::Spider(Vector2 pos)
+	:Monster(pos)
+{
+	_size = Vector2(40.0f, 40.0f);
+	_col = make_shared<RectCollider>(_size);
+	_rangeCol = make_shared<RectCollider>(Vector2(500.0f, 300.0f));
+	_rangeCol->GetTransform()->SetParent(_col->GetTransform());
+	_transform = make_shared<Transform>();
+	_transform->SetParent(_col->GetTransform());
+	_transform->SetPosition(Vector2(0.0f, 3.0f));
+	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/spider.png", Vector2(4, 4), Vector2(50.0f, 50.0f));
+
+	CreateAction();
+
+	SetAction(State::IDLE);
+
+	_hp = 1;
+	_moveSpeed = 200.0f;
+}
+
 Spider::~Spider()
 {
 }
@@ -58,6 +78,40 @@ void Spider::Update()
 void Spider::Render()
 {
 	Monster::Render();
+}
+
+bool Spider::TileInteract(shared_ptr<Tile> tile)
+{
+	bool check = false;
+
+	if (tile->Block(_col))
+	{
+		Vector2 tilePos = tile->GetCollider()->GetWorldPos();
+		if ((_col->GetWorldPos().y + _size.y * 0.5f > tilePos.y - 50.0f
+			&& _col->GetWorldPos().y - _size.y * 0.5f < tilePos.y + 50.0f) == false)
+			check = true;
+		else
+		{
+			_curSpeed = 0.0f;
+		}
+	}
+
+	return check;
+}
+
+void Spider::Land(bool check)
+{
+	if (check == false)
+	{
+		_isFalling = true;
+	}
+	else
+	{
+		if (_isFalling == true)
+			_isJumping = false;
+		_isFalling = false;
+		_curSpeed = 0.0f;
+	}
 }
 
 void Spider::SetAction(State state)
