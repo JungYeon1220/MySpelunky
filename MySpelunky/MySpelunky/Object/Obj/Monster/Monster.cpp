@@ -39,8 +39,8 @@ void Monster::Render()
 
 	_transform->SetWorldBuffer(0);
 	_sprite->Render();
-	_rangeCol->Render();
-	_col->Render();
+	//_rangeCol->Render();
+	//_col->Render();
 }
 
 void Monster::SetPosition(Vector2 pos)

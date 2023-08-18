@@ -22,6 +22,8 @@ public:
 
 	void TakeDamage(int value);
 
+	virtual void SetTarget(shared_ptr<class Player> player) {}
+
 	shared_ptr<RectCollider> GetCollider() { return _col; }
 	shared_ptr<RectCollider> GetRangeCol() { return _rangeCol; }
 	Vector2 GetSize() { return _size; }

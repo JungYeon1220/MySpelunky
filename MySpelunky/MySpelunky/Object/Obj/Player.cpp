@@ -431,11 +431,11 @@ void Player::Render()
 	_transform->SetWorldBuffer(0);
 	_damagedBuffer->SetPS_Buffer(2);
 	_sprite->Render();
-	_layDownCol->Render();
-	_feetCol->Render();
-	_headCol->Render();
-	_grabCol->Render();
-	_col->Render();
+	//_layDownCol->Render();
+	//_feetCol->Render();
+	//_headCol->Render();
+	//_grabCol->Render();
+	//_col->Render();
 }
 
 void Player::PostRender()

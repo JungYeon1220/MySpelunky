@@ -198,6 +198,7 @@
     <ClInclude Include="Object\Obj\Monster\Snake.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Scene\BasicScene\TileTestScene.h" />
+    <ClInclude Include="Object\Obj\Tile\TileManager.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="Object\Obj\Tile\Unbreakable.h" />
     <ClInclude Include="Object\Obj\Tile\Wooden.h" />
@@ -259,6 +260,7 @@
     <ClCompile Include="Object\Obj\Tile\Wooden.cpp" />
     <ClCompile Include="Object\Obj\Monster\Spider.cpp" />
     <ClCompile Include="Object\Obj\Monster\Snake.cpp" />
+    <ClCompile Include="Object\Obj\Tile\TileManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MySpelunky.rc" />

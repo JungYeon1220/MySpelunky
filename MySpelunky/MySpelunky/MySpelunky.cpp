@@ -56,6 +56,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     StateManager::Create();
     ShaderManager::Create();
     Camera::Create();
+	TileManager::Create();
 
     shared_ptr<Program> program = make_shared<Program>();
 
@@ -86,6 +87,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     SRVManager::Delete();
     InputManager::Delete();
     Timer::Delete();
+	TileManager::Delete();
 
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();

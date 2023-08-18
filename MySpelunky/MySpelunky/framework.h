@@ -16,8 +16,10 @@
 #include <tchar.h>
 #include <memory>
 #include <vector>
-#include <string>
+#include <map>
 #include <unordered_map>
+#include <string>
+#include <fstream>
 #include <algorithm>
 #include <wrl/client.h>
 #include <functional>
@@ -93,6 +95,8 @@ using namespace Microsoft::WRL;
 // Spelunky
 #include "Object/Obj/Tile/Tile.h"
 #include "Object/Obj/Monster/Monster.h"
+
+#include "Object/Obj/Tile/TileManager.h"
 
 // Scene
 #include "Scene/Scene.h"

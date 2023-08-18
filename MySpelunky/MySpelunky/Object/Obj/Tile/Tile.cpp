@@ -32,6 +32,9 @@ void Tile::SetType(Tile::Type value)
 
 bool Tile::Block(shared_ptr<Collider> col)
 {
+	if (_type == Type::EMPTY)
+		return false;
+
 	Vector2 colPos = col->GetWorldPos();
 	Vector2 pos = _col->GetWorldPos();
 	Vector2 halfSize = Vector2(50.0f, 50.0f);

@@ -18,6 +18,7 @@
 TileTestScene::TileTestScene()
 {
 	_map = make_shared<Map>();
+	_map->Update();
 	_player = make_shared<Player>();
 	_player->GetCollider()->GetTransform()->SetPosition(Vector2(_map->GetStartPos().x * 100.0f, (_map->PoolCount().y - 1 - _map->GetStartPos().y) * 100.0f));
 
@@ -29,18 +30,18 @@ TileTestScene::TileTestScene()
 			{
 				if (_map->GetTiles()[i - 1][j]->GetType() == Tile::Type::EMPTY)
 				{
-					int random = MathUtility::RandomInt(0, 9);
+					int random = MathUtility::RandomInt(0, 30);
 
 					if (random < 3)
 					{
 						shared_ptr<Monster> monster;
 
 						if (random == 0)
-							monster = make_shared<Spider>(_map->GetTile(j, i - 1)->GetCollider()->GetWorldPos());
+							monster = make_shared<Spider>(_map->GetTiles()[i][j]->GetCollider()->GetWorldPos() + Vector2(0.0f, 100.0f));
 						else if (random == 1)
-							monster = make_shared<Snake>(_map->GetTile(j, i - 1)->GetCollider()->GetWorldPos());
+							monster = make_shared<Snake>(_map->GetTiles()[i][j]->GetCollider()->GetWorldPos() + Vector2(0.0f, 100.0f));
 						else if (random == 2)
-							monster = make_shared<Mosquito>(_map->GetTile(j, i - 1)->GetCollider()->GetWorldPos());
+							monster = make_shared<Mosquito>(_map->GetTiles()[i][j]->GetCollider()->GetWorldPos() + Vector2(0.0f, 100.0f));
 
 						_monsters.push_back(monster);
 					}
@@ -66,6 +67,8 @@ void TileTestScene::Update()
 {
 	_player->Update();
 	_map->Update();
+	for (auto monster : _monsters)
+		monster->Update();
 
 	bool check = false;
 	bool ladderCheck = false;
@@ -340,6 +343,7 @@ void TileTestScene::Update()
 
 	if (ladderCheck == false)
 		_player->IsClimb() = false;
+
 	for (auto monster : _monsters)
 	{
 		bool check = false;
@@ -347,11 +351,11 @@ void TileTestScene::Update()
 		{
 			for (auto tile : tiles)
 			{
-				check = monster->TileInteract(tile);
+				if (monster->TileInteract(tile) == true)
+					check = true;
 			}
 		}
 		monster->Land(check);
-		monster->Update();
 	}
 }
 
