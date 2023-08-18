@@ -25,14 +25,13 @@ TutorialScene::TutorialScene()
 	_snake = make_shared<Snake>();
 	_mosquito = make_shared<Mosquito>();
 
-	for (int j = 0; j < 38; j++)
+
+	for (int i = 0; i < 15; i++)
 	{
-		for (int i = 0; i < 44; i++)
-		{
-			shared_ptr<Tile> tile = make_shared<Normal>(Vector2((i + 0.5f) * 100.0f, 50.0f - (100.0f * j)) - CENTER);
-			_tiles.push_back(tile);
-		}
+		shared_ptr<Tile> tile = make_shared<Normal>(Vector2((i + 0.5f) * 100.0f, 50.0f) - CENTER);
+		_tiles.push_back(tile);
 	}
+
 
 	_spike = make_shared<Spike>(Vector2(150.0f, 150.0f) - CENTER);
 	_tiles.push_back(_spike);
