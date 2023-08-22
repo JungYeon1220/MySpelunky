@@ -33,9 +33,7 @@ Map::Map()
 
 			if (type == 0 || type == 3 || type == 6 || type == 7 || type == 99)
 			{
-				tile = make_shared<Tile>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
-				tile->SetType(Tile::Type::EMPTY);
-				_tileMap[i].push_back(tile);
+				_tileMap[i].push_back(nullptr);
 				continue;
 			}
 

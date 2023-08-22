@@ -17,20 +17,16 @@ public:
 	virtual void Render() override;
 
 private:
-	shared_ptr<Transform> _upPebbleTrans;
-	shared_ptr<Sprite_Frame> _upPebbleSprite;
+	int _upPebbleNum = MathUtility::RandomInt(1, 3);
 	bool _upPebble = false;
 
-	shared_ptr<Transform> _downPebbleTrans;
-	shared_ptr<Sprite_Frame> _downPebbleSprite;
+	int _downPebbleNum = MathUtility::RandomInt(1, 3);
 	bool _downPebble = false;
 
-	shared_ptr<Transform> _rightPebbleTrans;
-	shared_ptr<Sprite_Frame> _rightPebbleSprite;
+	int _rightPebbleNum = MathUtility::RandomInt(1, 3);
 	bool _rightPebble = false;
 
-	shared_ptr<Transform> _leftPebbleTrans;
-	shared_ptr<Sprite_Frame> _leftPebbleSprite;
+	int _leftPebbleNum = MathUtility::RandomInt(1, 3);
 	bool _leftPebble = false;
 };
 

@@ -4,7 +4,6 @@
 Tile::Tile()
 {
 	_transform = make_shared<Transform>();
-
 	_col = make_shared<RectCollider>(Vector2(100.0f, 100.0f));
 	_transform->SetParent(_col->GetTransform());
 	_col->GetTransform()->SetPosition(_pos);
@@ -14,7 +13,6 @@ Tile::Tile(Vector2 pos)
 	:_pos(pos)
 {
 	_transform = make_shared<Transform>();
-
 	_col = make_shared<RectCollider>(Vector2(100.0f, 100.0f));
 	_transform->SetParent(_col->GetTransform());
 	_col->GetTransform()->SetPosition(_pos);
@@ -54,7 +52,6 @@ void Tile::Update()
 		return;
 
 	_transform->Update();
-	_sprite->Update();
 	_col->Update();
 }
 
@@ -64,6 +61,5 @@ void Tile::Render()
 		return;
 
 	_transform->SetWorldBuffer(0);
-	_sprite->Render();
 	//_col->Render();
 }

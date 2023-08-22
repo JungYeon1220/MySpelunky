@@ -13,6 +13,7 @@ Player::Player()
 	_transform = make_shared<Transform>();
 	_upTransform = make_shared<Transform>();
 	_downTransform = make_shared<Transform>();
+	_handSlot = make_shared<Transform>();
 
 	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/char_yellow.png", Vector2(16, 16));
 	_damagedBuffer = make_shared<DamagedBuffer>();
@@ -26,6 +27,8 @@ Player::Player()
 	_upTransform->SetPosition(Vector2(0.0f, 300.0f));
 	_downTransform->SetParent(_col->GetTransform());
 	_downTransform->SetPosition(Vector2(0.0f, -300.0f));
+	_handSlot->SetParent(_col->GetTransform());
+
 	
 	_layDownCol->GetTransform()->SetParent(_col->GetTransform());
 	_layDownCol->GetTransform()->SetPosition(Vector2(0.0f, -20.0f));

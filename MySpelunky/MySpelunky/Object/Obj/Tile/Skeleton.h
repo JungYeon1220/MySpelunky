@@ -13,8 +13,7 @@ public:
 	void SetSpikePebble();
 
 private:
-	shared_ptr<Transform> _upPebbleTrans;
-	shared_ptr<Sprite_Frame> _upPebbleSprite;
+	string _pebbleName = "SkeletonPebble";
 	bool _upPebble = false;
 };
 

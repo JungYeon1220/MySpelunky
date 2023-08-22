@@ -4,16 +4,14 @@
 Ladder::Ladder()
 	:Tile()
 {
-	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/floor_cave.png", Vector2(12, 12), Vector2(100.0f, 100.0f));
-	_sprite->SetCurClip(Vector2(4, 1));
+	_name = "NormalLadder";
 	_type = Tile::Type::LADDER;
 }
 
 Ladder::Ladder(Vector2 pos)
 	:Tile(pos)
 {
-	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/floor_cave.png", Vector2(12, 12), Vector2(100.0f, 100.0f));
-	_sprite->SetCurClip(Vector2(4, 1));
+	_name = "NormalLadder";
 	_type = Tile::Type::LADDER;
 }
 
@@ -49,29 +47,30 @@ void Ladder::Update()
 
 void Ladder::Render()
 {
-	Tile::Render();
+	_transform->SetWorldBuffer(0);
+	TILEMANAGER->Render("Cave", _name);
 }
 
 void Ladder::SetTop()
 {
-	_sprite->SetCurClip(Vector2(4, 0));
+	_name = "TopLadder";
 	_isOneWay = false;
 }
 
 void Ladder::SetMiddle()
 {
-	_sprite->SetCurClip(Vector2(4, 1));
+	_name = "NormalLadder";
 	_isOneWay = false;
 }
 
 void Ladder::SetBottom()
 {
-	_sprite->SetCurClip(Vector2(4, 3));
+	_name = "BottomLadder";
 	_isOneWay = false;
 }
 
 void Ladder::SetOneWay()
 {
-	_sprite->SetCurClip(Vector2(4, 2));
+	_name = "PlatformLadder";
 	_isOneWay = true;
 }

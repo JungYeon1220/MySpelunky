@@ -32,9 +32,10 @@ public:
 	bool& CliffLeft() { return _cliffL; }
 
 protected:
+	string _name;
+
 	shared_ptr<RectCollider> _col;
 	shared_ptr<Transform> _transform;
-	shared_ptr<Sprite_Frame> _sprite;
 
 	Vector2 _pos = Vector2(0.0f, 0.0f);
 	Vector2 _selected = Vector2(0, 0);

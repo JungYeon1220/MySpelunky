@@ -192,7 +192,10 @@
     <ClInclude Include="Object\Obj\Monster\Mosquito.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Obj\Tile\TileManager.h">
+    <ClInclude Include="Object\Obj\SpriteManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -356,7 +359,10 @@
     <ClCompile Include="Object\Obj\Monster\Mosquito.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Obj\Tile\TileManager.cpp">
+    <ClCompile Include="Object\Obj\SpriteManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -409,6 +415,9 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="Resource\Texture\spider.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Resource\Texture\items.png">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

@@ -7,8 +7,7 @@ Movable::Movable()
 	_movableCol = make_shared<RectCollider>(Vector2(95.0f, 95.0f));
 	_movableCol->GetTransform()->SetParent(_col->GetTransform());
 	_movableCol->GetTransform()->AddVector2(Vector2(0.0f, -5.0f));
-	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/floor_cave.png", Vector2(12, 12), Vector2(100.0f, 100.0f));
-	_sprite->SetCurClip(Vector2(7, 0));
+	_name = "Movable";
 	_type = Tile::Type::MOVABLE;
 
 }
@@ -19,8 +18,7 @@ Movable::Movable(Vector2 pos)
 	_movableCol = make_shared<RectCollider>(Vector2(95.0f, 95.0f));
 	_movableCol->GetTransform()->SetParent(_col->GetTransform());
 	_movableCol->GetTransform()->AddVector2(Vector2(0.0f, -5.0f));
-	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/floor_cave.png", Vector2(12, 12), Vector2(100.0f, 100.0f));
-	_sprite->SetCurClip(Vector2(7, 0));
+	_name = "Movable";
 	_type = Tile::Type::MOVABLE;
 
 
@@ -48,4 +46,5 @@ void Movable::Update()
 void Movable::Render()
 {
 	Tile::Render();
+	TILEMANAGER->Render("Cave", _name);
 }

@@ -4,75 +4,15 @@
 Unbreakable::Unbreakable()
 	:Tile()
 {
-	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/border_main.png", Vector2(8, 8), Vector2(100.0f, 100.0f));
-	_sprite->SetCurClip(Vector2(rand() % 2, rand() % 5));
+	_name = "Unbreakable";
 	_type = Tile::Type::UNBREAKABLE;
-
-	_upPebbleTrans = make_shared<Transform>();
-	_upPebbleTrans->SetParent(_col->GetTransform());
-	_upPebbleTrans->SetPosition(Vector2(0.0f, 55.0f));
-
-	_upPebbleSprite = make_shared<Sprite_Frame>(L"Resource/Texture/border_main.png", Vector2(8, 8), Vector2(100.0f, 100.0f));
-	_upPebbleSprite->SetCurClip(Vector2(2 + (rand() % 3), 1));
-
-	_downPebbleTrans = make_shared<Transform>();
-	_downPebbleTrans->SetParent(_col->GetTransform());
-	_downPebbleTrans->SetPosition(Vector2(0.0f, -55.0f));
-
-	_downPebbleSprite = make_shared<Sprite_Frame>(L"Resource/Texture/border_main.png", Vector2(8, 8), Vector2(100.0f, 100.0f));
-	_downPebbleSprite->SetCurClip(Vector2(2 + (rand() % 3), 2));
-
-	_rightPebbleTrans = make_shared<Transform>();
-	_rightPebbleTrans->SetParent(_col->GetTransform());
-	_rightPebbleTrans->SetPosition(Vector2(50.0f, 0.0f));
-
-	_rightPebbleSprite = make_shared<Sprite_Frame>(L"Resource/Texture/border_main.png", Vector2(8, 8), Vector2(100.0f, 100.0f));
-	_rightPebbleSprite->SetCurClip(Vector2(2 + (rand() % 3), 0));
-
-	_leftPebbleTrans = make_shared<Transform>();
-	_leftPebbleTrans->SetParent(_col->GetTransform());
-	_leftPebbleTrans->SetPosition(Vector2(-50.0f, 0.0f));
-
-	_leftPebbleSprite = make_shared<Sprite_Frame>(L"Resource/Texture/border_main.png", Vector2(8, 8), Vector2(100.0f, 100.0f));
-	_leftPebbleSprite->SetCurClip(Vector2(2 + (rand() % 3), 0));
-	_leftPebbleSprite->SetLeft();
 }
 
 Unbreakable::Unbreakable(Vector2 pos)
 	:Tile(pos)
 {
-	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/border_main.png", Vector2(8, 8), Vector2(100.0f, 100.0f));
-	_sprite->SetCurClip(Vector2(rand() % 2, rand() % 5));
+	_name = "Unbreakable";
 	_type = Tile::Type::UNBREAKABLE;
-
-	_upPebbleTrans = make_shared<Transform>();
-	_upPebbleTrans->SetParent(_col->GetTransform());
-	_upPebbleTrans->SetPosition(Vector2(0.0f, 55.0f));
-
-	_upPebbleSprite = make_shared<Sprite_Frame>(L"Resource/Texture/border_main.png", Vector2(8, 8), Vector2(100.0f, 100.0f));
-	_upPebbleSprite->SetCurClip(Vector2(2 + (rand() % 3), 1));
-
-	_downPebbleTrans = make_shared<Transform>();
-	_downPebbleTrans->SetParent(_col->GetTransform());
-	_downPebbleTrans->SetPosition(Vector2(0.0f, -55.0f));
-
-	_downPebbleSprite = make_shared<Sprite_Frame>(L"Resource/Texture/border_main.png", Vector2(8, 8), Vector2(100.0f, 100.0f));
-	_downPebbleSprite->SetCurClip(Vector2(2 + (rand() % 3), 2));
-
-	_rightPebbleTrans = make_shared<Transform>();
-	_rightPebbleTrans->SetParent(_col->GetTransform());
-	_rightPebbleTrans->SetPosition(Vector2(50.0f, 0.0f));
-
-	_rightPebbleSprite = make_shared<Sprite_Frame>(L"Resource/Texture/border_main.png", Vector2(8, 8), Vector2(100.0f, 100.0f));
-	_rightPebbleSprite->SetCurClip(Vector2(2 + (rand() % 3), 0));
-
-	_leftPebbleTrans = make_shared<Transform>();
-	_leftPebbleTrans->SetParent(_col->GetTransform());
-	_leftPebbleTrans->SetPosition(Vector2(-50.0f, 0.0f));
-
-	_leftPebbleSprite = make_shared<Sprite_Frame>(L"Resource/Texture/border_main.png", Vector2(8, 8), Vector2(100.0f, 100.0f));
-	_leftPebbleSprite->SetCurClip(Vector2(2 + (rand() % 3), 0));
-	_leftPebbleSprite->SetLeft();
 }
 
 Unbreakable::~Unbreakable()
@@ -85,55 +25,58 @@ void Unbreakable::SetRandomTile(int x, int y)
 	int n = y % 2;
 	int random = (rand() % 3) * 2;
 
-	_sprite->SetCurClip(Vector2(m, n + random));
+	_name += to_string(random);
+
+	if (m == 0 && n == 0)
+		_name += to_string(1);
+	else if (m == 0 && n == 1)
+		_name += to_string(2);
+	else if (m == 1 && n == 0)
+		_name += to_string(3);
+	else
+		_name += to_string(4);
 }
 
 void Unbreakable::Update()
 {
-	Tile::Update();
-	if (_upPebble == true)
-	{
-		_upPebbleTrans->Update();
-		_upPebbleSprite->Update();
-	}
-	if (_downPebble == true)
-	{
-		_downPebbleTrans->Update();
-		_downPebbleSprite->Update();
-	}
-	if (_rightPebble == true)
-	{
-		_rightPebbleTrans->Update();
-		_rightPebbleSprite->Update();
-	}
-	if (_leftPebble == true)
-	{
-		_leftPebbleTrans->Update();
-		_leftPebbleSprite->Update();
-	}
+	_col->Update();
 }
 
 void Unbreakable::Render()
 {
-	Tile::Render();
+	_transform->SetPosition(Vector2(0, 0));
+	_transform->Update();
+	_transform->SetWorldBuffer(0);
+	TILEMANAGER->Render("BorderMain", _name);
+
 	if (_upPebble == true)
 	{
-		_upPebbleTrans->SetWorldBuffer(0);
-		_upPebbleSprite->Render();
+		_transform->SetPosition(Vector2(0.0f, 55.0f));
+		_transform->Update();
+		_transform->SetWorldBuffer(0);
+		TILEMANAGER->Render("BorderMain", "UBUpPebble" + to_string(_upPebbleNum));
 	}
 	if (_downPebble == true)
 	{
-		_downPebbleTrans->SetWorldBuffer(0);
-		_downPebbleSprite->Render();
+		_transform->SetPosition(Vector2(0.0f, -55.0f));
+		_transform->Update();
+		_transform->SetWorldBuffer(0);
+		TILEMANAGER->Render("BorderMain", "UBDownPebble" + to_string(_downPebbleNum));
 	}
 	if (_rightPebble == true)
 	{
-		_rightPebbleTrans->SetWorldBuffer(0);
-		_rightPebbleSprite->Render();
+		_transform->SetPosition(Vector2(50.0f, 0.0f));
+		_transform->Update();
+		_transform->SetWorldBuffer(0);
+		TILEMANAGER->Render("BorderMain", "UBSidePebble" + to_string(_rightPebbleNum));
 	}
 	if (_leftPebble == true)
 	{
-		_leftPebbleTrans->SetWorldBuffer(0);
-		_leftPebbleSprite->Render();
+		_transform->SetPosition(Vector2(-50.0f, 0.0f));
+		_transform->Update();
+		_transform->SetWorldBuffer(0);
+		TILEMANAGER->GetSprite("BorderMain")->SetLeft();
+		TILEMANAGER->Render("BorderMain", "UBSidePebble" + to_string(_leftPebbleNum));
+		TILEMANAGER->GetSprite("BorderMain")->SetRight();
 	}
 }

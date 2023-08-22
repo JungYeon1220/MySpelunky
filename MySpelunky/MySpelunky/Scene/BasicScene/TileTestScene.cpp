@@ -25,9 +25,12 @@ TileTestScene::TileTestScene()
 	{
 		for (int j = 0; j < _map->PoolCount().x; j++)
 		{
+			if (_map->GetTiles()[i][j] == nullptr)
+				continue;
+
 			if (_map->GetTiles()[i][j]->GetType() == Tile::Type::NORMAL)
 			{
-				if (_map->GetTiles()[i - 1][j]->GetType() == Tile::Type::EMPTY)
+				if (_map->GetTiles()[i - 1][j] == nullptr)
 				{
 					int random = MathUtility::RandomInt(0, 30);
 
@@ -353,6 +356,9 @@ void TileTestScene::Update()
 		{
 			for (auto tile : tiles)
 			{
+				if (tile == nullptr)
+					continue;
+
 				if (monster->TileInteract(tile) == true)
 					check = true;
 			}

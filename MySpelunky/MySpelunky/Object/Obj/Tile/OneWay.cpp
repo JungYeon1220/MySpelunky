@@ -4,16 +4,14 @@
 OneWay::OneWay()
 	:Tile()
 {
-	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/floormisc.png", Vector2(8, 8), Vector2(100.0f, 100.0f));
-	_sprite->SetCurClip(Vector2(1, 1));
+	_name = "Oneway";
 	_type = Tile::Type::ONE_WAY;
 }
 
 OneWay::OneWay(Vector2 pos)
 	:Tile(pos)
 {
-	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/floormisc.png", Vector2(8, 8), Vector2(100.0f, 100.0f));
-	_sprite->SetCurClip(Vector2(1, 1));
+	_name = "Oneway";
 	_type = Tile::Type::ONE_WAY;
 }
 
@@ -41,10 +39,12 @@ bool OneWay::Block(shared_ptr<Collider> col)
 
 void OneWay::Update()
 {
-	Tile::Update();
+	_col->Update();
+	_transform->Update();
 }
 
 void OneWay::Render()
 {
-	Tile::Render();
+	_transform->SetWorldBuffer(0);
+	TILEMANAGER->Render("FloorMisc", _name);
 }

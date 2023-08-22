@@ -96,7 +96,7 @@ using namespace Microsoft::WRL;
 #include "Object/Obj/Tile/Tile.h"
 #include "Object/Obj/Monster/Monster.h"
 
-#include "Object/Obj/Tile/TileManager.h"
+#include "Object/Obj/SpriteManager.h"
 
 // Scene
 #include "Scene/Scene.h"

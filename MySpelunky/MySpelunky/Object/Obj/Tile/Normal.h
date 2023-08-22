@@ -12,27 +12,27 @@ public:
 	void PebbleUp() { _upPebble = true; }
 	void PebbleDown() { _downPebble = true; }
 	void PebbleRight() { _rightPebble = true; }
-	void PebbleGrabRight() { _rightPebbleSprite->SetCurClip(Vector2(7, 5)); }
+	void PebbleGrabRight() { _rightPebbleNum = 3; }
 	void PebbleLeft() { _leftPebble = true; }
-	void PebbleGrabLeft() { _leftPebbleSprite->SetCurClip(Vector2(7, 5)); }
+	void PebbleGrabLeft() { _rightPebbleNum = 3; }
 
 	void SetSpikePebble();
 
 private:
+	int _upPebbleNum = MathUtility::RandomInt(1, 3);
 	shared_ptr<Transform> _upPebbleTrans;
-	shared_ptr<Sprite_Frame> _upPebbleSprite;
 	bool _upPebble = false;
 
+	int _downPebbleNum = MathUtility::RandomInt(1, 3);
 	shared_ptr<Transform> _downPebbleTrans;
-	shared_ptr<Sprite_Frame> _downPebbleSprite;
 	bool _downPebble = false;
 
+	int _rightPebbleNum = MathUtility::RandomInt(1, 2);
 	shared_ptr<Transform> _rightPebbleTrans;
-	shared_ptr<Sprite_Frame> _rightPebbleSprite;
 	bool _rightPebble = false;
 
+	int _leftPebbleNum = MathUtility::RandomInt(1, 2);
 	shared_ptr<Transform> _leftPebbleTrans;
-	shared_ptr<Sprite_Frame> _leftPebbleSprite;
 	bool _leftPebble = false;
 };
 

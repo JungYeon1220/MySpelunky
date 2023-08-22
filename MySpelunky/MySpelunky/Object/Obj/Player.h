@@ -73,9 +73,12 @@ private:
 	shared_ptr<CircleCollider> _feetCol;
 	shared_ptr<CircleCollider> _headCol;
 	shared_ptr<CircleCollider> _grabCol;
+
 	shared_ptr<Transform> _transform;
 	shared_ptr<Transform> _upTransform;
 	shared_ptr<Transform> _downTransform;
+	shared_ptr<Transform> _handSlot;
+
 	vector<shared_ptr<Action>> _actions;
 	shared_ptr<Sprite_Frame> _sprite;
 	shared_ptr<PixelShader> _playerPS;

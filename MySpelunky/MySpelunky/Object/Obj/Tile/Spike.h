@@ -18,8 +18,9 @@ public:
 
 	bool& CanSpike() { return _CanSpike; }
 private:
-	shared_ptr<Sprite_Frame> _bloodSprite;
 	shared_ptr<RectCollider> _spikeCol;
+	string _bloodName;
+
 	bool _isBlood = false;
 	bool _isSkeleton = false;
 	bool _CanSpike = true;

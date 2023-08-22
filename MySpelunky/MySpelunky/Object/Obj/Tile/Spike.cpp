@@ -4,33 +4,29 @@
 Spike::Spike()
     :Tile()
 {
-    _sprite = make_shared<Sprite_Frame>(L"Resource/Texture/floor_cave.png", Vector2(12, 12), Vector2(100.0f, 100.0f));
-    int random = rand() % 3;
-    _sprite->SetCurClip(Vector2(5 + random, 9));
-    _type = Tile::Type::SPIKE;
+	int random = MathUtility::RandomInt(1, 3);
+	_name = "Spike" + to_string(random);
+	_type = Tile::Type::SPIKE;
 
-    _spikeCol = make_shared<RectCollider>(Vector2(100.0f, 90.0f));
-    _spikeCol->GetTransform()->SetParent(_col->GetTransform());
-    _spikeCol->GetTransform()->SetPosition(Vector2(0.0f, -5.0f));
+	_spikeCol = make_shared<RectCollider>(Vector2(100.0f, 90.0f));
+	_spikeCol->GetTransform()->SetParent(_col->GetTransform());
+	_spikeCol->GetTransform()->SetPosition(Vector2(0.0f, -5.0f));
 
-    _bloodSprite = make_shared<Sprite_Frame>(L"Resource/Texture/floor_cave.png", Vector2(12, 12), Vector2(100.0f, 100.0f));
-    _bloodSprite->SetCurClip(Vector2(5 + random, 10));
+	_bloodName = "Blood" + to_string(random);
 }
 
 Spike::Spike(Vector2 pos)
     :Tile(pos)
 {
-    _sprite = make_shared<Sprite_Frame>(L"Resource/Texture/floor_cave.png", Vector2(12, 12), Vector2(100.0f, 100.0f));
-    int random = rand() % 3;
-    _sprite->SetCurClip(Vector2(5 + random, 9));
-    _type = Tile::Type::SPIKE;
+	int random = MathUtility::RandomInt(1, 3);
+	_name = "Spike" + to_string(random);
+	_type = Tile::Type::SPIKE;
 
-    _spikeCol = make_shared<RectCollider>(Vector2(100.0f, 90.0f));
-    _spikeCol->GetTransform()->SetParent(_col->GetTransform());
-    _spikeCol->GetTransform()->SetPosition(Vector2(0.0f, -5.0f));
+	_spikeCol = make_shared<RectCollider>(Vector2(100.0f, 90.0f));
+	_spikeCol->GetTransform()->SetParent(_col->GetTransform());
+	_spikeCol->GetTransform()->SetPosition(Vector2(0.0f, -5.0f));
 
-    _bloodSprite = make_shared<Sprite_Frame>(L"Resource/Texture/floor_cave.png", Vector2(12, 12), Vector2(100.0f, 100.0f));
-    _bloodSprite->SetCurClip(Vector2(5 + random, 10));
+	_bloodName = "Blood" + to_string(random);
 }
 
 Spike::~Spike()
@@ -44,25 +40,26 @@ bool Spike::Block(shared_ptr<Collider> col)
 
 void Spike::Update()
 {
-    Tile::Update();
-    if (_isBlood == true)
-    {
-        _bloodSprite->Update();
-    }
+	_col->Update();
+	_spikeCol->Update();
 }
 
 void Spike::Render()
 {
-    Tile::Render();
-    if (_isBlood == true)
-    {
-        _bloodSprite->Render();
-    }
+	_transform->SetPosition(Vector2(0.0f, 0.0f));
+	_transform->Update();
+	_transform->SetWorldBuffer(0);
+	TILEMANAGER->Render("Cave", _name);
+
+	if (_isBlood == true)
+	{
+		TILEMANAGER->Render("Cave", _bloodName);
+	}
 }
 
 void Spike::SetSkeletonSpike()
 {
-    _isSkeleton = true;
-    _sprite->SetCurClip(Vector2(8, 9));
-    _bloodSprite->SetCurClip(Vector2(5, 10));
+	_isSkeleton = true;
+	_name = "SkeletonSpike";
+	_bloodName = "SkeletonBlood";
 }
