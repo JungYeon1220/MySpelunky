@@ -12,8 +12,9 @@ public:
 	virtual void Render() override;
 
 	bool& CanStand() { return _canStand; }
-
+	int& LegCount() { return _legCount; }
 private:
 	bool _canStand = true;
+	int _legCount = 0;
 };
 

@@ -12,5 +12,7 @@ private:
 	shared_ptr<class Map> _map;
 	shared_ptr<class Player> _player;
 	vector<shared_ptr<Monster>> _monsters;
+
+	bool m = false;
 };
 

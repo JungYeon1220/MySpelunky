@@ -18,7 +18,6 @@
 TileTestScene::TileTestScene()
 {
 	_map = make_shared<Map>();
-	_map->Update();
 	_player = make_shared<Player>();
 	_player->GetCollider()->GetTransform()->SetPosition(Vector2(_map->GetStartPos().x * 100.0f, (_map->PoolCount().y - 1 - _map->GetStartPos().y) * 100.0f));
 
@@ -56,7 +55,7 @@ TileTestScene::TileTestScene()
 	//CAMERA->SetRightTop(_map->GetTiles()[0][_map->PoolCount().x - 1]->GetCollider()->GetWorldPos());
 	 
 	CAMERA->FreeMode();
-	CAMERA->SetScale(Vector2(0.3f, 0.3f));
+	//CAMERA->SetScale(Vector2(0.3f, 0.3f));
 }
 
 TileTestScene::~TileTestScene()
@@ -67,8 +66,11 @@ void TileTestScene::Update()
 {
 	_player->Update();
 	_map->Update();
-	for (auto monster : _monsters)
-		monster->Update();
+	if (m)
+	{
+		for (auto monster : _monsters)
+			monster->Update();
+	}
 
 	bool check = false;
 	bool ladderCheck = false;
@@ -357,14 +359,16 @@ void TileTestScene::Update()
 		}
 		monster->Land(check);
 	}
+	m = true;
 }
 
 void TileTestScene::Render()
 {
-	_map->Render();
+	_map->BehindRender();
 	_player->Render();
 	for (auto monster : _monsters)
 		monster->Render();
+	_map->FrontRender();
 }
 
 void TileTestScene::PostRender()

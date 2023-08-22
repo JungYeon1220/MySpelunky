@@ -28,6 +28,8 @@ public:
 	shared_ptr<RectCollider> GetCollider() { return _col; }
 	Type GetType() { return _type; }
 	bool& CanGrab() { return _canGrab; }
+	bool& CliffRight() { return _cliffR; }
+	bool& CliffLeft() { return _cliffL; }
 
 protected:
 	shared_ptr<RectCollider> _col;
@@ -42,5 +44,7 @@ protected:
 
 	bool _canGrab = false;
 
+	bool _cliffR = false;
+	bool _cliffL = false;
 };
 

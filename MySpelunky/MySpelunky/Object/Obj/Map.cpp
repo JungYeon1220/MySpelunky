@@ -29,6 +29,8 @@ Map::Map()
 
 			shared_ptr<Tile> tile;
 
+
+
 			if (type == 0 || type == 3 || type == 6 || type == 7 || type == 99)
 			{
 				tile = make_shared<Tile>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
@@ -53,19 +55,38 @@ Map::Map()
 				if (_layout[i][j + 1] != 1 && _layout[i][j + 1] != 50)
 				{
 					dynamic_pointer_cast<Normal>(tile)->PebbleRight();
-					if(dynamic_pointer_cast<Normal>(tile)->CanGrab() == true)
+					if (dynamic_pointer_cast<Normal>(tile)->CanGrab() == true)
+					{
 						dynamic_pointer_cast<Normal>(tile)->PebbleGrabRight();
+						tile->CliffRight() = true;
+					}
 				}
 				if (_layout[i][j - 1] != 1 && _layout[i][j - 1] != 50)
 				{
 					dynamic_pointer_cast<Normal>(tile)->PebbleLeft();
 					if (dynamic_pointer_cast<Normal>(tile)->CanGrab() == true)
+					{
 						dynamic_pointer_cast<Normal>(tile)->PebbleGrabLeft();
+						tile->CliffLeft() = true;
+					}
 				}
-
+				_types["Normal"].push_back(tile);
 			}
-			else if(type == 5)
+			else if (type == 5)
+			{
 				tile = make_shared<OneWay>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
+
+				int count = 1;
+				while (true)
+				{
+					if (_layout[i + count][j] == 1)
+						break;
+					count++;
+				}
+				dynamic_pointer_cast<OneWay>(tile)->LegCount() = count - 1;
+
+				_types["Oneway"].push_back(tile);
+			}
 			else if (type == 50)
 			{
 				tile = make_shared<Unbreakable>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
@@ -87,6 +108,8 @@ Map::Map()
 				{
 					dynamic_pointer_cast<Unbreakable>(tile)->PebbleLeft();
 				}
+
+				_types["Unbreakable"].push_back(tile);
 			}
 			else if (type == 10)
 			{
@@ -95,6 +118,8 @@ Map::Map()
 				{
 					dynamic_pointer_cast<Spike>(tile)->SetSkeletonSpike();
 				}
+
+				_types["Spike"].push_back(tile);
 			}
 			else if (type == 11)
 			{
@@ -110,6 +135,8 @@ Map::Map()
 						dynamic_pointer_cast<Skeleton>(tile)->PebbleUp();
 					}
 				}
+
+				_types["Skeleton"].push_back(tile);
 			}
             else if (type == 2)
             {
@@ -122,20 +149,26 @@ Map::Map()
                 {
                     dynamic_pointer_cast<Ladder>(tile)->SetBottom();
                 }
+
+				_types["Ladder"].push_back(tile);
             }
             else if (type == 4)
             {
                 tile = make_shared<Ladder>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
                 dynamic_pointer_cast<Ladder>(tile)->SetOneWay();
+
+				_types["Ladder"].push_back(tile);
             }
             else if (type == 9)
             {
                 tile = make_shared<Wooden>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
+
+				_types["Wooden"].push_back(tile);
             }
             else if (type == 8)
             {
                 tile = make_shared<Movable>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
-                _movables.push_back(tile);
+				_types["Movable"].push_back(tile);
             }
 
 			_tileMap[i].push_back(tile);
@@ -154,9 +187,9 @@ Map::~Map()
 
 void Map::Update()
 {
-    for (auto movable : _movables)
+    for (int i = 0; i < _types["Movable"].size(); i++)
     {
-        movable->Update();
+		_types["Movable"][i]->Update();
         bool check = false;
         for (auto tileArr : _tileMap)
         {
@@ -165,61 +198,72 @@ void Map::Update()
                 if (tile == nullptr)
                     continue;
 
-                float x = movable->GetCollider()->GetWorldPos().x - tile->GetCollider()->GetWorldPos().x;
-                float y = movable->GetCollider()->GetWorldPos().y - tile->GetCollider()->GetWorldPos().y;
-                if (x * x + y * y > 40000.0f)
-                    continue;
-
                 if (tile->GetType() == Tile::Type::MOVABLE)
                     continue;
 
-				if (tile->GetCollider()->IsCollision(dynamic_pointer_cast<Movable>(movable)->GetMovableCollider()))
+				if (tile->GetCollider()->IsCollision(dynamic_pointer_cast<Movable>(_types["Movable"][i])->GetMovableCollider()))
 				{
-					if (tile->GetCollider()->Block(movable->GetCollider()))
+					if (tile->GetCollider()->Block(_types["Movable"][i]->GetCollider()))
 					{
-						if (tile->GetCollider()->GetWorldPos().y < movable->GetCollider()->GetWorldPos().y)
+						if (tile->GetCollider()->GetWorldPos().y < _types["Movable"][i]->GetCollider()->GetWorldPos().y)
 							check = true;
 					}
 				}
             }
         }
 
+		for (int j = 0; j < _types["Movable"].size(); j++)
+		{
+			if (i == j)
+				continue;
+
+			if (_types["Movable"][j]->GetCollider()->IsCollision(dynamic_pointer_cast<Movable>(_types["Movable"][i])->GetMovableCollider()))
+			{
+				if (_types["Movable"][j]->GetCollider()->Block(_types["Movable"][i]->GetCollider()))
+				{
+					if (_types["Movable"][j]->GetCollider()->GetWorldPos().y < _types["Movable"][i]->GetCollider()->GetWorldPos().y)
+						check = true;
+				}
+			}
+		}
+
         if (check == false)
         {
-            dynamic_pointer_cast<Movable>(movable)->IsFalling() = true;
+            dynamic_pointer_cast<Movable>(_types["Movable"][i])->IsFalling() = true;
         }
         else
         {
-            dynamic_pointer_cast<Movable>(movable)->IsFalling() = false;
+            dynamic_pointer_cast<Movable>(_types["Movable"][i])->IsFalling() = false;
         }
     }
 }
 
-void Map::Render()
+void Map::BehindRender()
 {
-    _bgTrans->SetWorldBuffer(0);
-    _bg->Render();
-	for (auto tileArr : _tileMap)
-	{
-		for (auto tile : tileArr)
-		{
-			if (tile == nullptr)
-				continue;
-			if (tile->GetType() == Tile::Type::UNBREAKABLE)
-				continue;
-			tile->Render();
-		}
-	}
-	for (auto tileArr : _tileMap)
-	{
-		for (auto tile : tileArr)
-		{
-			if (tile == nullptr)
-				continue;
-			if (tile->GetType() == Tile::Type::UNBREAKABLE)
-				tile->Render();
-		}
-	}
+	_bgTrans->SetWorldBuffer(0);
+	_bg->Render();
+
+	for (auto ladder : _types["Ladder"])
+		ladder->Render();
+	for (auto oneway : _types["Oneway"])
+		oneway->Render();
+	for (auto spike : _types["Spike"])
+		spike->Render();
+
+}
+
+void Map::FrontRender()
+{
+	for (auto movable : _types["Movable"])
+		movable->Render();
+	for (auto skeleton : _types["Skeleton"])
+		skeleton->Render();
+	for (auto wooden : _types["Wooden"])
+		wooden->Render();
+	for (auto normal : _types["Normal"])
+		normal->Render();
+	for (auto unbreakable : _types["Unbreakable"])
+		unbreakable->Render();
 }
 
 void Map::PostRender()

@@ -87,6 +87,27 @@ bool Snake::TileInteract(shared_ptr<Tile> tile)
 			if (_isMoving == true)
 				Reverse();
 		}
+
+		if (_col->GetWorldPos().x < tilePos.x + 50.0f && _col->GetWorldPos().x > tilePos.x - 50.0f)
+		{
+			if (tile->CliffRight() == true)
+			{
+				if (tilePos.x + 50.0f < _col->GetWorldPos().x + _size.x * 0.5f)
+				{
+					Reverse();
+					_col->GetTransform()->AddVector2(Vector2(-0.1f, 0.0f));
+				}
+			}
+
+			if (tile->CliffLeft() == true)
+			{
+				if (tilePos.x - 50.0f > _col->GetWorldPos().x - _size.x * 0.5f)
+				{
+					Reverse();
+					_col->GetTransform()->AddVector2(Vector2(0.1f, 0.0f));
+				}
+			}
+		}
 	}
 
 	return Landcheck;
