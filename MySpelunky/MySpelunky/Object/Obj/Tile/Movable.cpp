@@ -46,5 +46,5 @@ void Movable::Update()
 void Movable::Render()
 {
 	Tile::Render();
-	TILEMANAGER->Render("Cave", _name);
+	SPRITEMANAGER->Render("Cave", _name);
 }

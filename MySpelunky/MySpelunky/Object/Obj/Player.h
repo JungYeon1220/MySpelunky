@@ -96,6 +96,7 @@ private:
 
 	bool _isFalling = false;
 	float _jumpPower = 0.0f;
+	float _maxJump = 1200.0f;
 	float _maxFalling = 700.0f;
 
 	bool _isAttack = false;

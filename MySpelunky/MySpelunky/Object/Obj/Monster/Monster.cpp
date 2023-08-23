@@ -12,6 +12,9 @@ Monster::~Monster()
 
 void Monster::Update()
 {
+	if (_isDead == true)
+		return;
+
 	if (_isFalling == true)
 		_jumpPower -= GRAVITY * 8;
 	else

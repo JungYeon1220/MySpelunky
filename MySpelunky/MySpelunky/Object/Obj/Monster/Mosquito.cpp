@@ -60,6 +60,9 @@ Mosquito::~Mosquito()
 
 void Mosquito::Update()
 {
+	if (_isDead == true)
+		return;
+
 	Move();
 
 	_col->GetTransform()->AddVector2(_dir * _curSpeed * DELTA_TIME);

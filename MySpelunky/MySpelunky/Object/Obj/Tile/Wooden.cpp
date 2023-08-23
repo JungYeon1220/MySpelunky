@@ -28,5 +28,5 @@ void Wooden::Update()
 void Wooden::Render()
 {
 	_transform->SetWorldBuffer(0);
-	TILEMANAGER->Render("Wood", _name);
+	SPRITEMANAGER->Render("Wood", _name);
 }

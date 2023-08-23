@@ -227,7 +227,7 @@ void Player::Jump()
 
 	if (KEY_DOWN('Z') && _isFalling == false && _isStun == false)
 	{
-		_jumpPower = 1200.0f;
+		_jumpPower = _maxJump;
 		_isFalling = true;
 		_col->GetTransform()->AddVector2(Vector2(0.0f, 0.01f));
 	}

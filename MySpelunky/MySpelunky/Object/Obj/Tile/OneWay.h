@@ -15,6 +15,7 @@ public:
 	int& LegCount() { return _legCount; }
 private:
 	bool _canStand = true;
+
 	int _legCount = 0;
 };
 

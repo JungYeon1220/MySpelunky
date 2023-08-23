@@ -18,5 +18,6 @@ private:
 	vector<shared_ptr<class Tile>> _tiles;
 	shared_ptr<class Tile> _spike;
 	shared_ptr<class Tile> _movable;
+	shared_ptr<Item> _item;
 };
 

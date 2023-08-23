@@ -169,7 +169,7 @@
     <ClInclude Include="Framework\Utility\InputManager.h" />
     <ClInclude Include="Framework\Utility\Timer.h" />
     <ClInclude Include="Framework\Utility\tinyxml2.h" />
-    <ClInclude Include="Item.h" />
+    <ClInclude Include="Object\Obj\Item\Item.h" />
     <ClInclude Include="Object\Obj\Monster\Mosquito.h" />
     <ClInclude Include="Object\Obj\Monster\Monster.h" />
     <ClInclude Include="Object\Obj\Tile\Movable.h" />
@@ -233,7 +233,7 @@
     <ClCompile Include="Framework\Utility\InputManager.cpp" />
     <ClCompile Include="Framework\Utility\Timer.cpp" />
     <ClCompile Include="Framework\Utility\tinyxml2.cpp" />
-    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Object\Obj\Item\Item.cpp" />
     <ClCompile Include="Object\Obj\Monster\Mosquito.cpp" />
     <ClCompile Include="Object\Obj\Monster\Monster.cpp" />
     <ClCompile Include="Object\Obj\Tile\Movable.cpp" />

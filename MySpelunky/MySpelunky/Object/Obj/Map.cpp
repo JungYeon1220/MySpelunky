@@ -77,7 +77,7 @@ Map::Map()
 				int count = 1;
 				while (true)
 				{
-					if (_layout[i + count][j] == 1)
+					if (_layout[i + count][j] == 1 || _layout[i + count][j] == 11 || _layout[i + count][j] == 5)
 						break;
 					count++;
 				}
@@ -195,6 +195,11 @@ void Map::Update()
             {
                 if (tile == nullptr)
                     continue;
+
+				float x = _types["Movable"][i]->GetCollider()->GetWorldPos().x - tile->GetCollider()->GetWorldPos().x;
+				float y = _types["Movable"][i]->GetCollider()->GetWorldPos().y - tile->GetCollider()->GetWorldPos().y;
+				if (x * x + y * y > 40000.0f)
+					continue;
 
                 if (tile->GetType() == Tile::Type::MOVABLE)
                     continue;

@@ -45,6 +45,19 @@ void OneWay::Update()
 
 void OneWay::Render()
 {
+	_transform->SetPosition(Vector2(0.0f, 0.0f));
+	_transform->Update();
 	_transform->SetWorldBuffer(0);
-	TILEMANAGER->Render("FloorMisc", _name);
+	SPRITEMANAGER->Render("FloorMisc", _name);
+
+	for (int i = 0; i < _legCount; i++)
+	{
+		_transform->SetPosition(Vector2(0.0f, -100.0f * (i + 1)));
+		_transform->Update();
+		_transform->SetWorldBuffer(0);
+		if (i == _legCount - 1)
+			SPRITEMANAGER->Render("FloorMisc", "OnewayBottom");
+		else
+			SPRITEMANAGER->Render("FloorMisc", "OnewayLeg");
+	}
 }

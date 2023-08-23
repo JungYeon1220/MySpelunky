@@ -48,7 +48,7 @@ void Ladder::Update()
 void Ladder::Render()
 {
 	_transform->SetWorldBuffer(0);
-	TILEMANAGER->Render("Cave", _name);
+	SPRITEMANAGER->Render("Cave", _name);
 }
 
 void Ladder::SetTop()

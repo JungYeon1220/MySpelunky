@@ -59,8 +59,10 @@ Snake::~Snake()
 
 void Snake::Update()
 {
-	Move();
+	if (_isDead == true)
+		return;
 
+	Move();
 
 	_actions[_curState]->Update();
 	_sprite->SetCurClip(_actions[_curState]->GetCurClip());

@@ -19,6 +19,7 @@ public:
 
 	shared_ptr<class Tile> GetTile(int x, int y) { return _tileMap[y][x]; }
 	vector<vector<shared_ptr<class Tile>>>& GetTiles() { return _tileMap; }
+	map<string, vector<shared_ptr<class Tile>>>& GetTypeTiles() { return _types; }
 	vector<shared_ptr<class Tile>>& GetMovables() { return _types["Movable"]; }
 	Vector2 GetStartPos() { return _startPos; }
 

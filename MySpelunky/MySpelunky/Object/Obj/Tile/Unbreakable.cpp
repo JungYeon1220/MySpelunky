@@ -47,36 +47,36 @@ void Unbreakable::Render()
 	_transform->SetPosition(Vector2(0, 0));
 	_transform->Update();
 	_transform->SetWorldBuffer(0);
-	TILEMANAGER->Render("BorderMain", _name);
+	SPRITEMANAGER->Render("BorderMain", _name);
 
 	if (_upPebble == true)
 	{
 		_transform->SetPosition(Vector2(0.0f, 55.0f));
 		_transform->Update();
 		_transform->SetWorldBuffer(0);
-		TILEMANAGER->Render("BorderMain", "UBUpPebble" + to_string(_upPebbleNum));
+		SPRITEMANAGER->Render("BorderMain", "UBUpPebble" + to_string(_upPebbleNum));
 	}
 	if (_downPebble == true)
 	{
 		_transform->SetPosition(Vector2(0.0f, -55.0f));
 		_transform->Update();
 		_transform->SetWorldBuffer(0);
-		TILEMANAGER->Render("BorderMain", "UBDownPebble" + to_string(_downPebbleNum));
+		SPRITEMANAGER->Render("BorderMain", "UBDownPebble" + to_string(_downPebbleNum));
 	}
 	if (_rightPebble == true)
 	{
 		_transform->SetPosition(Vector2(50.0f, 0.0f));
 		_transform->Update();
 		_transform->SetWorldBuffer(0);
-		TILEMANAGER->Render("BorderMain", "UBSidePebble" + to_string(_rightPebbleNum));
+		SPRITEMANAGER->Render("BorderMain", "UBSidePebble" + to_string(_rightPebbleNum));
 	}
 	if (_leftPebble == true)
 	{
 		_transform->SetPosition(Vector2(-50.0f, 0.0f));
 		_transform->Update();
 		_transform->SetWorldBuffer(0);
-		TILEMANAGER->GetSprite("BorderMain")->SetLeft();
-		TILEMANAGER->Render("BorderMain", "UBSidePebble" + to_string(_leftPebbleNum));
-		TILEMANAGER->GetSprite("BorderMain")->SetRight();
+		SPRITEMANAGER->GetSprite("BorderMain")->SetLeft();
+		SPRITEMANAGER->Render("BorderMain", "UBSidePebble" + to_string(_leftPebbleNum));
+		SPRITEMANAGER->GetSprite("BorderMain")->SetRight();
 	}
 }

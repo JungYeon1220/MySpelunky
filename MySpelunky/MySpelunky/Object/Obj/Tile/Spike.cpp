@@ -49,11 +49,11 @@ void Spike::Render()
 	_transform->SetPosition(Vector2(0.0f, 0.0f));
 	_transform->Update();
 	_transform->SetWorldBuffer(0);
-	TILEMANAGER->Render("Cave", _name);
+	SPRITEMANAGER->Render("Cave", _name);
 
 	if (_isBlood == true)
 	{
-		TILEMANAGER->Render("Cave", _bloodName);
+		SPRITEMANAGER->Render("Cave", _bloodName);
 	}
 }
 

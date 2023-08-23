@@ -29,13 +29,13 @@ void Skeleton::Render()
 	_transform->SetPosition(Vector2(0, 0));
 	_transform->Update();
 	_transform->SetWorldBuffer(0);
-	TILEMANAGER->Render("Cave", _name);
+	SPRITEMANAGER->Render("Cave", _name);
 	if (_upPebble == true)
 	{
 		_transform->SetPosition(Vector2(0.0f, 50.0f));
 		_transform->Update();
 		_transform->SetWorldBuffer(0);
-		TILEMANAGER->Render("Cave", _pebbleName);
+		SPRITEMANAGER->Render("Cave", _pebbleName);
 	}
 }
 

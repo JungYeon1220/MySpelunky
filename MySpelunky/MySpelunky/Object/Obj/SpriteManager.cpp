@@ -81,6 +81,8 @@ void SpriteManager::CreateSprite()
 		data.sprite = make_shared<Sprite_Frame>(L"Resource/Texture/floormisc.png", Vector2(8, 8), Vector2(100.0f, 100.0f));
 
 		data.frame["Oneway"] = Vector2(1, 1);
+		data.frame["OnewayLeg"] = Vector2(1, 2);
+		data.frame["OnewayBottom"] = Vector2(1, 3);
 
 		_sprites["FloorMisc"] = data;
 	}
@@ -133,8 +135,12 @@ void SpriteManager::CreateSprite()
 	{
 		SpriteData data;
 
-		data.sprite = make_shared<Sprite_Frame>(L"Resource/Texture/items.png", Vector2(16, 16));
+		data.sprite = make_shared<Sprite_Frame>(L"Resource/Texture/items.png", Vector2(16, 16), Vector2(70.0f, 70.0f));
+
+		data.frame["JumpShoes"] = Vector2(6, 2);
 
 		_sprites["Item"] = data;
 	}
+
+
 }
