@@ -28,6 +28,11 @@ TutorialScene::TutorialScene()
 	_monsters.push_back(_spider);
 	_monsters.push_back(_snake);
 	_monsters.push_back(_mosquito);
+	for (int i = 0; i < 25; i++)
+	{
+		shared_ptr<Monster> monster = make_shared<Mosquito>();
+		_monsters.push_back(monster);
+	}
 
 	for (int i = 0; i < 15; i++)
 	{
@@ -57,6 +62,7 @@ void TutorialScene::Update()
 {
 	_player->Update();
 	_item->Update();
+	_item->InteractPlayer(_player);
 
 	{
 		bool check = false;
@@ -444,9 +450,8 @@ void TutorialScene::Update()
 void TutorialScene::Render()
 {
 	_player->Render();
-	_spider->Render();
-	_snake->Render();
-	_mosquito->Render();
+	for (auto monster : _monsters)
+		monster->Render();
 	for (auto tile : _tiles)
 		tile->Render();
 	_item->Render();

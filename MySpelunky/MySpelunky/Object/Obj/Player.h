@@ -48,6 +48,7 @@ public:
 	shared_ptr<class Whip> GetWhip() { return _whip; }
 	State GetState() { return _curState; }
 	float& GetJumpPower() { return _jumpPower; }
+	float& GetJumpMax() { return _maxJump; }
 	float& GetSpeed() { return _curSpeed; }
 	Vector2 GetSize() { return _playerSize; }
 	int GetHp() { return _hp; }

@@ -95,6 +95,7 @@ using namespace Microsoft::WRL;
 // Spelunky
 #include "Object/Obj/Tile/Tile.h"
 #include "Object/Obj/Monster/Monster.h"
+#include "Object/Obj/Player.h"
 #include "Object/Obj/Item/Item.h"
 
 #include "Object/Obj/SpriteManager.h"

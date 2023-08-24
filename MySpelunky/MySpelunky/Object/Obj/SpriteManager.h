@@ -32,6 +32,7 @@ public:
 	};
 
 	void Render(string spriteName, string frameName);
+	void Render(string spriteName, Action::Clip clip);
 
 	shared_ptr<Sprite_Frame> GetSprite(string name) { return _sprites[name].sprite; }
 private:

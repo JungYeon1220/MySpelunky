@@ -16,6 +16,9 @@ Item::~Item()
 
 void Item::Update()
 {
+	if (_isActive == false)
+		return;
+
 	if (_isFalling == true)
 		_jumpPower -= GRAVITY * 8;
 	else
@@ -32,8 +35,19 @@ void Item::Update()
 
 void Item::Render()
 {
+	if (_isActive == false)
+		return;
 	_transform->SetWorldBuffer(0);
 	SPRITEMANAGER->Render("Item", _name);
 
 	//_col->Render();
+}
+
+void Item::InteractPlayer(shared_ptr<class Player> player)
+{
+	if (_col->IsCollision(player->GetCollider()))
+	{
+		player->GetJumpMax() = 1500.0f;
+		_isActive = false;
+	}
 }

@@ -12,7 +12,6 @@ Snake::Snake()
 	_transform = make_shared<Transform>();
 	_transform->SetParent(_col->GetTransform());
 	_transform->SetPosition(Vector2(0.0f, 7.0f));
-	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/snake.png", Vector2(4, 3), Vector2(70.0f, 70.0f));
 
 	CreateAction();
 
@@ -38,7 +37,6 @@ Snake::Snake(Vector2 pos)
 	_transform = make_shared<Transform>();
 	_transform->SetParent(_col->GetTransform());
 	_transform->SetPosition(Vector2(0.0f, 7.0f));
-	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/snake.png", Vector2(4, 3), Vector2(70.0f, 70.0f));
 
 	CreateAction();
 
@@ -65,13 +63,20 @@ void Snake::Update()
 	Move();
 
 	_actions[_curState]->Update();
-	_sprite->SetCurClip(_actions[_curState]->GetCurClip());
 	Monster::Update();
 }
 
 void Snake::Render()
 {
-	Monster::Render();
+	if (_isDead == true)
+		return;
+
+	_transform->SetWorldBuffer(0);
+	if (_isLeft)
+		SPRITEMANAGER->GetSprite("Snake")->SetLeft();
+	else
+		SPRITEMANAGER->GetSprite("Snake")->SetRight();
+	SPRITEMANAGER->Render("Snake", _actions[_curState]->GetCurClip());
 }
 
 bool Snake::TileInteract(shared_ptr<Tile> tile)
@@ -92,7 +97,7 @@ bool Snake::TileInteract(shared_ptr<Tile> tile)
 
 		if (_col->GetWorldPos().x < tilePos.x + 50.0f && _col->GetWorldPos().x > tilePos.x - 50.0f)
 		{
-			if (tile->CliffRight() == true)
+			if (tile->LedgeRight() == true)
 			{
 				if (tilePos.x + 50.0f < _col->GetWorldPos().x + _size.x * 0.5f)
 				{
@@ -101,7 +106,7 @@ bool Snake::TileInteract(shared_ptr<Tile> tile)
 				}
 			}
 
-			if (tile->CliffLeft() == true)
+			if (tile->LedgeLeft() == true)
 			{
 				if (tilePos.x - 50.0f > _col->GetWorldPos().x - _size.x * 0.5f)
 				{
@@ -131,7 +136,6 @@ void Snake::Land(bool check)
 void Snake::Left()
 {
 	_dir = -RIGHT_VECTOR;
-	_sprite->SetLeft();
 	_rangeCol->GetTransform()->SetPosition(Vector2(-50.0f, 0.0f));
 	_isLeft = true;
 }
@@ -139,7 +143,6 @@ void Snake::Left()
 void Snake::Right()
 {
 	_dir = RIGHT_VECTOR;
-	_sprite->SetRight();
 	_rangeCol->GetTransform()->SetPosition(Vector2(50.0f, 0.0f));
 	_isLeft = false;
 }

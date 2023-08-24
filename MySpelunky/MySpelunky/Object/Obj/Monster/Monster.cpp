@@ -31,8 +31,6 @@ void Monster::Update()
 	_rangeCol->Update();
 	_transform->Update();
 
-	_sprite->Update();
-
 }
 
 void Monster::Render()
@@ -41,7 +39,6 @@ void Monster::Render()
 		return;
 
 	_transform->SetWorldBuffer(0);
-	_sprite->Render();
 	//_rangeCol->Render();
 	//_col->Render();
 }

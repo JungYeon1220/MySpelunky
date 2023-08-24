@@ -36,7 +36,6 @@ protected:
 	shared_ptr<Transform> _transform;
 	shared_ptr<RectCollider> _col;
 	shared_ptr<RectCollider> _rangeCol;
-	shared_ptr<Sprite_Frame> _sprite;
 	vector<shared_ptr<Action>> _actions;
 	Vector2 _size;
 	bool _isLeft = false;

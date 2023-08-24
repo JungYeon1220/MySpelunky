@@ -56,7 +56,7 @@ Map::Map()
 					if (dynamic_pointer_cast<Normal>(tile)->CanGrab() == true)
 					{
 						dynamic_pointer_cast<Normal>(tile)->PebbleGrabRight();
-						tile->CliffRight() = true;
+						tile->LedgeRight() = true;
 					}
 				}
 				if (_layout[i][j - 1] != 1 && _layout[i][j - 1] != 50)
@@ -65,7 +65,7 @@ Map::Map()
 					if (dynamic_pointer_cast<Normal>(tile)->CanGrab() == true)
 					{
 						dynamic_pointer_cast<Normal>(tile)->PebbleGrabLeft();
-						tile->CliffLeft() = true;
+						tile->LedgeLeft() = true;
 					}
 				}
 				_types["Normal"].push_back(tile);

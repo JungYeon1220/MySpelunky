@@ -11,7 +11,6 @@ Mosquito::Mosquito()
 	_rangeCol->GetTransform()->SetPosition(Vector2(120.0f, 0.0f));
 	_transform = make_shared<Transform>();
 	_transform->SetParent(_col->GetTransform());
-	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/mosquito.png", Vector2(3, 3), Vector2(70.0f, 70.0f));
 
 	CreateAction();
 
@@ -37,7 +36,6 @@ Mosquito::Mosquito(Vector2 pos)
 	_rangeCol->GetTransform()->SetPosition(Vector2(120.0f, 0.0f));
 	_transform = make_shared<Transform>();
 	_transform->SetParent(_col->GetTransform());
-	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/mosquito.png", Vector2(3, 3), Vector2(70.0f, 70.0f));
 
 	CreateAction();
 
@@ -72,13 +70,19 @@ void Mosquito::Update()
 	_transform->Update();
 
 	_actions[_curState]->Update();
-	_sprite->SetCurClip(_actions[_curState]->GetCurClip());
-	_sprite->Update();
 }
 
 void Mosquito::Render()
 {
-	Monster::Render();
+	if (_isDead == true)
+		return;
+
+	_transform->SetWorldBuffer(0);
+	if (_isLeft)
+		SPRITEMANAGER->GetSprite("Mosquito")->SetLeft();
+	else
+		SPRITEMANAGER->GetSprite("Mosquito")->SetRight();
+	SPRITEMANAGER->Render("Mosquito", _actions[_curState]->GetCurClip());
 }
 
 bool Mosquito::TileInteract(shared_ptr<Tile> tile)
@@ -132,13 +136,11 @@ void Mosquito::Move()
 
 	if (_dir.x < 0.0f)
 	{
-		_sprite->SetLeft();
 		_rangeCol->GetTransform()->SetPosition(Vector2(-120.0f, 0.0f));
 		_isLeft = true;
 	}
 	else
 	{
-		_sprite->SetRight();
 		_rangeCol->GetTransform()->SetPosition(Vector2(120.0f, 0.0f));
 		_isLeft = false;
 	}

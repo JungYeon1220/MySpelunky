@@ -19,6 +19,13 @@ void SpriteManager::Render(string spriteName, string frameName)
 	_sprites[spriteName].sprite->Render();
 }
 
+void SpriteManager::Render(string spriteName, Action::Clip clip)
+{
+	_sprites[spriteName].sprite->SetCurClip(clip);
+	_sprites[spriteName].sprite->Update();
+	_sprites[spriteName].sprite->Render();
+}
+
 void SpriteManager::CreateSprite()
 {
 	{
@@ -137,10 +144,35 @@ void SpriteManager::CreateSprite()
 
 		data.sprite = make_shared<Sprite_Frame>(L"Resource/Texture/items.png", Vector2(16, 16), Vector2(70.0f, 70.0f));
 
-		data.frame["JumpShoes"] = Vector2(6, 2);
+		data.frame["JumpShoes"] = Vector2(7, 2);
+		data.frame["Stone"] = Vector2(0, 1);
+		data.frame["Bomb"] = Vector2(0, 5);
+		data.frame["BombBox"] = Vector2(1, 2);
 
 		_sprites["Item"] = data;
 	}
 
+	{
+		SpriteData data;
 
+		data.sprite = make_shared<Sprite_Frame>(L"Resource/Texture/mosquito.png", Vector2(3, 3), Vector2(70.0f, 70.0f));
+
+		_sprites["Mosquito"] = data;
+	}
+
+	{
+		SpriteData data;
+
+		data.sprite = make_shared<Sprite_Frame>(L"Resource/Texture/snake.png", Vector2(4, 3), Vector2(70.0f, 70.0f));
+
+		_sprites["Snake"] = data;
+	}
+
+	{
+		SpriteData data;
+
+		data.sprite = make_shared<Sprite_Frame>(L"Resource/Texture/spider.png", Vector2(4, 4), Vector2(50.0f, 50.0f));
+
+		_sprites["Spider"] = data;
+	}
 }

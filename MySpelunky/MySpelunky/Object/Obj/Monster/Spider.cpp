@@ -11,7 +11,6 @@ Spider::Spider()
 	_transform = make_shared<Transform>();
 	_transform->SetParent(_col->GetTransform());
 	_transform->SetPosition(Vector2(0.0f, 3.0f));
-	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/spider.png", Vector2(4, 4), Vector2(50.0f, 50.0f));
 
 	CreateAction();
 
@@ -31,7 +30,6 @@ Spider::Spider(Vector2 pos)
 	_transform = make_shared<Transform>();
 	_transform->SetParent(_col->GetTransform());
 	_transform->SetPosition(Vector2(0.0f, 3.0f));
-	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/spider.png", Vector2(4, 4), Vector2(50.0f, 50.0f));
 
 	CreateAction();
 
@@ -71,13 +69,20 @@ void Spider::Update()
 	}
 
 	_actions[_curState]->Update();
-	_sprite->SetCurClip(_actions[_curState]->GetCurClip());
 	Monster::Update();
 }
 
 void Spider::Render()
 {
-	Monster::Render();
+	if (_isDead == true)
+		return;
+
+	_transform->SetWorldBuffer(0);
+	if (_isLeft)
+		SPRITEMANAGER->GetSprite("Spider")->SetLeft();
+	else
+		SPRITEMANAGER->GetSprite("Spider")->SetRight();
+	SPRITEMANAGER->Render("Spider", _actions[_curState]->GetCurClip());
 }
 
 bool Spider::TileInteract(shared_ptr<Tile> tile)
