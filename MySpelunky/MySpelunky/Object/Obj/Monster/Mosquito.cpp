@@ -77,6 +77,9 @@ void Mosquito::Render()
 	if (_isDead == true)
 		return;
 
+	if (CAMERA->GetViewCollider()->IsCollision(_col) == false)
+		return;
+
 	_transform->SetWorldBuffer(0);
 	if (_isLeft)
 		SPRITEMANAGER->GetSprite("Mosquito")->SetLeft();

@@ -46,6 +46,9 @@ void Spike::Update()
 
 void Spike::Render()
 {
+	if (CAMERA->GetViewCollider()->IsCollision(_col) == false)
+		return;
+
 	_transform->SetPosition(Vector2(0.0f, 0.0f));
 	_transform->Update();
 	_transform->SetWorldBuffer(0);

@@ -47,6 +47,9 @@ void Ladder::Update()
 
 void Ladder::Render()
 {
+	if (CAMERA->GetViewCollider()->IsCollision(_col) == false)
+		return;
+
 	_transform->SetWorldBuffer(0);
 	SPRITEMANAGER->Render("Cave", _name);
 }

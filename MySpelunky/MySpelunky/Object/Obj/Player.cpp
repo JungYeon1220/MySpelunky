@@ -28,7 +28,6 @@ Player::Player()
 	_downTransform->SetParent(_col->GetTransform());
 	_downTransform->SetPosition(Vector2(0.0f, -300.0f));
 	_handSlot->SetParent(_col->GetTransform());
-
 	
 	_layDownCol->GetTransform()->SetParent(_col->GetTransform());
 	_layDownCol->GetTransform()->SetPosition(Vector2(0.0f, -20.0f));
@@ -375,16 +374,16 @@ void Player::Update()
 	{
 		if (_curState == State::LOOK_UP)
 		{
-			//CAMERA->SetTarget(_upTransform);
+			CAMERA->SetTarget(_upTransform);
 		}
 		else if (_curState == State::LAY_DOWN)
 		{
-			//CAMERA->SetTarget(_downTransform);
+			CAMERA->SetTarget(_downTransform);
 		}
 	}
 	else
 	{
-		//CAMERA->SetTarget(_col->GetTransform());
+		CAMERA->SetTarget(_col->GetTransform());
 	}
 
 	if (_isDamaged == true)
@@ -439,6 +438,7 @@ void Player::Render()
 	//_headCol->Render();
 	//_grabCol->Render();
 	//_col->Render();
+	//_viewCol->Render();
 }
 
 void Player::PostRender()

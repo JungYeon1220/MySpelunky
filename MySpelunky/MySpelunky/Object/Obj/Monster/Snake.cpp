@@ -70,6 +70,8 @@ void Snake::Render()
 {
 	if (_isDead == true)
 		return;
+	if (CAMERA->GetViewCollider()->IsCollision(_col) == false)
+		return;
 
 	_transform->SetWorldBuffer(0);
 	if (_isLeft)
@@ -101,8 +103,11 @@ bool Snake::TileInteract(shared_ptr<Tile> tile)
 			{
 				if (tilePos.x + 50.0f < _col->GetWorldPos().x + _size.x * 0.5f)
 				{
-					Reverse();
-					_col->GetTransform()->AddVector2(Vector2(-0.1f, 0.0f));
+					if (_isMoving == true)
+					{
+						Reverse();
+						_col->GetTransform()->AddVector2(Vector2(-0.1f, 0.0f));
+					}
 				}
 			}
 
@@ -110,8 +115,11 @@ bool Snake::TileInteract(shared_ptr<Tile> tile)
 			{
 				if (tilePos.x - 50.0f > _col->GetWorldPos().x - _size.x * 0.5f)
 				{
-					Reverse();
-					_col->GetTransform()->AddVector2(Vector2(0.1f, 0.0f));
+					if (_isMoving == true)
+					{
+						Reverse();
+						_col->GetTransform()->AddVector2(Vector2(0.1f, 0.0f));
+					}
 				}
 			}
 		}

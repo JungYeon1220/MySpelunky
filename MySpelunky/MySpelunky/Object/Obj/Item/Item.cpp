@@ -45,6 +45,9 @@ void Item::Render()
 
 void Item::InteractPlayer(shared_ptr<class Player> player)
 {
+	if (_isActive == false)
+		return;
+
 	if (_col->IsCollision(player->GetCollider()))
 	{
 		player->GetJumpMax() = 1500.0f;

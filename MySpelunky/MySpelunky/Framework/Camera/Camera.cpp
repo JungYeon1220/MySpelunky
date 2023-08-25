@@ -8,6 +8,9 @@ Camera::Camera()
 	_view = make_shared<Transform>();
 	_uiView = make_shared<Transform>();
 	_uiView->Update();
+
+	_viewCol = make_shared<RectCollider>(Vector2(WIN_WIDTH, WIN_HEIGHT));
+
 	_projection = make_shared<MatrixBuffer>();
 
 	//XMMATRIX projMatrix = XMMatrixOrthographicOffCenterLH(0,WIN_WIDTH,0,WIN_HEIGHT,0.0f, 1.0f);
@@ -36,11 +39,7 @@ void Camera::Update()
 
 void Camera::PostRender()
 {
-	if (ImGui::Button("Shake", { 50,50 }))
-	{
-		ShakeStart(5.0f, 0.3f);
-	}
-
+	_viewCol->Render();
 	Vector2 temp = GetWorldMousePos();
 	ImGui::Text("World_mousePos: { %.0f, %.0f }", temp.x, temp.y);
 	ImGui::Text("Win_mousePos: { %.0f, %.0f }", WIN_MOUSE_POS.x, WIN_MOUSE_POS.y);
@@ -125,11 +124,6 @@ Vector2 Camera::GetScreenMousePos()
 	return WIN_MOUSE_POS - CENTER;
 }
 
-Vector2 Camera::GetCameraPos()
-{
-	return _view->GetWorldPos();
-}
-
 void Camera::Shake()
 {
 	if (_duration <= 0.0f)
@@ -201,4 +195,6 @@ void Camera::FollowMode()
 	Vector2 temp = LERP(-_view->GetWorldPos(), targetPos, 0.04f);
 
 	SetPosition(temp);
+
+	_viewCol->GetTransform()->SetPosition(LERP(_viewCol->GetWorldPos(), targetPos, 0.04f));
 }

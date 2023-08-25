@@ -46,7 +46,7 @@ Map::Map()
 						dynamic_pointer_cast<Normal>(tile)->SetSpikePebble();
 					else
 						dynamic_pointer_cast<Normal>(tile)->PebbleUp();
-					dynamic_pointer_cast<Normal>(tile)->CanGrab() = true;
+					tile->CanGrab() = true;
 				}
 				if (_layout[i + 1][j] != 1 && _layout[i + 1][j] != 50)
 					dynamic_pointer_cast<Normal>(tile)->PebbleDown();
@@ -122,6 +122,8 @@ Map::Map()
 			else if (type == 11)
 			{
 				tile = make_shared<Skeleton>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
+				if (_layout[i - 1][j] == 0)
+					tile->CanGrab() = true;
 				if (_layout[i - 1][j] != 11)
 				{
 					if (_layout[i - 1][j] == 10)
@@ -160,12 +162,15 @@ Map::Map()
             else if (type == 9)
             {
                 tile = make_shared<Wooden>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
+				if (_layout[i - 1][j] == 0)
+					tile->CanGrab() = true;
 
 				_types["Wooden"].push_back(tile);
             }
             else if (type == 8)
             {
                 tile = make_shared<Movable>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
+				tile->CanGrab() = true;
 				_types["Movable"].push_back(tile);
             }
 

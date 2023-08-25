@@ -55,7 +55,9 @@ public:
 
 	Vector2 GetWorldMousePos();
 	Vector2 GetScreenMousePos();
-	Vector2 GetCameraPos();
+
+	shared_ptr<RectCollider> GetViewCollider() { return _viewCol; }
+	bool IsFollowMode() { return !_target.expired(); }
 
 	void FreeMode();
 	void FollowMode();
@@ -66,6 +68,8 @@ private:
 
 	shared_ptr<Transform> _view;
 	shared_ptr<Transform> _uiView;
+
+	shared_ptr<RectCollider> _viewCol;
 
 	shared_ptr<MatrixBuffer> _projection;
 

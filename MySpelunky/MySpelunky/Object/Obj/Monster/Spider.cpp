@@ -76,6 +76,8 @@ void Spider::Render()
 {
 	if (_isDead == true)
 		return;
+	if (CAMERA->GetViewCollider()->IsCollision(_col) == false)
+		return;
 
 	_transform->SetWorldBuffer(0);
 	if (_isLeft)
@@ -93,7 +95,8 @@ bool Spider::TileInteract(shared_ptr<Tile> tile)
 	{
 		Vector2 tilePos = tile->GetCollider()->GetWorldPos();
 		if ((_col->GetWorldPos().y + _size.y * 0.5f > tilePos.y - 50.0f
-			&& _col->GetWorldPos().y - _size.y * 0.5f < tilePos.y + 50.0f) == false)
+		&& _col->GetWorldPos().y - _size.y * 0.5f < tilePos.y + 50.0f) == false
+			&& _col->GetWorldPos().y > tile->GetCollider()->GetWorldPos().y)
 			check = true;
 		else
 		{

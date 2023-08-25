@@ -27,6 +27,9 @@ void Normal::Update()
 
 void Normal::Render()
 {
+	if (CAMERA->GetViewCollider()->IsCollision(_col) == false)
+		return;
+
 	_transform->SetPosition(Vector2(0, 0));
 	_transform->Update();
 	_transform->SetWorldBuffer(0);

@@ -45,14 +45,22 @@ void OneWay::Update()
 
 void OneWay::Render()
 {
-	_transform->SetPosition(Vector2(0.0f, 0.0f));
-	_transform->Update();
-	_transform->SetWorldBuffer(0);
-	SPRITEMANAGER->Render("FloorMisc", _name);
+	if (CAMERA->GetViewCollider()->IsCollision(_col) == true)
+	{
+		_transform->SetPosition(Vector2(0.0f, 0.0f));
+		_transform->Update();
+		_transform->SetWorldBuffer(0);
+		SPRITEMANAGER->Render("FloorMisc", _name);
+	}
 
 	for (int i = 0; i < _legCount; i++)
 	{
 		_transform->SetPosition(Vector2(0.0f, -100.0f * (i + 1)));
+		if (CAMERA->GetViewCollider()->GetWorldPos().y + WIN_HEIGHT * 0.5f < _transform->GetWorldPos().y - 50.0f
+			|| CAMERA->GetViewCollider()->GetWorldPos().y - WIN_HEIGHT * 0.5f > _transform->GetWorldPos().y + 50.0f
+			|| CAMERA->GetViewCollider()->GetWorldPos().x + WIN_WIDTH * 0.5f < _transform->GetWorldPos().x - 50.0f
+			|| CAMERA->GetViewCollider()->GetWorldPos().x - WIN_WIDTH * 0.5f > _transform->GetWorldPos().x + 50.0f)
+			continue;
 		_transform->Update();
 		_transform->SetWorldBuffer(0);
 		if (i == _legCount - 1)

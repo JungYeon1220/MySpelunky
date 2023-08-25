@@ -27,6 +27,9 @@ void Wooden::Update()
 
 void Wooden::Render()
 {
+	if (CAMERA->GetViewCollider()->IsCollision(_col) == false)
+		return;
+
 	_transform->SetWorldBuffer(0);
 	SPRITEMANAGER->Render("Wood", _name);
 }

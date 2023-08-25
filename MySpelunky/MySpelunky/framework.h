@@ -67,9 +67,6 @@ using namespace Microsoft::WRL;
 #include "Framework/Render/PixelShader.h"
 #include "Framework/Render/ShaderManager.h"
 
-// Camera
-#include "Framework/Camera/Camera.h"
-
 //TextureMapping
 #include "Framework/TextureMapping/SRV.h"
 #include "Framework/TextureMapping/SRVManager.h"
@@ -81,6 +78,9 @@ using namespace Microsoft::WRL;
 #include "Framework/Collider/Collider.h"
 #include "Framework/Collider/RectCollider.h"
 #include "Framework/Collider/CircleCollider.h"
+
+// Camera
+#include "Framework/Camera/Camera.h"
 
 // Action
 #include "Framework/Animation/Action.h"
@@ -95,6 +95,7 @@ using namespace Microsoft::WRL;
 // Spelunky
 #include "Object/Obj/Tile/Tile.h"
 #include "Object/Obj/Monster/Monster.h"
+#include "Object/Obj/Whip.h"
 #include "Object/Obj/Player.h"
 #include "Object/Obj/Item/Item.h"
 

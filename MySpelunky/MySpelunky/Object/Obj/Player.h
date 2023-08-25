@@ -45,6 +45,7 @@ public:
 	shared_ptr<CircleCollider> GetHeadCollider() { return _headCol; }
 	shared_ptr<CircleCollider> GetGrabCollider() { return _grabCol; }
 	shared_ptr<RectCollider> GetHitCollider();
+
 	shared_ptr<class Whip> GetWhip() { return _whip; }
 	State GetState() { return _curState; }
 	float& GetJumpPower() { return _jumpPower; }

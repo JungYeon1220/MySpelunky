@@ -14,7 +14,7 @@ public:
 	void PebbleRight() { _rightPebble = true; }
 	void PebbleGrabRight() { _rightPebbleNum = 3; }
 	void PebbleLeft() { _leftPebble = true; }
-	void PebbleGrabLeft() { _rightPebbleNum = 3; }
+	void PebbleGrabLeft() { _leftPebbleNum = 3; }
 
 	void SetSpikePebble();
 

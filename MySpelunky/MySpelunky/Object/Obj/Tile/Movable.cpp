@@ -39,12 +39,20 @@ void Movable::Update()
 	if (_jumpPower < -_maxFalling)
 		_jumpPower = -_maxFalling;
 
+	if (_isFalling == true)
+		_canGrab = false;
+	else
+		_canGrab = true;
+
 	_col->GetTransform()->AddVector2(Vector2(0.0f, _jumpPower * DELTA_TIME));
 	_movableCol->Update();
 }
 
 void Movable::Render()
 {
+	if (CAMERA->GetViewCollider()->IsCollision(_col) == false)
+		return;
+
 	Tile::Render();
 	SPRITEMANAGER->Render("Cave", _name);
 }

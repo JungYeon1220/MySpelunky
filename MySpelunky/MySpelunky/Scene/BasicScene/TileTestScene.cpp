@@ -53,12 +53,14 @@ TileTestScene::TileTestScene()
 		}
 	}
 
-	//CAMERA->SetTarget(_player->GetCollider()->GetTransform());
-	//CAMERA->SetLeftBottom(_map->GetTiles()[_map->PoolCount().y - 1][0]->GetCollider()->GetWorldPos());
-	//CAMERA->SetRightTop(_map->GetTiles()[0][_map->PoolCount().x - 1]->GetCollider()->GetWorldPos());
+	CAMERA->SetPosition(_player->GetCollider()->GetWorldPos());
+	CAMERA->GetViewCollider()->GetTransform()->SetPosition(_player->GetCollider()->GetWorldPos());
+	CAMERA->SetTarget(_player->GetCollider()->GetTransform());
+	CAMERA->SetLeftBottom(_map->GetTiles()[_map->PoolCount().y - 1][0]->GetCollider()->GetWorldPos());
+	CAMERA->SetRightTop(_map->GetTiles()[0][_map->PoolCount().x - 1]->GetCollider()->GetWorldPos());
 	 
-	CAMERA->FreeMode();
-	CAMERA->SetScale(Vector2(0.3f, 0.3f));
+	//CAMERA->FreeMode();
+	//CAMERA->SetScale(Vector2(0.5f, 0.5f));
 }
 
 TileTestScene::~TileTestScene()
@@ -69,7 +71,7 @@ void TileTestScene::Update()
 {
 	_player->Update();
 	_map->Update();
-	if (m == false)
+	if (m)
 	{
 		for (auto monster : _monsters)
 			monster->Update();
@@ -381,8 +383,44 @@ void TileTestScene::Update()
 					check = true;
 			}
 		}
+
+		if (_player->GetWhip()->IsActive() == true)
+		{
+			if (_player->GetWhip()->GetCollider()->IsCollision(monster->GetCollider()))
+			{
+				monster->TakeDamage(1);
+			}
+		}
+
+
+		if (monster->IsDead() == false)
+		{
+			monster->SetTarget(_player);
+
+			if (monster->GetCollider()->IsCollision(_player->GetHitCollider()))
+			{
+				if (monster->GetCollider()->IsCollision(_player->GetFeetCollider()))
+				{
+					if (_player->IsFalling() == true && _player->GetJumpPower() < 0.0f)
+					{
+						if (KEY_PRESS('Z'))
+							_player->GetJumpPower() = 1200.0f;
+						else
+							_player->GetJumpPower() = 800.0f;
+						monster->TakeDamage(1);
+					}
+				}
+				else
+				{
+					_player->KnockBack(monster->GetCollider()->GetWorldPos(), 300.0f);
+					_player->TakeDamage(0);
+				}
+			}
+		}
+
 		monster->Land(check);
 	}
+
 	m = true;
 }
 
