@@ -1,6 +1,7 @@
 #include "framework.h"
 #include "Player.h"
 #include "Whip.h"
+#include "Item/Bomb.h"
 
 Player::Player()
 {
@@ -42,6 +43,13 @@ Player::Player()
 
 	_col->GetTransform()->SetPosition(Vector2(0.1f, 0.1f));
 
+	for (int i = 0; i < 10; i++)
+	{
+		shared_ptr<Bomb> bomb = make_shared<Bomb>();
+		bomb->GetCollider()->GetTransform()->SetPosition(Vector2(-10000.0f, 10000.0f));
+		_bombs.push_back(bomb);
+	}
+
 	CreateAction();
 
 	SetAction(State::IDLE);
@@ -59,6 +67,11 @@ void Player::Input()
 	if (KEY_DOWN('X'))
 	{
 		Attack();
+	}
+
+	if (KEY_DOWN('C'))
+	{
+		ThrowBomb();
 	}
 
 	if (_isClimb == true && _canClimb == true)
@@ -255,6 +268,24 @@ void Player::Attack()
 	_isAttack = true;
 }
 
+void Player::ThrowBomb()
+{
+	shared_ptr<Bomb> bomb = FindBomb();
+	if (bomb == nullptr)
+		return;
+	bomb->GetCollider()->GetTransform()->SetPosition(_col->GetWorldPos());
+
+	if(_isLeft == true)
+		bomb->GetSpeed() = -15.0f;
+	else
+		bomb->GetSpeed() = 15.0f;
+
+	bomb->GetJumpPower() = 700.0f;
+	bomb->GetRotation() = MathUtility::RandomFloat(-0.3f, 0.3f);
+	bomb->IsFalling() = true;
+	bomb->IsActive() = true;
+}
+
 void Player::ClimbRadder()
 {
 	if (_canClimb == false)
@@ -423,6 +454,9 @@ void Player::Update()
 	_damagedBuffer->_data.damaged = _isDamaged;
 	_damagedBuffer->Update_Resource();
 
+	for (auto bomb : _bombs)
+		bomb->Update();
+
 	_sprite->SetCurClip(_actions[_curState]->GetCurClip());
 	_sprite->Update();
 }
@@ -433,7 +467,9 @@ void Player::Render()
 	_transform->SetWorldBuffer(0);
 	_damagedBuffer->SetPS_Buffer(2);
 	_sprite->Render();
-	//_layDownCol->Render();
+	for (auto bomb : _bombs)
+		bomb->Render();
+	_layDownCol->Render();
 	//_feetCol->Render();
 	//_headCol->Render();
 	//_grabCol->Render();
@@ -562,6 +598,16 @@ shared_ptr<RectCollider> Player::GetHitCollider()
 	{
 		return _col;
 	}
+}
+
+shared_ptr<Bomb> Player::FindBomb()
+{
+	for (auto bomb : _bombs)
+	{
+		if (bomb->IsActive() == false)
+			return bomb;
+	}
+	return nullptr;
 }
 
 void Player::CreateAction()

@@ -2,6 +2,7 @@
 #include "TutorialScene.h"
 #include "../../Object/Obj/Player.h"
 #include "../../Object/Obj/Whip.h"
+#include "../../Object/Obj/Item/Bomb.h"
 #include "../../Object/Obj/Monster/Monster.h"
 #include "../../Object/Obj/Monster/Spider.h"
 #include "../../Object/Obj/Monster/Snake.h"
@@ -444,6 +445,26 @@ void TutorialScene::Update()
 	else
 	{
 		_item->IsFalling() = true;
+	}
+
+	{
+		for (auto bomb : _player->GetBombs())
+		{
+			if (bomb->IsActive() == false)
+				continue;
+			bool check = false;
+			for (auto tile : _tiles)
+			{
+				if (tile->GetCollider()->Block(bomb->GetCollider()))
+					check = true;
+			}
+
+			if (check == true)
+				bomb->IsFalling() = false;
+			else
+				bomb->IsFalling() = true;
+		}
+
 	}
 }
 

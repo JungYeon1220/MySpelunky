@@ -3,17 +3,20 @@ class Item
 {
 public:
 	Item();
-	~Item();
+	virtual ~Item();
 
-	void Update();
-	void Render();
+	virtual void Update();
+	virtual void Render();
 
-	shared_ptr<RectCollider> GetCollider() { return _col;}
+	virtual shared_ptr<RectCollider> GetCollider() { return _col;}
+	float& GetJumpPower() { return _jumpPower; }
+
 	bool& IsFalling() { return _isFalling; }
+	bool& IsActive() { return _isActive; }
 
 	void InteractPlayer(shared_ptr<class Player> player);
 
-private:
+protected:
 	shared_ptr<Transform> _transform;
 	shared_ptr<RectCollider> _col;
 
@@ -21,7 +24,7 @@ private:
 	float _jumpPower = 0.0f;
 	float _maxFalling = 700.0f;
 
-	bool _isActive = true;
+	bool _isActive = false;
 
 	string _name = "";
 };

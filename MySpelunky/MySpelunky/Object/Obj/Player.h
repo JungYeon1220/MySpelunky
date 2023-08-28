@@ -24,6 +24,7 @@ public:
 	void Input();
 	void Jump();
 	void Attack();
+	void ThrowBomb();
 	void ClimbRadder();
 	void GrabLedge();
 
@@ -46,12 +47,13 @@ public:
 	shared_ptr<CircleCollider> GetGrabCollider() { return _grabCol; }
 	shared_ptr<RectCollider> GetHitCollider();
 
+	vector<shared_ptr<class Bomb>> GetBombs() { return _bombs; }
 	shared_ptr<class Whip> GetWhip() { return _whip; }
 	State GetState() { return _curState; }
+	Vector2 GetSize() { return _playerSize; }
 	float& GetJumpPower() { return _jumpPower; }
 	float& GetJumpMax() { return _maxJump; }
 	float& GetSpeed() { return _curSpeed; }
-	Vector2 GetSize() { return _playerSize; }
 	int GetHp() { return _hp; }
 
 	bool& IsFalling() { return _isFalling; }
@@ -64,6 +66,7 @@ public:
 	bool& IsPush() { return _isPush; }
 
 private:
+	shared_ptr<class Bomb> FindBomb();
 	void CreateAction();
 	State _curState = State::IDLE;
 	State _oldState = State::IDLE;
@@ -121,5 +124,8 @@ private:
 	bool _isDamaged = false;
 	float _curDamagedTime = 0.0f;
 	float _damagedCoolTime = 2.0f;
+
+	int _bombCount = 3;
+	vector<shared_ptr<class Bomb>> _bombs;
 };
 
