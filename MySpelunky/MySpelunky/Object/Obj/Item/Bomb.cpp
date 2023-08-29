@@ -3,7 +3,8 @@
 
 Bomb::Bomb()
 {
-	_col = make_shared<RectCollider>(Vector2(35.0f, 35.0f));
+	_size = Vector2(35.0f, 35.0f);
+	_col = make_shared<RectCollider>(_size);
 	_offsetTrans = make_shared<Transform>();
 	_offsetTrans->SetParent(_col->GetTransform());
 	_offsetTrans->SetPosition(Vector2(0.5f, -2.5f));

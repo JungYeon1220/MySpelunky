@@ -10,11 +10,11 @@ Player::Player()
 	_feetCol = make_shared<CircleCollider>(15.0f);
 	_headCol = make_shared<CircleCollider>(10.0f);
 	_grabCol = make_shared<CircleCollider>(10.0f);
+	_handCol = make_shared<CircleCollider>(10.0f);
 
 	_transform = make_shared<Transform>();
 	_upTransform = make_shared<Transform>();
 	_downTransform = make_shared<Transform>();
-	_handSlot = make_shared<Transform>();
 
 	_sprite = make_shared<Sprite_Frame>(L"Resource/Texture/char_yellow.png", Vector2(16, 16));
 	_damagedBuffer = make_shared<DamagedBuffer>();
@@ -28,7 +28,6 @@ Player::Player()
 	_upTransform->SetPosition(Vector2(0.0f, 300.0f));
 	_downTransform->SetParent(_col->GetTransform());
 	_downTransform->SetPosition(Vector2(0.0f, -300.0f));
-	_handSlot->SetParent(_col->GetTransform());
 	
 	_layDownCol->GetTransform()->SetParent(_col->GetTransform());
 	_layDownCol->GetTransform()->SetPosition(Vector2(0.0f, -20.0f));
@@ -38,6 +37,8 @@ Player::Player()
 	_headCol->GetTransform()->SetPosition(Vector2(0.0f, 40.0f));
 	_grabCol->GetTransform()->SetParent(_col->GetTransform());
 	_grabCol->GetTransform()->SetPosition(Vector2(25.0f, 30.0f));
+	_handCol->GetTransform()->SetParent(_col->GetTransform());
+	_handCol->GetTransform()->SetPosition(Vector2(15.0f, -15.0f));
 
 	_whip->GetTransform()->SetParent(_col->GetTransform());
 
@@ -92,6 +93,7 @@ void Player::Input()
 		_sprite->SetLeft();
 		_whip->SetLeft();
 		_grabCol->GetTransform()->SetPosition(Vector2(-25.0f, 30.0f));
+		_handCol->GetTransform()->SetPosition(Vector2(-15.0f,_handCol->GetTransform()->GetPos().y));
 		_isLeft = true;
 	}
 	if (KEY_PRESS(VK_RIGHT))
@@ -100,8 +102,14 @@ void Player::Input()
 		_sprite->SetRight();
 		_whip->SetRight();
 		_grabCol->GetTransform()->SetPosition(Vector2(25.0f, 30.0f));
+		_handCol->GetTransform()->SetPosition(Vector2(15.0f, _handCol->GetTransform()->GetPos().y));
 		_isLeft = false;
 	}
+
+	if (_isLaying == true)
+		_handCol->GetTransform()->SetPosition(Vector2(_handCol->GetTransform()->GetPos().x, -40.0f));
+	else
+		_handCol->GetTransform()->SetPosition(Vector2(_handCol->GetTransform()->GetPos().x, -15.0f));
 
 	if (KEY_PRESS(VK_LEFT))
 	{
@@ -154,6 +162,8 @@ void Player::Input()
 	{
 		if (_isAttack == true)
 			EndAttack();
+		if (_isThrow == true)
+			EndThrow();
 
 		SetAction(State::LOOK_UP);
 	}
@@ -166,6 +176,8 @@ void Player::Input()
 	{
 		if (_isAttack == true)
 			EndAttack();
+		if (_isThrow == true)
+			EndThrow();
 
 		if (_curState != State::CRAWL)
 			SetAction(State::LAY_DOWN);
@@ -191,6 +203,9 @@ void Player::Input()
 		SetAction(State::IDLE);
 	}
 
+	if (_curState == State::THROW)
+		return;
+
 	if (_curState == State::ATTACK)
 		return;
 
@@ -211,9 +226,9 @@ void Player::Input()
 
 void Player::Jump()
 {
-	if (_isFalling == true && _isAttack == false && _isStun == false)
+	if (_isFalling == true && _isAttack == false && _isStun == false && _isThrow == false)
 		SetAction(State::JUMP);
-	else if (_curState == State::JUMP && _isFalling == false && _isAttack == false && _isStun == false)
+	else if (_curState == State::JUMP && _isFalling == false && _isAttack == false && _isStun == false && _isThrow == false)
 		SetAction(State::IDLE);
 
 	if (_actions[State::JUMP]->GetCurIndex() == 7)
@@ -253,6 +268,9 @@ void Player::Attack()
 	if (_isGrabLedge == true)
 		_isGrabLedge = false;
 
+	if (_isThrow == true)
+		EndThrow();
+
 	if (_curState == State::LAY_DOWN || _curState == State::CRAWL)
 		return;
 
@@ -270,20 +288,40 @@ void Player::Attack()
 
 void Player::ThrowBomb()
 {
+	if (_bombCount <= 0)
+		return;
+
 	shared_ptr<Bomb> bomb = FindBomb();
 	if (bomb == nullptr)
 		return;
-	bomb->GetCollider()->GetTransform()->SetPosition(_col->GetWorldPos());
+
+	_bombCount -= 1;
+	bomb->IsFalling() = true;
+	bomb->IsActive() = true;
+	bomb->GetCollider()->GetTransform()->SetPosition(_handCol->GetWorldPos());
+
+	if (_isLaying == true)
+		return;
 
 	if(_isLeft == true)
 		bomb->GetSpeed() = -15.0f;
 	else
 		bomb->GetSpeed() = 15.0f;
 
-	bomb->GetJumpPower() = 700.0f;
 	bomb->GetRotation() = MathUtility::RandomFloat(-0.3f, 0.3f);
-	bomb->IsFalling() = true;
-	bomb->IsActive() = true;
+	bomb->GetJumpPower() = 700.0f;
+
+	if (_isAttack == true)
+		EndAttack();
+
+	if (_isThrow == true)
+	{
+		_actions[State::THROW]->Pause();
+		_actions[State::THROW]->Reset();
+		_actions[State::THROW]->Play();
+	}
+	SetAction(State::THROW);
+	_isThrow = true;
 }
 
 void Player::ClimbRadder()
@@ -293,6 +331,7 @@ void Player::ClimbRadder()
 
 	SetAction(State::CLIMB_RADDER);
 	_isAttack = false;
+	_isThrow = false;
 	_isFalling = false;
 	_whip->End();
 	_jumpPower = 0.0f;
@@ -335,6 +374,7 @@ void Player::GrabLedge()
 
 	_curSpeed = 0.0f;
 	_isAttack = false;
+	_isThrow = false;
 	_isFalling = false;
 	_whip->End();
 
@@ -357,8 +397,24 @@ void Player::GrabLedge()
 	}
 }
 
+void Player::ThrowItem()
+{
+
+}
+
+void Player::HoldItem(shared_ptr<Item> item)
+{
+	if(_handCol->IsCollision(item->GetCollider()) && _isLaying == true && _handItem.expired() && KEY_DOWN('X'))
+		_handItem = item;
+}
+
 void Player::Update()
 {
+	if (_curState == State::CRAWL || _curState == State::LAY_DOWN || _curState == State::STUN_GROUND)
+		_isLaying = true;
+	else
+		_isLaying = false;
+
 	if (_isStun == true)
 	{
 		if (_isFalling == true)
@@ -440,6 +496,17 @@ void Player::Update()
 		}
 	}
 
+	for (auto bomb : _bombs)
+		HoldItem(bomb);
+
+	if (_handItem.expired() == false)
+	{
+		_handItem.lock()->GetCollider()->GetTransform()->SetPosition(_handCol->GetWorldPos());
+
+		if (_handItem.lock()->IsActive() == false)
+			_handItem.reset();
+	}
+
 	_col->GetTransform()->AddVector2(RIGHT_VECTOR * _curSpeed * DELTA_TIME);
 	_whip->Update();
 	_col->Update();
@@ -447,6 +514,7 @@ void Player::Update()
 	_feetCol->Update();
 	_headCol->Update();
 	_grabCol->Update();
+	_handCol->Update();
 	_transform->Update();
 	_upTransform->Update();
 	_downTransform->Update();
@@ -469,10 +537,11 @@ void Player::Render()
 	_sprite->Render();
 	for (auto bomb : _bombs)
 		bomb->Render();
-	_layDownCol->Render();
+	//_layDownCol->Render();
 	//_feetCol->Render();
 	//_headCol->Render();
 	//_grabCol->Render();
+	_handCol->Render();
 	//_col->Render();
 	//_viewCol->Render();
 }
@@ -485,6 +554,7 @@ void Player::PostRender()
 	ImGui::Text("is falling : %d", _isFalling);
 	ImGui::Text("hp : %d", _hp);
 	ImGui::Text("is Damaged : %d", _isDamaged);
+	ImGui::Text("is laying : %d", _isLaying);
 	if (ImGui::Button("Kill", { 50,50 }))
 	{
 		Dead();
@@ -508,6 +578,8 @@ void Player::SetIdle()
 {
 	if (_isAttack == true)
 		return;
+	if (_isThrow == true)
+		return;
 	SetAction(State::IDLE);
 }
 
@@ -515,6 +587,17 @@ void Player::EndAttack()
 {
 	_isAttack = false;
 	_whip->End();
+	if (_isFalling == false)
+		SetAction(State::IDLE);
+	else
+	{
+		SetAction(State::JUMP);
+	}
+}
+
+void Player::EndThrow()
+{
+	_isThrow = false;
 	if (_isFalling == false)
 		SetAction(State::IDLE);
 	else
@@ -773,6 +856,20 @@ void Player::CreateAction()
 		}
 
 		shared_ptr<Action> action = make_shared<Action>(clips, "PUSH", Action::LOOP);
+		_actions.push_back(action);
+	}
+
+	{
+		vector<Action::Clip> clips;
+		for (int i = 6; i < 11; i++)
+		{
+			Vector2 startPos = Vector2((i * imageSize.x) / maxFrame.x, imageSize.y * 4.0f / maxFrame.y);
+			Action::Clip clip = Action::Clip(startPos.x, startPos.y, size.x, size.y, srv);
+			clips.push_back(clip);
+		}
+
+		shared_ptr<Action> action = make_shared<Action>(clips, "Throw", Action::END);
+		action->SetEndEvent(std::bind(&Player::EndThrow, this));
 		_actions.push_back(action);
 	}
 }

@@ -455,8 +455,19 @@ void TutorialScene::Update()
 			bool check = false;
 			for (auto tile : _tiles)
 			{
-				if (tile->GetCollider()->Block(bomb->GetCollider()))
-					check = true;
+				if (tile->Block(bomb->GetCollider()))
+				{
+					if (bomb->GetCollider()->GetWorldPos().y + bomb->GetSize().y * 0.5f > tile->GetCollider()->GetWorldPos().y - 50.0f
+						&& bomb->GetCollider()->GetWorldPos().y - bomb->GetSize().y * 0.5f < tile->GetCollider()->GetWorldPos().y + 50.0f)
+					{
+						bomb->GetRotation() = 0.0f;
+						bomb->GetSpeed() = 0.0f;
+					}
+					else
+					{
+						check = true;
+					}
+				}
 			}
 
 			if (check == true)

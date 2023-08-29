@@ -37,6 +37,9 @@ void Item::Render()
 {
 	if (_isActive == false)
 		return;
+	if (_col->IsCollision(CAMERA->GetViewCollider()) == false)
+		return;
+
 	_transform->SetWorldBuffer(0);
 	SPRITEMANAGER->Render("Item", _name);
 

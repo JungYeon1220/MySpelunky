@@ -15,7 +15,8 @@ public:
 		LEDGE_GRAB,
 		LOOK_UP,
 		STUN_GROUND,
-		PUSH
+		PUSH,
+		THROW
 	};
 
 	Player();
@@ -27,6 +28,8 @@ public:
 	void ThrowBomb();
 	void ClimbRadder();
 	void GrabLedge();
+	void ThrowItem();
+	void HoldItem(shared_ptr<Item> item);
 
 	void Update();
 	void Render();
@@ -35,6 +38,7 @@ public:
 	void SetAction(State state);
 	void SetIdle();
 	void EndAttack();
+	void EndThrow();
 	void TakeDamage(int value);
 
 	void KnockBack(Vector2 pos, float value);
@@ -78,11 +82,11 @@ private:
 	shared_ptr<CircleCollider> _feetCol;
 	shared_ptr<CircleCollider> _headCol;
 	shared_ptr<CircleCollider> _grabCol;
+	shared_ptr<CircleCollider> _handCol;
 
 	shared_ptr<Transform> _transform;
 	shared_ptr<Transform> _upTransform;
 	shared_ptr<Transform> _downTransform;
-	shared_ptr<Transform> _handSlot;
 
 	vector<shared_ptr<Action>> _actions;
 	shared_ptr<Sprite_Frame> _sprite;
@@ -90,6 +94,8 @@ private:
 	shared_ptr<DamagedBuffer> _damagedBuffer;
 
 	shared_ptr<class Whip> _whip;
+
+	weak_ptr<Item> _handItem;
 
 	bool _isLeft = false;
 
@@ -105,6 +111,7 @@ private:
 	float _maxFalling = 700.0f;
 
 	bool _isAttack = false;
+	bool _isThrow = false;
 	bool _isClimb = false;
 	bool _isDead = false;
 	bool _isStun = false;

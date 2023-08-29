@@ -10,6 +10,7 @@ public:
 
 	virtual shared_ptr<RectCollider> GetCollider() { return _col;}
 	float& GetJumpPower() { return _jumpPower; }
+	Vector2 GetSize() { return _size; }
 
 	bool& IsFalling() { return _isFalling; }
 	bool& IsActive() { return _isActive; }
@@ -19,6 +20,8 @@ public:
 protected:
 	shared_ptr<Transform> _transform;
 	shared_ptr<RectCollider> _col;
+
+	Vector2 _size;
 
 	bool _isFalling = false;
 	float _jumpPower = 0.0f;
