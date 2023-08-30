@@ -23,6 +23,15 @@ void Bomb::Update()
 	if (_isActive == false)
 		return;
 
+	if (_isFalling == false && _isActive == true)
+	{
+		_speed *= 0.9f;
+		_rotation = -_speed / 15.0f;
+	}
+
+	if (_speed < 0.1f && _speed > -0.1f)
+		_speed = 0.0f;
+
 	if (_time >= 3.0f)
 	{
 		_isActive = false;
@@ -32,16 +41,7 @@ void Bomb::Update()
 		_jumpPower = 0.0f;
 	}
 
-	_time += DELTA_TIME;
-
-	if (_isFalling == false && _isActive == true)
-	{
-		_speed *= 0.9f;
-		_rotation = -_speed / 15.0f;
-	}
-
-	if (_speed < 0.1f && _speed > -0.1f)
-		_speed = 0.0f;
+	//_time += DELTA_TIME;
 
 	_col->GetTransform()->AddVector2(RIGHT_VECTOR * _speed);
 	_offsetTrans->AddAngle(_rotation);

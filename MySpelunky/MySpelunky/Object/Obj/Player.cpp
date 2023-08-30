@@ -67,7 +67,10 @@ void Player::Input()
 
 	if (KEY_DOWN('X'))
 	{
-		Attack();
+		if (_handItem.expired())
+			Attack();
+		else
+			ThrowItem();
 	}
 
 	if (KEY_DOWN('C'))
@@ -304,12 +307,12 @@ void Player::ThrowBomb()
 		return;
 
 	if(_isLeft == true)
-		bomb->GetSpeed() = -15.0f;
+		bomb->GetSpeed() = -15.0f + _curSpeed * DELTA_TIME;
 	else
-		bomb->GetSpeed() = 15.0f;
+		bomb->GetSpeed() = 15.0f + _curSpeed * DELTA_TIME;
 
-	bomb->GetRotation() = MathUtility::RandomFloat(-0.3f, 0.3f);
 	bomb->GetJumpPower() = 700.0f;
+	bomb->GetRotation() = MathUtility::RandomFloat(-0.3f, 0.3f);
 
 	if (_isAttack == true)
 		EndAttack();
@@ -399,13 +402,60 @@ void Player::GrabLedge()
 
 void Player::ThrowItem()
 {
+	if (_isLeft == true)
+		_handItem.lock()->GetSpeed() = -15.0f + _curSpeed * DELTA_TIME;
+	else
+		_handItem.lock()->GetSpeed() = 15.0f + _curSpeed * DELTA_TIME;
 
+	_handItem.lock()->GetJumpPower() = 700.0f;
+
+	_handItem.reset();
+
+	if (_isThrow == true)
+	{
+		_actions[State::THROW]->Pause();
+		_actions[State::THROW]->Reset();
+		_actions[State::THROW]->Play();
+	}
+	SetAction(State::THROW);
+	_isThrow = true;
 }
 
-void Player::HoldItem(shared_ptr<Item> item)
+void Player::DropItem()
 {
-	if(_handCol->IsCollision(item->GetCollider()) && _isLaying == true && _handItem.expired() && KEY_DOWN('X'))
-		_handItem = item;
+	if (_handItem.expired() == false)
+	{
+		if (_isLaying == true)
+		{
+			if (KEY_DOWN('X'))
+			{
+				_handItem.reset();
+			}
+		}
+	}
+}
+
+bool Player::HoldItem(shared_ptr<Item> item)
+{
+	if (_isLaying == true && KEY_DOWN('X') && _handCol->IsCollision(item->GetCollider()))
+	{
+		if (_handItem.expired() == false)
+		{
+			_handItem.reset();
+			return true;
+		}
+		else
+		{
+			_handItem = item;
+			_handItem.lock()->GetJumpPower() = 0.0f;
+			_handItem.lock()->GetSpeed() = 0.0f;
+
+			return true;
+		}
+	}
+
+
+	return false;
 }
 
 void Player::Update()
@@ -497,8 +547,21 @@ void Player::Update()
 	}
 
 	for (auto bomb : _bombs)
-		HoldItem(bomb);
+	{
+		if (HoldItem(bomb))
+			break;
+	}
 
+
+
+	_col->GetTransform()->AddVector2(RIGHT_VECTOR * _curSpeed * DELTA_TIME);
+	_col->Update();
+	_whip->Update();
+	_layDownCol->Update();
+	_feetCol->Update();
+	_headCol->Update();
+	_grabCol->Update();
+	_handCol->Update();
 	if (_handItem.expired() == false)
 	{
 		_handItem.lock()->GetCollider()->GetTransform()->SetPosition(_handCol->GetWorldPos());
@@ -507,14 +570,6 @@ void Player::Update()
 			_handItem.reset();
 	}
 
-	_col->GetTransform()->AddVector2(RIGHT_VECTOR * _curSpeed * DELTA_TIME);
-	_whip->Update();
-	_col->Update();
-	_layDownCol->Update();
-	_feetCol->Update();
-	_headCol->Update();
-	_grabCol->Update();
-	_handCol->Update();
 	_transform->Update();
 	_upTransform->Update();
 	_downTransform->Update();
@@ -527,6 +582,8 @@ void Player::Update()
 
 	_sprite->SetCurClip(_actions[_curState]->GetCurClip());
 	_sprite->Update();
+
+
 }
 
 void Player::Render()
@@ -555,6 +612,7 @@ void Player::PostRender()
 	ImGui::Text("hp : %d", _hp);
 	ImGui::Text("is Damaged : %d", _isDamaged);
 	ImGui::Text("is laying : %d", _isLaying);
+	ImGui::Text("is hold : %d", _handItem.expired());
 	if (ImGui::Button("Kill", { 50,50 }))
 	{
 		Dead();

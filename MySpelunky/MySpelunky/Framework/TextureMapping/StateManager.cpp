@@ -16,7 +16,7 @@ StateManager::StateManager()
 	_sampler = make_shared<SamplerState>();
 
 	D3D11_RASTERIZER_DESC desc = {};
-	desc.CullMode = D3D11_CULL_NONE;
+	desc.CullMode = D3D11_CULL_BACK;
 	desc.FillMode = D3D11_FILL_SOLID;
 
 	DEVICE->CreateRasterizerState(&desc, &rasterizerState);

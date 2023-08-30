@@ -29,7 +29,8 @@ public:
 	void ClimbRadder();
 	void GrabLedge();
 	void ThrowItem();
-	void HoldItem(shared_ptr<Item> item);
+	void DropItem();
+	bool HoldItem(shared_ptr<Item> item);
 
 	void Update();
 	void Render();

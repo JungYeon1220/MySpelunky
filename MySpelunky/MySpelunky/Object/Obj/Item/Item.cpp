@@ -46,6 +46,11 @@ void Item::Render()
 	//_col->Render();
 }
 
+bool Item::UseItem()
+{
+	return false;
+}
+
 void Item::InteractPlayer(shared_ptr<class Player> player)
 {
 	if (_isActive == false)

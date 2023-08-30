@@ -8,8 +8,11 @@ public:
 	virtual void Update();
 	virtual void Render();
 
+	virtual bool UseItem();
+
 	virtual shared_ptr<RectCollider> GetCollider() { return _col;}
 	float& GetJumpPower() { return _jumpPower; }
+	float& GetSpeed() { return _speed; }
 	Vector2 GetSize() { return _size; }
 
 	bool& IsFalling() { return _isFalling; }
@@ -26,6 +29,8 @@ protected:
 	bool _isFalling = false;
 	float _jumpPower = 0.0f;
 	float _maxFalling = 700.0f;
+
+	float _speed = 0.0f;
 
 	bool _isActive = false;
 
