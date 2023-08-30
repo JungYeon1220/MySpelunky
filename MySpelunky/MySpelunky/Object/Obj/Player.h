@@ -132,7 +132,7 @@ private:
 	float _curDamagedTime = 0.0f;
 	float _damagedCoolTime = 2.0f;
 
-	int _bombCount = 3;
+	int _bombCount = 5;
 	vector<shared_ptr<class Bomb>> _bombs;
 };
 

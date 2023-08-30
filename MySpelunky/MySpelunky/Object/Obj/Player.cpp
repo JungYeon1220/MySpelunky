@@ -541,7 +541,7 @@ void Player::Render()
 	//_feetCol->Render();
 	//_headCol->Render();
 	//_grabCol->Render();
-	_handCol->Render();
+	//_handCol->Render();
 	//_col->Render();
 	//_viewCol->Render();
 }

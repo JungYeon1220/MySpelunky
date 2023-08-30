@@ -29,7 +29,7 @@ TutorialScene::TutorialScene()
 	_monsters.push_back(_spider);
 	_monsters.push_back(_snake);
 	_monsters.push_back(_mosquito);
-	for (int i = 0; i < 25; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		shared_ptr<Monster> monster = make_shared<Mosquito>();
 		_monsters.push_back(monster);
