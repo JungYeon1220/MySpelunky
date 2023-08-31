@@ -22,6 +22,7 @@ public:
 	map<string, vector<shared_ptr<class Tile>>>& GetTypeTiles() { return _types; }
 	vector<shared_ptr<class Tile>>& GetMovables() { return _types["Movable"]; }
 	Vector2 GetStartPos() { return _startPos; }
+	Vector2 GetPosition(Vector2 pos);
 
 	Vector2 PoolCount() { return Vector2(_poolCountX, _poolCountY); }
 private:

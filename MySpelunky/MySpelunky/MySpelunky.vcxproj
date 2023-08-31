@@ -191,6 +191,7 @@
     <ClInclude Include="Program\Program.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Object\Obj\Room.h" />
+    <ClInclude Include="Object\Obj\Item\Rope.h" />
     <ClInclude Include="Scene\BasicScene\TileMapScene.h" />
     <ClInclude Include="Scene\BasicScene\TutorialScene.h" />
     <ClInclude Include="Scene\Scene.h" />
@@ -254,6 +255,7 @@
     <ClCompile Include="Object\Obj\Tile\OneWay.cpp" />
     <ClCompile Include="Program\Program.cpp" />
     <ClCompile Include="Object\Obj\Room.cpp" />
+    <ClCompile Include="Object\Obj\Item\Rope.cpp" />
     <ClCompile Include="Scene\BasicScene\TileMapScene.cpp" />
     <ClCompile Include="Scene\BasicScene\TutorialScene.cpp" />
     <ClCompile Include="Scene\Scene.cpp" />

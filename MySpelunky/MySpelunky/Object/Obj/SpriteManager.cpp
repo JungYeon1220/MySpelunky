@@ -175,4 +175,14 @@ void SpriteManager::CreateSprite()
 
 		_sprites["Spider"] = data;
 	}
+
+	{
+		SpriteData data;
+
+		data.sprite = make_shared<Sprite_Frame>(L"Resource/Texture/char_yellow.png", Vector2(16, 16), Vector2(100.0f, 100.0f));
+
+		data.frame["Hook1"] = Vector2(12, 9);
+
+		_sprites["Rope"] = data;
+	}
 }

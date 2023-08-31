@@ -325,22 +325,24 @@ void TileTestScene::Update()
 			}
 			if (dynamic_pointer_cast<Movable>(movable)->IsFalling() == false)
 			{
-				if (_player->GetCollider()->GetWorldPos().y < movable->GetCollider()->GetWorldPos().y + 50.0f && _player->GetCollider()->GetWorldPos().y > movable->GetCollider()->GetWorldPos().y - 50.0f)
+				if (_player->GetCollider()->GetWorldPos().y < movable->GetCollider()->GetWorldPos().y + 50.0f 
+					&& _player->GetCollider()->GetWorldPos().y > movable->GetCollider()->GetWorldPos().y - 50.0f)
 				{
 					if (_player->IsFalling() == false)
 					{
-						if (KEY_PRESS(VK_LEFT))
+						if (KEY_PRESS(VK_LEFT) && _player->GetCollider()->GetWorldPos().x > movable->GetCollider()->GetWorldPos().x)
 						{
-							movable->GetCollider()->GetTransform()->AddVector2(-RIGHT_VECTOR * 100.0f * DELTA_TIME);
+							//movable->GetCollider()->GetTransform()->AddVector2(-RIGHT_VECTOR * 100.0f * DELTA_TIME);
 							_player->IsPush() = true;
 						}
 
-						if (KEY_PRESS(VK_RIGHT))
+						if (KEY_PRESS(VK_RIGHT) && _player->GetCollider()->GetWorldPos().x < movable->GetCollider()->GetWorldPos().x)
 						{
-							movable->GetCollider()->GetTransform()->AddVector2(RIGHT_VECTOR * 100.0f * DELTA_TIME);
+							//movable->GetCollider()->GetTransform()->AddVector2(RIGHT_VECTOR * 100.0f * DELTA_TIME);
 							_player->IsPush() = true;
 
 						}
+
 					}
 				}
 			}

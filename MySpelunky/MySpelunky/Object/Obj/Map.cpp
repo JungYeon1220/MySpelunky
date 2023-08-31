@@ -278,6 +278,12 @@ void Map::PostRender()
 {
 }
 
+Vector2 Map::GetPosition(Vector2 pos)
+{
+
+    return Vector2();
+}
+
 void Map::CreateRooms()
 {
 //0: 비어있음

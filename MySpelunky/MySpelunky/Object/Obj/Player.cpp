@@ -123,6 +123,7 @@ void Player::Input()
 		}
 		else if (_isPush == true)
 		{
+			_curSpeed = 0.0f;
 			_col->GetTransform()->AddVector2(-RIGHT_VECTOR * 101.0F * DELTA_TIME);
 		}
 		else
@@ -141,6 +142,7 @@ void Player::Input()
 		}
 		else if (_isPush == true)
 		{
+			_curSpeed = 0.0f;
 			_col->GetTransform()->AddVector2(RIGHT_VECTOR * 101.0F * DELTA_TIME);
 		}
 		else
@@ -220,7 +222,7 @@ void Player::Input()
 
 	if (_curSpeed <= 15.0f && _curSpeed >= -15.0f && !KEY_PRESS(VK_LEFT) && !KEY_PRESS(VK_RIGHT))
 	{
-		if (_curState != State::LOOK_UP)
+		if (_curState != State::LOOK_UP || _curState != State::PUSH)
 			SetAction(State::IDLE);
 	}
 	else
@@ -423,20 +425,13 @@ void Player::ThrowItem()
 
 void Player::DropItem()
 {
-	if (_handItem.expired() == false)
-	{
-		if (_isLaying == true)
-		{
-			if (KEY_DOWN('X'))
-			{
-				_handItem.reset();
-			}
-		}
-	}
 }
 
 bool Player::HoldItem(shared_ptr<Item> item)
 {
+	if (item->IsActive() == false)
+		return false;
+
 	if (_isLaying == true && KEY_DOWN('X') && _handCol->IsCollision(item->GetCollider()))
 	{
 		if (_handItem.expired() == false)
@@ -453,7 +448,6 @@ bool Player::HoldItem(shared_ptr<Item> item)
 			return true;
 		}
 	}
-
 
 	return false;
 }
@@ -548,11 +542,9 @@ void Player::Update()
 
 	for (auto bomb : _bombs)
 	{
-		if (HoldItem(bomb))
-			break;
+		HoldItem(bomb);
+		bomb->Update();
 	}
-
-
 
 	_col->GetTransform()->AddVector2(RIGHT_VECTOR * _curSpeed * DELTA_TIME);
 	_col->Update();
@@ -569,16 +561,12 @@ void Player::Update()
 		if (_handItem.lock()->IsActive() == false)
 			_handItem.reset();
 	}
-
 	_transform->Update();
 	_upTransform->Update();
 	_downTransform->Update();
 	_actions[_curState]->Update();
 	_damagedBuffer->_data.damaged = _isDamaged;
 	_damagedBuffer->Update_Resource();
-
-	for (auto bomb : _bombs)
-		bomb->Update();
 
 	_sprite->SetCurClip(_actions[_curState]->GetCurClip());
 	_sprite->Update();
@@ -605,18 +593,20 @@ void Player::Render()
 
 void Player::PostRender()
 {
-	ImGui::Text("x pos : %f", _col->GetWorldPos().x);
-	ImGui::Text("y pos : %f", _col->GetWorldPos().y);
-	ImGui::Text("jump power : %f", _jumpPower);
-	ImGui::Text("is falling : %d", _isFalling);
-	ImGui::Text("hp : %d", _hp);
-	ImGui::Text("is Damaged : %d", _isDamaged);
-	ImGui::Text("is laying : %d", _isLaying);
-	ImGui::Text("is hold : %d", _handItem.expired());
-	if (ImGui::Button("Kill", { 50,50 }))
-	{
-		Dead();
-	}
+	//ImGui::Text("x pos : %f", _col->GetWorldPos().x);
+	//ImGui::Text("y pos : %f", _col->GetWorldPos().y);
+	//ImGui::Text("jump power : %f", _jumpPower);
+	//ImGui::Text("is falling : %d", _isFalling);
+	//ImGui::Text("hp : %d", _hp);
+	//ImGui::Text("is Damaged : %d", _isDamaged);
+	//ImGui::Text("is laying : %d", _isLaying);
+	//ImGui::Text("is hold : %d", _handItem.expired());
+	if(_handItem.expired() == false)
+		ImGui::Text("item speed : %d", _handItem.lock()->GetSpeed());
+	//if (ImGui::Button("Kill", { 50,50 }))
+	//{
+	//	Dead();
+	//}
 }
 
 void Player::SetAction(State state)
