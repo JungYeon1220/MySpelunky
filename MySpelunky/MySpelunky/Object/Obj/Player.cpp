@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Whip.h"
 #include "Item/Bomb.h"
+#include "Item/Rope.h"
 
 Player::Player()
 {
@@ -46,9 +47,9 @@ Player::Player()
 
 	for (int i = 0; i < 10; i++)
 	{
-		shared_ptr<Bomb> bomb = make_shared<Bomb>();
-		bomb->GetCollider()->GetTransform()->SetPosition(Vector2(-10000.0f, 10000.0f));
-		_bombs.push_back(bomb);
+		shared_ptr<Rope> rope = make_shared<Rope>();
+		rope->GetCollider()->GetTransform()->SetPosition(Vector2(-10000.0f, 10000.0f));
+		_ropes.push_back(rope);
 	}
 
 	CreateAction();
@@ -76,6 +77,11 @@ void Player::Input()
 	if (KEY_DOWN('C'))
 	{
 		ThrowBomb();
+	}
+
+	if (KEY_DOWN('D'))
+	{
+		ThrowRope();
 	}
 
 	if (_isClimb == true && _canClimb == true)
@@ -296,25 +302,28 @@ void Player::ThrowBomb()
 	if (_bombCount <= 0)
 		return;
 
-	shared_ptr<Bomb> bomb = FindBomb();
-	if (bomb == nullptr)
+	float speedX = _curSpeed * DELTA_TIME;
+	float speedY = 700.0f;
+
+	if (_isLeft == true)
+	{
+		speedX += -15.0f;
+	}
+	else
+	{
+		speedX += 15.0f;
+	}
+
+	if (_isLaying == true)
+	{
+		speedX = 0.0f;
+		speedY = 0.0f;
+	}
+
+	if (ITEMMANAGER->GetInstance()->ThrowBomb(_handCol->GetWorldPos(), speedX, speedY) == false)
 		return;
 
 	_bombCount -= 1;
-	bomb->IsFalling() = true;
-	bomb->IsActive() = true;
-	bomb->GetCollider()->GetTransform()->SetPosition(_handCol->GetWorldPos());
-
-	if (_isLaying == true)
-		return;
-
-	if(_isLeft == true)
-		bomb->GetSpeed() = -15.0f + _curSpeed * DELTA_TIME;
-	else
-		bomb->GetSpeed() = 15.0f + _curSpeed * DELTA_TIME;
-
-	bomb->GetJumpPower() = 700.0f;
-	bomb->GetRotation() = MathUtility::RandomFloat(-0.3f, 0.3f);
 
 	if (_isAttack == true)
 		EndAttack();
@@ -327,6 +336,16 @@ void Player::ThrowBomb()
 	}
 	SetAction(State::THROW);
 	_isThrow = true;
+}
+
+void Player::ThrowRope()
+{
+	shared_ptr<Rope> rope = FindRopes();
+	if (rope == nullptr)
+		return;
+
+	rope->GetCollider()->GetTransform()->SetPosition(GetPosition());
+	rope->IsActive() = true;
 }
 
 void Player::ClimbRadder()
@@ -540,11 +559,8 @@ void Player::Update()
 		}
 	}
 
-	for (auto bomb : _bombs)
-	{
-		HoldItem(bomb);
-		bomb->Update();
-	}
+	for (auto rope : _ropes)
+		rope->Update();
 
 	_col->GetTransform()->AddVector2(RIGHT_VECTOR * _curSpeed * DELTA_TIME);
 	_col->Update();
@@ -576,12 +592,13 @@ void Player::Update()
 
 void Player::Render()
 {
+	for (auto rope : _ropes)
+		rope->Render();
 	_whip->Render();
 	_transform->SetWorldBuffer(0);
 	_damagedBuffer->SetPS_Buffer(2);
 	_sprite->Render();
-	for (auto bomb : _bombs)
-		bomb->Render();
+
 	//_layDownCol->Render();
 	//_feetCol->Render();
 	//_headCol->Render();
@@ -731,12 +748,23 @@ shared_ptr<RectCollider> Player::GetHitCollider()
 	}
 }
 
-shared_ptr<Bomb> Player::FindBomb()
+Vector2 Player::GetPosition()
 {
-	for (auto bomb : _bombs)
+	Vector2 pos = _col->GetWorldPos();
+	pos *= 0.01f;
+	pos.x = round(pos.x);
+	pos.y = round(pos.y);
+	pos *= 100.0f;
+
+	return pos;
+}
+
+shared_ptr<class Rope> Player::FindRopes()
+{
+	for (auto rope : _ropes)
 	{
-		if (bomb->IsActive() == false)
-			return bomb;
+		if (rope->IsActive() == false)
+			return rope;
 	}
 	return nullptr;
 }

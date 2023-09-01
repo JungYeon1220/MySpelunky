@@ -9,6 +9,8 @@ Rope::Rope()
 	_transform->SetParent(_col->GetTransform());
 
 	_name = "Hook1";
+	_isFalling = true;
+	_jumpPower = 2000.0f;
 }
 
 Rope::~Rope()
@@ -26,4 +28,5 @@ void Rope::Render()
 		return;
 	_transform->SetWorldBuffer(0);
 	SPRITEMANAGER->Render("Rope", _name);
+	_col->Render();
 }

@@ -43,5 +43,6 @@
 #define CAMERA		Camera::GetInstance()
 
 #define SPRITEMANAGER	SpriteManager::GetInstance()
+#define ITEMMANAGER		ItemManager::GetInstance()
 
 using CallBack = function<void()>;

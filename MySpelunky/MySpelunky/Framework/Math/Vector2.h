@@ -49,6 +49,14 @@ public:
 		return result = Vector2(float(this->x * value), float(this->y * value));
 	}
 
+	Vector2& operator*=(const float& value)
+	{
+		x *= value;
+		y *= value;
+
+		return *this;
+	}
+
 	Vector2& operator=(const Vector2& other)
 	{
 		x = other.x;

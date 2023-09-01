@@ -100,6 +100,7 @@ using namespace Microsoft::WRL;
 #include "Object/Obj/Player.h"
 
 #include "Object/Obj/SpriteManager.h"
+#include "Object/Obj/Item/ItemManager.h"
 
 // Scene
 #include "Scene/Scene.h"

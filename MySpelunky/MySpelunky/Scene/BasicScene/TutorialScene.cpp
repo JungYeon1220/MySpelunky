@@ -448,7 +448,7 @@ void TutorialScene::Update()
 	}
 
 	{
-		for (auto bomb : _player->GetBombs())
+		for (auto bomb : ITEMMANAGER->GetBombs())
 		{
 			if (bomb->IsActive() == false)
 				continue;
