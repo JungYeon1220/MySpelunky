@@ -30,6 +30,9 @@ public:
 	void Render();
 
 	bool ThrowBomb(Vector2 pos, float speedX, float speedY);
+	void ThrowRope(Vector2 pos);
+
+
 	vector<shared_ptr<class Bomb>> GetBombs() { return _bombs; }
 
 private:

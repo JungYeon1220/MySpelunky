@@ -10,6 +10,8 @@ public:
 	void FrontRender();
 	void PostRender();
 
+	int GetRopeLength(Vector2 pos);
+
 	vector<vector<int>> GetStartRoom() { return _startRooms[rand() % (_startRooms.size())]; }
 	vector<vector<int>> GetEndRoom() { return _endRooms[rand() % (_endRooms.size())]; }
 	vector<vector<int>> GetRightRoom() { return _rightRooms[rand() % (_rightRooms.size())]; }

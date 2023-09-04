@@ -30,6 +30,7 @@ public:
 	bool& CanGrab() { return _canGrab; }
 	bool& LedgeRight() { return _cliffR; }
 	bool& LedgeLeft() { return _cliffL; }
+	bool& IsActive() { return _isActive; }
 
 protected:
 	string _name;

@@ -56,7 +56,6 @@ public:
 	shared_ptr<class Whip> GetWhip() { return _whip; }
 	State GetState() { return _curState; }
 	Vector2 GetSize() { return _playerSize; }
-	Vector2 GetPosition();
 	float& GetJumpPower() { return _jumpPower; }
 	float& GetJumpMax() { return _maxJump; }
 	float& GetSpeed() { return _curSpeed; }
@@ -135,7 +134,5 @@ private:
 	float _damagedCoolTime = 2.0f;
 
 	int _bombCount = 5;
-
-	vector<shared_ptr<class Rope>> _ropes;
 };
 

@@ -15,3 +15,22 @@ float MathUtility::RandomFloat(float min, float max)
 
     return (max - min) * temp + min;
 }
+
+Vector2 MathUtility::GetGridPosition(Vector2 pos)
+{
+	pos *= 0.01f;
+	pos.x = round(pos.x);
+	pos.y = round(pos.y);
+	pos *= 100.0f;
+
+	return pos;
+}
+
+Vector2 MathUtility::GetGridIndex(Vector2 pos)
+{
+	pos *= 0.01f;
+	pos.x = round(pos.x);
+	pos.y = round(pos.y);
+
+	return Vector2((int)pos.x, (int)pos.y);
+}

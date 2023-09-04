@@ -9,6 +9,9 @@ public:
 	void Render();
 
 private:
-	int length;
+	int _length = 4;
+	bool _hooked = false;
+
+	Vector2 _hookPos;
 
 };

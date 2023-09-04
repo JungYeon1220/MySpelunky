@@ -278,6 +278,38 @@ void Map::PostRender()
 {
 }
 
+int Map::GetRopeLength(Vector2 pos)
+{
+	int count = 0;
+	Vector2 index = MathUtility::GetGridIndex(pos);
+	for (int i = 1; i <= 4; i++)
+	{
+		if (GetTile(index.x, index.y + i) == nullptr)
+		{
+			count++;
+			continue;
+		}
+		if (GetTile(index.x, index.y + i)->IsActive() == false)
+		{
+			count++;
+			continue;
+		}
+
+		if (GetTile(index.x, index.y + i)->GetType() == Tile::Type::NORMAL
+		||  GetTile(index.x, index.y + i)->GetType() == Tile::Type::SKELETON
+		||  GetTile(index.x, index.y + i)->GetType() == Tile::Type::WOODEN
+		||  GetTile(index.x, index.y + i)->GetType() == Tile::Type::UNBREAKABLE)
+		{
+			break;
+		}
+
+		count++;
+
+	}
+
+	return count;
+}
+
 void Map::CreateRooms()
 {
 //0: 비어있음

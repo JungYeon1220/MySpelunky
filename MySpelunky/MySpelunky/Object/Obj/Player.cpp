@@ -45,12 +45,6 @@ Player::Player()
 
 	_col->GetTransform()->SetPosition(Vector2(0.1f, 0.1f));
 
-	for (int i = 0; i < 10; i++)
-	{
-		shared_ptr<Rope> rope = make_shared<Rope>();
-		rope->GetCollider()->GetTransform()->SetPosition(Vector2(-10000.0f, 10000.0f));
-		_ropes.push_back(rope);
-	}
 
 	CreateAction();
 
@@ -81,7 +75,7 @@ void Player::Input()
 
 	if (KEY_DOWN('D'))
 	{
-		ThrowRope();
+		ITEMMANAGER->ThrowRope(_col->GetWorldPos());
 	}
 
 	if (_isClimb == true && _canClimb == true)
@@ -149,7 +143,7 @@ void Player::Input()
 		else if (_isPush == true)
 		{
 			_curSpeed = 0.0f;
-			_col->GetTransform()->AddVector2(RIGHT_VECTOR * 101.0F * DELTA_TIME);
+			_col->GetTransform()->AddVector2(RIGHT_VECTOR * 100.0f * DELTA_TIME);
 		}
 		else
 		{
@@ -223,16 +217,17 @@ void Player::Input()
 	if (_isPush == true)
 	{
 		SetAction(State::PUSH);
-		return;
+		_curSpeed = 0.0f;
 	}
 
 	if (_curSpeed <= 15.0f && _curSpeed >= -15.0f && !KEY_PRESS(VK_LEFT) && !KEY_PRESS(VK_RIGHT))
 	{
-		if (_curState != State::LOOK_UP || _curState != State::PUSH)
+		if (_curState != State::LOOK_UP && _isPush != true)
 			SetAction(State::IDLE);
 	}
 	else
 		SetAction(State::RUN);
+
 }
 
 void Player::Jump()
@@ -320,7 +315,7 @@ void Player::ThrowBomb()
 		speedY = 0.0f;
 	}
 
-	if (ITEMMANAGER->GetInstance()->ThrowBomb(_handCol->GetWorldPos(), speedX, speedY) == false)
+	if (ITEMMANAGER->ThrowBomb(_handCol->GetWorldPos(), speedX, speedY) == false)
 		return;
 
 	_bombCount -= 1;
@@ -336,16 +331,6 @@ void Player::ThrowBomb()
 	}
 	SetAction(State::THROW);
 	_isThrow = true;
-}
-
-void Player::ThrowRope()
-{
-	shared_ptr<Rope> rope = FindRopes();
-	if (rope == nullptr)
-		return;
-
-	rope->GetCollider()->GetTransform()->SetPosition(GetPosition());
-	rope->IsActive() = true;
 }
 
 void Player::ClimbRadder()
@@ -559,9 +544,6 @@ void Player::Update()
 		}
 	}
 
-	for (auto rope : _ropes)
-		rope->Update();
-
 	_col->GetTransform()->AddVector2(RIGHT_VECTOR * _curSpeed * DELTA_TIME);
 	_col->Update();
 	_whip->Update();
@@ -592,8 +574,6 @@ void Player::Update()
 
 void Player::Render()
 {
-	for (auto rope : _ropes)
-		rope->Render();
 	_whip->Render();
 	_transform->SetWorldBuffer(0);
 	_damagedBuffer->SetPS_Buffer(2);
@@ -616,6 +596,7 @@ void Player::PostRender()
 	//ImGui::Text("is falling : %d", _isFalling);
 	//ImGui::Text("hp : %d", _hp);
 	//ImGui::Text("is Damaged : %d", _isDamaged);
+	ImGui::Text("is PUSH : %d", _isPush);
 	//ImGui::Text("is laying : %d", _isLaying);
 	//ImGui::Text("is hold : %d", _handItem.expired());
 	if(_handItem.expired() == false)
@@ -746,27 +727,6 @@ shared_ptr<RectCollider> Player::GetHitCollider()
 	{
 		return _col;
 	}
-}
-
-Vector2 Player::GetPosition()
-{
-	Vector2 pos = _col->GetWorldPos();
-	pos *= 0.01f;
-	pos.x = round(pos.x);
-	pos.y = round(pos.y);
-	pos *= 100.0f;
-
-	return pos;
-}
-
-shared_ptr<class Rope> Player::FindRopes()
-{
-	for (auto rope : _ropes)
-	{
-		if (rope->IsActive() == false)
-			return rope;
-	}
-	return nullptr;
 }
 
 void Player::CreateAction()

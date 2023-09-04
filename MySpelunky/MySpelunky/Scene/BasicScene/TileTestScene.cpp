@@ -71,6 +71,8 @@ void TileTestScene::Update()
 {
 	_player->Update();
 	_map->Update();
+	ITEMMANAGER->Update();
+
 	if (m)
 	{
 		for (auto monster : _monsters)
@@ -335,6 +337,8 @@ void TileTestScene::Update()
 							//movable->GetCollider()->GetTransform()->AddVector2(-RIGHT_VECTOR * 100.0f * DELTA_TIME);
 							_player->IsPush() = true;
 						}
+						else if(KEY_UP(VK_LEFT))
+							_player->IsPush() = false;
 
 						if (KEY_PRESS(VK_RIGHT) && _player->GetCollider()->GetWorldPos().x < movable->GetCollider()->GetWorldPos().x)
 						{
@@ -342,6 +346,8 @@ void TileTestScene::Update()
 							_player->IsPush() = true;
 
 						}
+						else if(KEY_UP(VK_RIGHT))
+							_player->IsPush() = false;
 
 					}
 				}
@@ -432,6 +438,7 @@ void TileTestScene::Render()
 	_player->Render();
 	for (auto monster : _monsters)
 		monster->Render();
+	ITEMMANAGER->Render();
 	_map->FrontRender();
 }
 
