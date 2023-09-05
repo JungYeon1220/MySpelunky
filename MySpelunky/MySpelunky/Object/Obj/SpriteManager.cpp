@@ -184,6 +184,9 @@ void SpriteManager::CreateSprite()
 		data.frame["Hook1"] = Vector2(12, 9);
 		data.frame["Hook2"] = Vector2(13, 9);
 
+		data.frame["Rope"] = Vector2(0, 12);
+		data.frame["RopeEnd"] = Vector2(5, 12);
+
 		_sprites["Rope"] = data;
 	}
 }

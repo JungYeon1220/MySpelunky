@@ -613,8 +613,8 @@ void Player::SetAction(State state)
 		return;
 
 	_oldState = _curState;
-	_actions[_oldState]->Reset();
 	_actions[_oldState]->Pause();
+	_actions[_oldState]->Reset();
 
 	_curState = state;
 	_actions[_curState]->Play();

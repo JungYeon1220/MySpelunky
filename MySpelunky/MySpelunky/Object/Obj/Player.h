@@ -71,7 +71,6 @@ public:
 	bool& IsPush() { return _isPush; }
 
 private:
-	shared_ptr<class Rope> FindRopes();
 	void CreateAction();
 	State _curState = State::IDLE;
 	State _oldState = State::IDLE;
