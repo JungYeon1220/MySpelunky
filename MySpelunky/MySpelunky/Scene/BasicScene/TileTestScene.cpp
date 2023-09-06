@@ -137,7 +137,7 @@ void TileTestScene::Update()
 		if (x * x + y * y > 40000.0f)
 			continue;
 
-		if ((_player->GetJumpPower() <= 0.0f))
+		if ((_player->GetJumpPower() <= 0.0f) && _player->IsClimb() == false)
 		{
 			if (oneway->Block(_player->GetCollider()))
 			{
@@ -173,6 +173,7 @@ void TileTestScene::Update()
 					if (_player->CanClimb() == true)
 						_player->GetCollider()->GetTransform()->SetPosition(Vector2(ladder->GetCollider()->GetWorldPos().x, _player->GetCollider()->GetWorldPos().y));
 					_player->IsClimb() = true;
+					_player->IsRope() = false;
 				}
 				ladderCheck = true;
 			}
@@ -334,7 +335,7 @@ void TileTestScene::Update()
 					{
 						if (KEY_PRESS(VK_LEFT) && _player->GetCollider()->GetWorldPos().x > movable->GetCollider()->GetWorldPos().x)
 						{
-							//movable->GetCollider()->GetTransform()->AddVector2(-RIGHT_VECTOR * 100.0f * DELTA_TIME);
+							movable->GetCollider()->GetTransform()->AddVector2(-RIGHT_VECTOR * 100.0f * DELTA_TIME);
 							_player->IsPush() = true;
 						}
 						else if(KEY_UP(VK_LEFT))
@@ -342,7 +343,7 @@ void TileTestScene::Update()
 
 						if (KEY_PRESS(VK_RIGHT) && _player->GetCollider()->GetWorldPos().x < movable->GetCollider()->GetWorldPos().x)
 						{
-							//movable->GetCollider()->GetTransform()->AddVector2(RIGHT_VECTOR * 100.0f * DELTA_TIME);
+							movable->GetCollider()->GetTransform()->AddVector2(RIGHT_VECTOR * 100.0f * DELTA_TIME);
 							_player->IsPush() = true;
 
 						}
@@ -357,20 +358,6 @@ void TileTestScene::Update()
 			_player->IsPush() = false;
 
 	}
-
-	if (check == false)
-	{
-		_player->IsFalling() = true;
-	}
-	else
-	{
-		_player->IsFalling() = false;
-		if (KEY_PRESS(VK_DOWN))
-			_player->IsClimb() = false;
-	}
-
-	if (ladderCheck == false)
-		_player->IsClimb() = false;
 
 	for (auto monster : _monsters)
 	{
@@ -428,6 +415,103 @@ void TileTestScene::Update()
 
 		monster->Land(check);
 	}
+
+	{
+		for (auto bomb : ITEMMANAGER->GetBombs())
+		{
+			if (bomb->IsActive() == false)
+				continue;
+			bool check = false;
+			for (auto tiles : _map->GetTiles())
+			{
+				for (auto tile : tiles)
+				{
+					if (tile == nullptr)
+						continue;
+					if (tile->Block(bomb->GetCollider()))
+					{
+						if (bomb->GetCollider()->GetWorldPos().y + bomb->GetSize().y * 0.5f > tile->GetCollider()->GetWorldPos().y - 50.0f
+							&& bomb->GetCollider()->GetWorldPos().y - bomb->GetSize().y * 0.5f < tile->GetCollider()->GetWorldPos().y + 50.0f)
+						{
+							bomb->GetRotation() = 0.0f;
+							bomb->GetSpeed() = 0.0f;
+						}
+						else
+						{
+							check = true;
+						}
+					}
+				}
+			}
+
+			if (check == true)
+				bomb->IsFalling() = false;
+			else
+				bomb->IsFalling() = true;
+		}
+
+	}
+
+	{
+		for (auto rope : ITEMMANAGER->GetRopes())
+		{
+			if (rope->IsActive() == false)
+				continue;
+
+			for (auto tiles : _map->GetTiles())
+			{
+				for (auto tile : tiles)
+				{
+					if (tile == nullptr)
+						continue;
+					if (tile->GetType() == Tile::Type::ONE_WAY)
+						continue;
+					if (tile->Block(rope->GetCollider()))
+					{
+						rope->GetJumpPower() = 0.0f;
+					}
+				}
+			}
+
+			if (rope->IsHooked() == true && rope->DropEnd() == false)
+				rope->GetLength() = _map->GetRopeLength(rope->GetCollider()->GetWorldPos());
+
+			for (int i = 0; i < rope->GetCurLength(); i++)
+			{
+				if (rope->GetColliders()[i]->IsCollision(_player->GetCollider()))
+				{
+					float tileX = rope->GetColliders()[i]->GetWorldPos().x;
+					float playerX = _player->GetCollider()->GetWorldPos().x;
+					float playerXHalfSize = _player->GetSize().x * 0.5f;
+					if (tileX < playerX + playerXHalfSize && tileX > playerX - playerXHalfSize)
+					{
+						if (KEY_DOWN(VK_UP) || KEY_PRESS(VK_UP))
+						{
+							if (_player->CanClimb() == true)
+								_player->GetCollider()->GetTransform()->SetPosition(Vector2(rope->GetColliders()[i]->GetWorldPos().x, _player->GetCollider()->GetWorldPos().y));
+							_player->IsClimb() = true;
+							_player->IsRope() = true;
+						}
+						ladderCheck = true;
+					}
+				}
+			}
+		}
+	}
+
+	if (check == false)
+	{
+		_player->IsFalling() = true;
+	}
+	else
+	{
+		_player->IsFalling() = false;
+		if (KEY_PRESS(VK_DOWN))
+			_player->IsClimb() = false;
+	}
+
+	if (ladderCheck == false)
+		_player->IsClimb() = false;
 
 	m = true;
 }

@@ -284,21 +284,17 @@ int Map::GetRopeLength(Vector2 pos)
 	Vector2 index = MathUtility::GetGridIndex(pos);
 	for (int i = 1; i <= 4; i++)
 	{
-		if (GetTile(index.x, index.y + i) == nullptr)
-		{
-			count++;
-			continue;
-		}
-		if (GetTile(index.x, index.y + i)->IsActive() == false)
+		if (_layout[index.y - i][index.x] == 0)
 		{
 			count++;
 			continue;
 		}
 
-		if (GetTile(index.x, index.y + i)->GetType() == Tile::Type::NORMAL
-		||  GetTile(index.x, index.y + i)->GetType() == Tile::Type::SKELETON
-		||  GetTile(index.x, index.y + i)->GetType() == Tile::Type::WOODEN
-		||  GetTile(index.x, index.y + i)->GetType() == Tile::Type::UNBREAKABLE)
+		shared_ptr<Tile> tile = GetTile(index.x, index.y - i);
+		if (_layout[index.y - i][index.x] == 1
+		||  _layout[index.y - i][index.x] == 11
+		||  _layout[index.y - i][index.x] == 9
+		||  _layout[index.y - i][index.x] == 50)
 		{
 			break;
 		}

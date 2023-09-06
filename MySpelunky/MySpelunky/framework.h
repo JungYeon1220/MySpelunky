@@ -94,9 +94,27 @@ using namespace Microsoft::WRL;
 
 // Spelunky
 #include "Object/Obj/Tile/Tile.h"
+#include "Object/Obj/Tile/Ladder.h"
+#include "Object/Obj/Tile/Movable.h"
+#include "Object/Obj/Tile/Normal.h"
+#include "Object/Obj/Tile/OneWay.h"
+#include "Object/Obj/Tile/Skeleton.h"
+#include "Object/Obj/Tile/Spike.h"
+#include "Object/Obj/Tile/Unbreakable.h"
+#include "Object/Obj/Tile/Wooden.h"
+
+#include "Object/Obj/Map.h"
+
 #include "Object/Obj/Monster/Monster.h"
-#include "Object/Obj/Whip.h"
+#include "Object/Obj/Monster/Mosquito.h"
+#include "Object/Obj/Monster/Snake.h"
+#include "Object/Obj/Monster/Spider.h"
+
 #include "Object/Obj/Item/Item.h"
+#include "Object/Obj/Item/Bomb.h"
+#include "Object/Obj/Item/Rope.h"
+
+#include "Object/Obj/Whip.h"
 #include "Object/Obj/Player.h"
 
 #include "Object/Obj/SpriteManager.h"

@@ -85,7 +85,7 @@ void Whip::Render()
 
 	_transform->SetWorldBuffer(0);
 	_sprite->Render();
-	_col->Render();
+	//_col->Render();
 }
 
 void Whip::SetLeft()

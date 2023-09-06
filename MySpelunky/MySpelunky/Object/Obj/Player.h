@@ -16,7 +16,8 @@ public:
 		LOOK_UP,
 		STUN_GROUND,
 		PUSH,
-		THROW
+		THROW,
+		CLIMB_ROPE
 	};
 
 	Player();
@@ -26,8 +27,8 @@ public:
 	void Jump();
 	void Attack();
 	void ThrowBomb();
-	void ThrowRope();
-	void ClimbRadder();
+	void ClimbLadder();
+	void ClimbRope();
 	void GrabLedge();
 	void ThrowItem();
 	void DropItem();
@@ -63,6 +64,7 @@ public:
 
 	bool& IsFalling() { return _isFalling; }
 	bool& IsClimb() { return _isClimb; }
+	bool& IsRope() { return _isRope; }
 	bool& CanClimb() { return _canClimb; }
 	bool& IsOnOneWay() { return _onOneWay; }
 	bool& IsGrab() { return _isGrabLedge; }
@@ -113,6 +115,7 @@ private:
 	bool _isAttack = false;
 	bool _isThrow = false;
 	bool _isClimb = false;
+	bool _isRope = false;
 	bool _isDead = false;
 	bool _isStun = false;
 	bool _isPush = false;

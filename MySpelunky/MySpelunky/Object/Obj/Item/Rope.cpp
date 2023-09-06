@@ -31,13 +31,10 @@ Rope::~Rope()
 void Rope::Update()
 {
 	_action->Update();
+	for (auto col : _ropeCols)
+		col->Update();
 	if(_hooked == false)
 		Item::Update();
-
-	if (_hooked == true)
-	{
-
-	}
 
 	if (_jumpPower <= 0.0f)
 	{
@@ -68,21 +65,20 @@ void Rope::Render()
 		for (int i = 0; i < _curLength; i++)
 		{
 			_transform->SetPosition(Vector2(0.0f, -100.0f * (i + 1)));
-			if (CAMERA->GetViewCollider()->GetWorldPos().y + WIN_HEIGHT * 0.5f < _transform->GetWorldPos().y - 50.0f
-				|| CAMERA->GetViewCollider()->GetWorldPos().y - WIN_HEIGHT * 0.5f > _transform->GetWorldPos().y + 50.0f
-				|| CAMERA->GetViewCollider()->GetWorldPos().x + WIN_WIDTH * 0.5f < _transform->GetWorldPos().x - 50.0f
-				|| CAMERA->GetViewCollider()->GetWorldPos().x - WIN_WIDTH * 0.5f > _transform->GetWorldPos().x + 50.0f)
+			if (CAMERA->GetViewCollider()->IsCollision(_ropeCols[i]) == false)
 				continue;
 			_transform->Update();
 			_transform->SetWorldBuffer(0);
 
 			if (i == _curLength - 1)
-				SPRITEMANAGER->Render("Rope", _action->GetCurClip());
+			{
+				if(i == _length - 1 && _dropEnd == true)
+					SPRITEMANAGER->Render("Rope", "RopeEnd");
+				else
+					SPRITEMANAGER->Render("Rope", _action->GetCurClip());
+			}
 			else
 				SPRITEMANAGER->Render("Rope", "Rope");
-
-			if(i == _length && _dropEnd == true)
-				SPRITEMANAGER->Render("Rope", "RopeEnd");
 		}
 	}
 	//_col->Render();
@@ -97,6 +93,11 @@ void Rope::DropRope()
 	}
 	_action->Play();
 	_curLength++;
+}
+
+vector<shared_ptr<RectCollider>> Rope::GetColliders()
+{
+	return _ropeCols;
 }
 
 void Rope::CreateAction()

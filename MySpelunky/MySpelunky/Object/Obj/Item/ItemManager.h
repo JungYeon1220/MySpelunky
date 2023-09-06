@@ -34,6 +34,7 @@ public:
 
 
 	vector<shared_ptr<class Bomb>> GetBombs() { return _bombs; }
+	vector<shared_ptr<class Rope>> GetRopes() { return _ropes; }
 
 private:
 	static ItemManager* _instance;

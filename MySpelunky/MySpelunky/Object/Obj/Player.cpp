@@ -80,7 +80,10 @@ void Player::Input()
 
 	if (_isClimb == true && _canClimb == true)
 	{
-		ClimbRadder();
+		if (_isRope)
+			ClimbRope();
+		else
+			ClimbLadder();
 		return;
 	}
 
@@ -143,7 +146,7 @@ void Player::Input()
 		else if (_isPush == true)
 		{
 			_curSpeed = 0.0f;
-			_col->GetTransform()->AddVector2(RIGHT_VECTOR * 100.0f * DELTA_TIME);
+			_col->GetTransform()->AddVector2(RIGHT_VECTOR * 101.0f * DELTA_TIME);
 		}
 		else
 		{
@@ -226,7 +229,10 @@ void Player::Input()
 			SetAction(State::IDLE);
 	}
 	else
-		SetAction(State::RUN);
+	{
+		if(_isPush != true)
+			SetAction(State::RUN);
+	}
 
 }
 
@@ -333,7 +339,7 @@ void Player::ThrowBomb()
 	_isThrow = true;
 }
 
-void Player::ClimbRadder()
+void Player::ClimbLadder()
 {
 	if (_canClimb == false)
 		return;
@@ -367,6 +373,50 @@ void Player::ClimbRadder()
 	else if (KEY_UP(VK_DOWN))
 	{
 		_actions[State::CLIMB_RADDER]->Pause();
+	}
+
+	if (KEY_DOWN('Z'))
+	{
+		_isClimb = false;
+		_canClimb = false;
+		Jump();
+	}
+}
+
+void Player::ClimbRope()
+{
+	if (_canClimb == false)
+		return;
+
+	SetAction(State::CLIMB_ROPE);
+	_isAttack = false;
+	_isThrow = false;
+	_isFalling = false;
+	_whip->End();
+	_jumpPower = 0.0f;
+	_curSpeed = 0.0f;
+
+	if (KEY_DOWN(VK_UP) || KEY_DOWN(VK_DOWN))
+		_actions[State::CLIMB_ROPE]->Play();
+
+	if (KEY_PRESS(VK_UP))
+	{
+		_actions[State::CLIMB_ROPE]->SetReverse(false);
+		_col->GetTransform()->AddVector2(UP_VECTOR * 150.0f * DELTA_TIME);
+	}
+	else if (KEY_UP(VK_UP))
+	{
+		_actions[State::CLIMB_ROPE]->Pause();
+	}
+
+	if (KEY_PRESS(VK_DOWN))
+	{
+		_actions[State::CLIMB_ROPE]->SetReverse(true);
+		_col->GetTransform()->AddVector2(-UP_VECTOR * 150.0f * DELTA_TIME);
+	}
+	else if (KEY_UP(VK_DOWN))
+	{
+		_actions[State::CLIMB_ROPE]->Pause();
 	}
 
 	if (KEY_DOWN('Z'))
@@ -904,8 +954,21 @@ void Player::CreateAction()
 			clips.push_back(clip);
 		}
 
-		shared_ptr<Action> action = make_shared<Action>(clips, "Throw", Action::END);
+		shared_ptr<Action> action = make_shared<Action>(clips, "THROW", Action::END);
 		action->SetEndEvent(std::bind(&Player::EndThrow, this));
+		_actions.push_back(action);
+	}
+
+	{
+		vector<Action::Clip> clips;
+		for (int i = 0; i < 10; i++)
+		{
+			Vector2 startPos = Vector2((i * imageSize.x) / maxFrame.x, imageSize.y * 7.0f / maxFrame.y);
+			Action::Clip clip = Action::Clip(startPos.x, startPos.y, size.x, size.y, srv);
+			clips.push_back(clip);
+		}
+
+		shared_ptr<Action> action = make_shared<Action>(clips, "CLIMB_ROPE", Action::LOOP);
 		_actions.push_back(action);
 	}
 }
