@@ -9,7 +9,7 @@ public:
 	virtual void Update() override;
 	virtual void Render() override;
 
-	void PebbleUp() { _upPebble = true; }
+	virtual void PebbleUp() { _upPebble = true; }
 	void SetSpikePebble();
 
 private:

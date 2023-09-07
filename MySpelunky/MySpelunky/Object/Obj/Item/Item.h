@@ -8,6 +8,8 @@ public:
 	virtual void Update();
 	virtual void Render();
 
+	void SetName(string name) { _name = name; }
+
 	virtual bool UseItem();
 
 	virtual shared_ptr<RectCollider> GetCollider() { return _col;}

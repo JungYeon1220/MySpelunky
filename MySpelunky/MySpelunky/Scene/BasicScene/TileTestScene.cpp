@@ -513,16 +513,22 @@ void TileTestScene::Update()
 	if (ladderCheck == false)
 		_player->IsClimb() = false;
 
+	for (auto item : ITEMMANAGER->GetItems())
+	{
+
+	}
+
 	m = true;
 }
 
 void TileTestScene::Render()
 {
 	_map->BehindRender();
+	ITEMMANAGER->RopeRender();
 	_player->Render();
 	for (auto monster : _monsters)
 		monster->Render();
-	ITEMMANAGER->Render();
+	ITEMMANAGER->BombRender();
 	_map->FrontRender();
 }
 

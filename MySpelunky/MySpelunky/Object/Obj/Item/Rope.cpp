@@ -38,12 +38,15 @@ void Rope::Update()
 
 	if (_jumpPower <= 0.0f)
 	{
-		if (_hooked == false)
+		if (_hooked == false && _length != 0)
 			DropRope();
 		_col->GetTransform()->SetPosition({ _col->GetWorldPos().x, MathUtility::GetGridPosition(_col->GetWorldPos()).y });
 		_transform->Update();
 		_col->Update();
-		_name = "Hook2";
+		if (_length == 0)
+			_name = "Hook3";
+		else
+			_name = "Hook2";
 		_hooked = true;
 	}
 }
@@ -60,7 +63,7 @@ void Rope::Render()
 		SPRITEMANAGER->Render("Rope", _name);
 	}
 
-	if (_hooked == true)
+	if (_hooked == true && _length != 0)
 	{
 		for (int i = 0; i < _curLength; i++)
 		{

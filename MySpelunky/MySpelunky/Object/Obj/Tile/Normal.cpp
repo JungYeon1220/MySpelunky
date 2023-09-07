@@ -40,7 +40,7 @@ void Normal::Render()
 		_transform->SetPosition(Vector2(0.0f, 50.0f));
 		_transform->Update();
 		_transform->SetWorldBuffer(0);
-		//SPRITEMANAGER->Render("Cave", "UpPebble" + to_string(_upPebbleNum));
+		SPRITEMANAGER->Render("Cave", "UpPebble" + to_string(_upPebbleNum));
 	}
 	if (_downPebble == true)
 	{

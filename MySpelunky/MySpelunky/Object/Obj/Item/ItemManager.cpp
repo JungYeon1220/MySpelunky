@@ -32,14 +32,30 @@ void ItemManager::Update()
 		rope->Update();
 	for (auto bomb : _bombs)
 		bomb->Update();
+	for (auto item : _items)
+		item->Update();
 }
 
-void ItemManager::Render()
+void ItemManager::BombRender()
+{
+	for (auto item : _items)
+		item->Render();
+	for (auto bomb : _bombs)
+		bomb->Render();
+}
+
+void ItemManager::RopeRender()
 {
 	for (auto rope : _ropes)
 		rope->Render();
-	for (auto bomb : _bombs)
-		bomb->Render();
+}
+
+void ItemManager::SetItem(string name, Vector2 pos)
+{
+	shared_ptr<Item> item = make_shared<Item>();
+	item->SetName(name);
+	item->GetCollider()->GetTransform()->SetPosition(pos);
+	_items.push_back(item);
 }
 
 bool ItemManager::ThrowBomb(Vector2 pos, float speedX, float speedY)

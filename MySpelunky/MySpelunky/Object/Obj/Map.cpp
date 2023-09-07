@@ -27,15 +27,20 @@ Map::Map()
 		{
 			int type = _layout[i][j];
 
-			shared_ptr<Tile> tile;
-
-
-
-			if (type == 0 || type == 3 || type == 6 || type == 7 || type == 99)
+			if (type == 0 || type == 3 || type == 6 || type == 7)
 			{
 				_tileMap[i].push_back(nullptr);
 				continue;
 			}
+
+			if (type == 99)
+			{
+				ITEMMANAGER->SetItem("JumpShoes", Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
+				_tileMap[i].push_back(nullptr);
+				continue;
+			}
+
+			shared_ptr<Tile> tile;
 
 			if (type == 1)
 			{
@@ -45,15 +50,15 @@ Map::Map()
 					if (_layout[i - 1][j] == 10)
 						dynamic_pointer_cast<Normal>(tile)->SetSpikePebble();
 					else
-						dynamic_pointer_cast<Normal>(tile)->PebbleUp();
+						tile->PebbleUp();
 					tile->CanGrab() = true;
 				}
 				if (_layout[i + 1][j] != 1 && _layout[i + 1][j] != 50)
-					dynamic_pointer_cast<Normal>(tile)->PebbleDown();
+					tile->PebbleDown();
 				if (_layout[i][j + 1] != 1 && _layout[i][j + 1] != 50)
 				{
-					dynamic_pointer_cast<Normal>(tile)->PebbleRight();
-					if (dynamic_pointer_cast<Normal>(tile)->CanGrab() == true)
+					tile->PebbleRight();
+					if (tile->CanGrab() == true)
 					{
 						dynamic_pointer_cast<Normal>(tile)->PebbleGrabRight();
 						tile->LedgeRight() = true;
@@ -61,8 +66,8 @@ Map::Map()
 				}
 				if (_layout[i][j - 1] != 1 && _layout[i][j - 1] != 50)
 				{
-					dynamic_pointer_cast<Normal>(tile)->PebbleLeft();
-					if (dynamic_pointer_cast<Normal>(tile)->CanGrab() == true)
+					tile->PebbleLeft();
+					if (tile->CanGrab() == true)
 					{
 						dynamic_pointer_cast<Normal>(tile)->PebbleGrabLeft();
 						tile->LedgeLeft() = true;
@@ -92,19 +97,19 @@ Map::Map()
 
 				if (i == _poolCountY - 2 && j >= 2 && j <= _poolCountX - 3)
 				{
-					dynamic_pointer_cast<Unbreakable>(tile)->PebbleUp();
+					tile->PebbleUp();
 				}
 				if (i == 1 && j >= 2 && j <= _poolCountX - 3)
 				{
-					dynamic_pointer_cast<Unbreakable>(tile)->PebbleDown();
+					tile->PebbleDown();
 				}
 				if (j == 1 && i >= 2 && i <= _poolCountY - 3)
 				{
-					dynamic_pointer_cast<Unbreakable>(tile)->PebbleRight();
+					tile->PebbleRight();
 				}
 				if (j == _poolCountX - 2 && i >= 2 && i <= _poolCountY - 3)
 				{
-					dynamic_pointer_cast<Unbreakable>(tile)->PebbleLeft();
+					tile->PebbleLeft();
 				}
 
 				_types["Unbreakable"].push_back(tile);
@@ -132,7 +137,7 @@ Map::Map()
 					}
 					else
 					{
-						dynamic_pointer_cast<Skeleton>(tile)->PebbleUp();
+						tile->PebbleUp();
 					}
 				}
 
@@ -174,8 +179,8 @@ Map::Map()
 				_types["Movable"].push_back(tile);
             }
 
-			_tileMap[i].push_back(tile);
 			tile->Update();
+			_tileMap[i].push_back(tile);
 		}
 	}
 
@@ -284,23 +289,16 @@ int Map::GetRopeLength(Vector2 pos)
 	Vector2 index = MathUtility::GetGridIndex(pos);
 	for (int i = 1; i <= 4; i++)
 	{
-		if (_layout[index.y - i][index.x] == 0)
-		{
-			count++;
-			continue;
-		}
-
-		shared_ptr<Tile> tile = GetTile(index.x, index.y - i);
-		if (_layout[index.y - i][index.x] == 1
-		||  _layout[index.y - i][index.x] == 11
-		||  _layout[index.y - i][index.x] == 9
-		||  _layout[index.y - i][index.x] == 50)
+		shared_ptr<Tile> tile = GetTile(index.x,(_poolCountY - 1 - index.y) + i);
+		if (_layout[(_poolCountY - 1 - index.y) + i][index.x] == 1
+		||  _layout[(_poolCountY - 1 - index.y) + i][index.x] == 11
+		||  _layout[(_poolCountY - 1 - index.y) + i][index.x] == 9
+		||  _layout[(_poolCountY - 1 - index.y) + i][index.x] == 50)
 		{
 			break;
 		}
 
 		count++;
-
 	}
 
 	return count;

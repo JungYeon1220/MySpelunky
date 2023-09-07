@@ -27,7 +27,10 @@ public:
 	}
 
 	void Update();
-	void Render();
+	void BombRender();
+	void RopeRender();
+
+	void SetItem(string name, Vector2 pos);
 
 	bool ThrowBomb(Vector2 pos, float speedX, float speedY);
 	void ThrowRope(Vector2 pos);
@@ -35,12 +38,15 @@ public:
 
 	vector<shared_ptr<class Bomb>> GetBombs() { return _bombs; }
 	vector<shared_ptr<class Rope>> GetRopes() { return _ropes; }
+	vector<shared_ptr<Item>> GetItems() { return _items; }
 
 private:
 	static ItemManager* _instance;
 
 	vector<shared_ptr<class Bomb>> _bombs;
 	vector<shared_ptr<class Rope>> _ropes;
+
+	vector<shared_ptr<Item>> _items;
 
 };
 

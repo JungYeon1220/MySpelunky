@@ -9,11 +9,11 @@ public:
 	virtual void Update() override;
 	virtual void Render() override;
 
-	void PebbleUp() { _upPebble = true; }
-	void PebbleDown() { _downPebble = true; }
-	void PebbleRight() { _rightPebble = true; }
+	virtual void PebbleUp() { _upPebble = true; }
+	virtual void PebbleDown() { _downPebble = true; }
+	virtual void PebbleRight() { _rightPebble = true; }
+	virtual void PebbleLeft() { _leftPebble = true; }
 	void PebbleGrabRight() { _rightPebbleNum = 3; }
-	void PebbleLeft() { _leftPebble = true; }
 	void PebbleGrabLeft() { _leftPebbleNum = 3; }
 
 	void SetSpikePebble();

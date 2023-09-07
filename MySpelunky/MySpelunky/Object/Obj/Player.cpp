@@ -127,7 +127,7 @@ void Player::Input()
 		else if (_isPush == true)
 		{
 			_curSpeed = 0.0f;
-			_col->GetTransform()->AddVector2(-RIGHT_VECTOR * 101.0F * DELTA_TIME);
+			_col->GetTransform()->AddVector2(-RIGHT_VECTOR * 105.0F * DELTA_TIME);
 		}
 		else
 		{
@@ -146,7 +146,7 @@ void Player::Input()
 		else if (_isPush == true)
 		{
 			_curSpeed = 0.0f;
-			_col->GetTransform()->AddVector2(RIGHT_VECTOR * 101.0f * DELTA_TIME);
+			_col->GetTransform()->AddVector2(RIGHT_VECTOR * 105.0f * DELTA_TIME);
 		}
 		else
 		{

@@ -41,7 +41,7 @@ void Bomb::Update()
 		_jumpPower = 0.0f;
 	}
 
-	//_time += DELTA_TIME;
+	_time += DELTA_TIME;
 
 	_col->GetTransform()->AddVector2(RIGHT_VECTOR * _speed);
 	_offsetTrans->AddAngle(_rotation);

@@ -8,10 +8,10 @@ public:
 
 	void SetRandomTile(int x, int y);
 
-	void PebbleUp() { _upPebble = true; }
-	void PebbleDown() { _downPebble = true; }
-	void PebbleRight() { _rightPebble = true; }
-	void PebbleLeft() { _leftPebble = true; }
+	virtual void PebbleUp() { _upPebble = true; }
+	virtual void PebbleDown() { _downPebble = true; }
+	virtual void PebbleRight() { _rightPebble = true; }
+	virtual void PebbleLeft() { _leftPebble = true; }
 
 	virtual void Update() override;
 	virtual void Render() override;
