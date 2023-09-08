@@ -1,19 +1,5 @@
 #include "framework.h"
 #include "TileTestScene.h"
-#include "../../Object/Obj/Tile/Normal.h"
-#include "../../Object/Obj/Tile/Ladder.h"
-#include "../../Object/Obj/Tile/OneWay.h"
-#include "../../Object/Obj/Tile/Unbreakable.h"
-#include "../../Object/Obj/Tile/Wooden.h"
-#include "../../Object/Obj/Tile/Skeleton.h"
-#include "../../Object/Obj/Tile/Spike.h"
-#include "../../Object/Obj/Tile/Movable.h"
-#include "../../Object/Obj/Map.h"
-#include "../../Object/Obj/Player.h"
-#include "../../Object/Obj/Monster/Monster.h"
-#include "../../Object/Obj/Monster/Mosquito.h"
-#include "../../Object/Obj/Monster/Snake.h"
-#include "../../Object/Obj/Monster/Spider.h"
 
 TileTestScene::TileTestScene()
 {
@@ -515,7 +501,46 @@ void TileTestScene::Update()
 
 	for (auto item : ITEMMANAGER->GetItems())
 	{
+		if (item->IsActive() == false)
+			continue;
 
+		if (_player->GetCollider()->IsCollision(item->GetCollider()))
+		{
+			item->InteractPlayer(_player);
+			item->IsActive() = false;
+		}
+
+
+		bool check = false;
+		for (auto tiles : _map->GetTiles())
+		{
+			for (auto tile : tiles)
+			{
+				if (tile == nullptr)
+					continue;
+				if (tile->Block(item->GetCollider()))
+				{
+					if (item->GetCollider()->GetWorldPos().y + item->GetSize().y * 0.5f > tile->GetCollider()->GetWorldPos().y - 50.0f
+						&& item->GetCollider()->GetWorldPos().y - item->GetSize().y * 0.5f < tile->GetCollider()->GetWorldPos().y + 50.0f)
+					{
+					}
+					else
+					{
+						check = true;
+					}
+				}
+			}
+		}
+
+		if (check == true)
+			item->IsFalling() = false;
+		else
+			item->IsFalling() = true;
+	}
+
+	if (_player->GetCollider()->IsCollision(Vector2(_map->GetEndPos().x * 100.0f, (_map->PoolCount().y - 1 - _map->GetEndPos().y) * 100.0f)) && KEY_DOWN(VK_UP))
+	{
+		_player->Dead();
 	}
 
 	m = true;

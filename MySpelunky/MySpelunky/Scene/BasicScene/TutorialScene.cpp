@@ -35,7 +35,7 @@ TutorialScene::TutorialScene()
 		_monsters.push_back(monster);
 	}
 
-	for (int i = 0; i < 15; i++)
+	for (int i = 0; i < 44 * 38; i++)
 	{
 		shared_ptr<Tile> tile = make_shared<Normal>(Vector2((i + 0.5f) * 100.0f, 50.0f) - CENTER);
 		_tiles.push_back(tile);
