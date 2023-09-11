@@ -38,6 +38,7 @@ TutorialScene::TutorialScene()
 	for (int i = 0; i < 44 * 38; i++)
 	{
 		shared_ptr<Tile> tile = make_shared<Normal>(Vector2((i + 0.5f) * 100.0f, 50.0f) - CENTER);
+		tile->IsActive() = false;
 		_tiles.push_back(tile);
 	}
 

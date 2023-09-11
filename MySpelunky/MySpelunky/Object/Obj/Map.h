@@ -23,19 +23,22 @@ public:
 	vector<vector<shared_ptr<class Tile>>>& GetTiles() { return _tileMap; }
 	map<string, vector<shared_ptr<class Tile>>>& GetTypeTiles() { return _types; }
 	vector<shared_ptr<class Tile>>& GetMovables() { return _types["Movable"]; }
-	Vector2 GetStartPos() { return _startPos; }
-	Vector2 GetEndPos() { return _endPos; }
+	Vector2 GetStartPos() { return _startPos->GetWorldPos(); }
+	Vector2 GetEndPos() { return _endPos->GetWorldPos(); }
 
 	Vector2 PoolCount() { return Vector2(_poolCountX, _poolCountY); }
+	void CreateStage();
 private:
 	void CreateRooms();
 	void CreateRoomLayout();
 	void CreateLevelLayout();
 
-	void CreateStage();
 
 	shared_ptr<Transform> _bgTrans;
 	shared_ptr<Quad> _bg;
+
+	shared_ptr<Quad> _startDoor;
+	shared_ptr<Quad> _endDoor;
 
 	int _poolCountX = 44;
 	int _poolCountY = 36;
@@ -46,8 +49,8 @@ private:
 
 	map<string, vector<shared_ptr<class Tile>>> _types;
 
-	Vector2 _startPos;
-	Vector2 _endPos;
+	shared_ptr<Transform> _startPos;
+	shared_ptr<Transform> _endPos;
 
 	vector<vector<vector<int>>> _startRooms;
 	vector<vector<vector<int>>> _endRooms;

@@ -5,7 +5,7 @@ TileTestScene::TileTestScene()
 {
 	_map = make_shared<Map>();
 	_player = make_shared<Player>();
-	_player->GetCollider()->GetTransform()->SetPosition(Vector2(_map->GetStartPos().x * 100.0f, (_map->PoolCount().y - 1 - _map->GetStartPos().y) * 100.0f));
+	_player->GetCollider()->GetTransform()->SetPosition(_map->GetStartPos());
 
 	for (int i = 0; i < _map->PoolCount().y; i++)
 	{
@@ -540,9 +540,9 @@ void TileTestScene::Update()
 			item->IsFalling() = true;
 	}
 
-	if (_player->GetCollider()->IsCollision(Vector2(_map->GetEndPos().x * 100.0f, (_map->PoolCount().y - 1 - _map->GetEndPos().y) * 100.0f)) && KEY_DOWN(VK_UP))
+	if (KEY_DOWN('P'))
 	{
-		_player->Dead();
+		_map->CreateStage();
 	}
 
 	m = true;
