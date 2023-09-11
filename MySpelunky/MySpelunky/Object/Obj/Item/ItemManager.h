@@ -9,7 +9,7 @@ public:
 	static void Create()
 	{
 		if (_instance == nullptr)
-			_instance = new ItemManager();
+			_instance = new ItemManager();	
 	}
 
 	static void Delete()
@@ -33,7 +33,7 @@ public:
 	void SetItem(string name, Vector2 pos);
 
 	bool ThrowBomb(Vector2 pos, float speedX, float speedY);
-	void ThrowRope(Vector2 pos);
+	void ThrowRope(Vector2 pos, bool laying = false, bool left = false);
 
 
 	vector<shared_ptr<class Bomb>> GetBombs() { return _bombs; }

@@ -24,12 +24,15 @@ public:
 	map<string, vector<shared_ptr<class Tile>>>& GetTypeTiles() { return _types; }
 	vector<shared_ptr<class Tile>>& GetMovables() { return _types["Movable"]; }
 	Vector2 GetStartPos() { return _startPos; }
+	Vector2 GetEndPos() { return _endPos; }
 
 	Vector2 PoolCount() { return Vector2(_poolCountX, _poolCountY); }
 private:
 	void CreateRooms();
 	void CreateRoomLayout();
 	void CreateLevelLayout();
+
+	void CreateStage();
 
 	shared_ptr<Transform> _bgTrans;
 	shared_ptr<Quad> _bg;
@@ -53,5 +56,6 @@ private:
 	vector<vector<vector<int>>> _upRooms;
 	vector<vector<vector<int>>> _downRooms;
 	
+
 };
 

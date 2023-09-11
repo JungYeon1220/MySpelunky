@@ -729,3 +729,174 @@ void Map::CreateLevelLayout()
 		}
 	}
 }
+
+void Map::CreateStage()
+{
+	CreateRoomLayout();
+	CreateLevelLayout();
+
+	_tileMap.resize(_poolCountY);
+	for (int i = 0; i < _poolCountY; i++)
+	{
+		_tileMap.reserve(_poolCountX);
+		for (int j = 0; j < _poolCountX; j++)
+		{
+			int type = _layout[i][j];
+
+			if (type == 0 || type == 3 || type == 6 || type == 7)
+			{
+				_tileMap[i].push_back(nullptr);
+				continue;
+			}
+
+			if (type == 99)
+			{
+				ITEMMANAGER->SetItem("JumpShoes", Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
+				_tileMap[i].push_back(nullptr);
+				continue;
+			}
+
+			shared_ptr<Tile> tile;
+
+			if (type == 1)
+			{
+				tile = make_shared<Normal>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
+				if (_layout[i - 1][j] != 1 && _layout[i - 1][j] != 50)
+				{
+					if (_layout[i - 1][j] == 10)
+						dynamic_pointer_cast<Normal>(tile)->SetSpikePebble();
+					else
+						tile->PebbleUp();
+					tile->CanGrab() = true;
+				}
+				if (_layout[i + 1][j] != 1 && _layout[i + 1][j] != 50)
+					tile->PebbleDown();
+				if (_layout[i][j + 1] != 1 && _layout[i][j + 1] != 50)
+				{
+					tile->PebbleRight();
+					if (tile->CanGrab() == true)
+					{
+						dynamic_pointer_cast<Normal>(tile)->PebbleGrabRight();
+						tile->LedgeRight() = true;
+					}
+				}
+				if (_layout[i][j - 1] != 1 && _layout[i][j - 1] != 50)
+				{
+					tile->PebbleLeft();
+					if (tile->CanGrab() == true)
+					{
+						dynamic_pointer_cast<Normal>(tile)->PebbleGrabLeft();
+						tile->LedgeLeft() = true;
+					}
+				}
+				_types["Normal"].push_back(tile);
+			}
+			else if (type == 5)
+			{
+				tile = make_shared<OneWay>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
+
+				int count = 1;
+				while (true)
+				{
+					if (_layout[i + count][j] == 1 || _layout[i + count][j] == 11 || _layout[i + count][j] == 5)
+						break;
+					count++;
+				}
+				dynamic_pointer_cast<OneWay>(tile)->LegCount() = count - 1;
+
+				_types["Oneway"].push_back(tile);
+			}
+			else if (type == 50)
+			{
+				tile = make_shared<Unbreakable>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
+				dynamic_pointer_cast<Unbreakable>(tile)->SetRandomTile(j, i);
+
+				if (i == _poolCountY - 2 && j >= 2 && j <= _poolCountX - 3)
+				{
+					tile->PebbleUp();
+				}
+				if (i == 1 && j >= 2 && j <= _poolCountX - 3)
+				{
+					tile->PebbleDown();
+				}
+				if (j == 1 && i >= 2 && i <= _poolCountY - 3)
+				{
+					tile->PebbleRight();
+				}
+				if (j == _poolCountX - 2 && i >= 2 && i <= _poolCountY - 3)
+				{
+					tile->PebbleLeft();
+				}
+
+				_types["Unbreakable"].push_back(tile);
+			}
+			else if (type == 10)
+			{
+				tile = make_shared<Spike>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
+				if (_layout[i + 1][j] == 11)
+				{
+					dynamic_pointer_cast<Spike>(tile)->SetSkeletonSpike();
+				}
+
+				_types["Spike"].push_back(tile);
+			}
+			else if (type == 11)
+			{
+				tile = make_shared<Skeleton>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
+				if (_layout[i - 1][j] == 0)
+					tile->CanGrab() = true;
+				if (_layout[i - 1][j] != 11)
+				{
+					if (_layout[i - 1][j] == 10)
+					{
+						dynamic_pointer_cast<Skeleton>(tile)->SetSpikePebble();
+					}
+					else
+					{
+						tile->PebbleUp();
+					}
+				}
+
+				_types["Skeleton"].push_back(tile);
+			}
+			else if (type == 2)
+			{
+				tile = make_shared<Ladder>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
+				if (_layout[i - 1][j] != 2 && _layout[i - 1][j] != 4)
+				{
+					dynamic_pointer_cast<Ladder>(tile)->SetTop();
+				}
+				else if (_layout[i + 1][j] != 2 && _layout[i + 1][j] != 4)
+				{
+					dynamic_pointer_cast<Ladder>(tile)->SetBottom();
+				}
+
+				_types["Ladder"].push_back(tile);
+			}
+			else if (type == 4)
+			{
+				tile = make_shared<Ladder>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
+				dynamic_pointer_cast<Ladder>(tile)->SetOneWay();
+
+				_types["Ladder"].push_back(tile);
+			}
+			else if (type == 9)
+			{
+				tile = make_shared<Wooden>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
+				if (_layout[i - 1][j] == 0)
+					tile->CanGrab() = true;
+
+				_types["Wooden"].push_back(tile);
+			}
+			else if (type == 8)
+			{
+				tile = make_shared<Movable>(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
+				tile->CanGrab() = true;
+				_types["Movable"].push_back(tile);
+			}
+
+			tile->Update();
+			_tileMap[i].push_back(tile);
+		}
+	}
+}

@@ -53,7 +53,9 @@ void ItemManager::SetItem(string name, Vector2 pos)
 	shared_ptr<Item> item = make_shared<Item>();
 	item->SetName(name);
 	item->GetCollider()->GetTransform()->SetPosition(pos);
+	item->IsActive() = true;
 	_items.push_back(item);
+
 }
 
 bool ItemManager::ThrowBomb(Vector2 pos, float speedX, float speedY)
@@ -81,7 +83,7 @@ bool ItemManager::ThrowBomb(Vector2 pos, float speedX, float speedY)
 	return true;
 }
 
-void ItemManager::ThrowRope(Vector2 pos)
+void ItemManager::ThrowRope(Vector2 pos, bool laying, bool left)
 {
 	shared_ptr<Rope> rope = nullptr;
 	for (auto finder : _ropes)
@@ -95,6 +97,17 @@ void ItemManager::ThrowRope(Vector2 pos)
 	if (rope == nullptr)
 		return;
 
-	rope->GetCollider()->GetTransform()->SetPosition({ MathUtility::GetGridPosition(pos).x, pos.y });
+	if (laying == true)
+	{
+		Vector2 ropePos = MathUtility::GetGridPosition(pos);
+		rope->GetJumpPower() = 0.0f;
+		if (left == false)
+			rope->GetCollider()->GetTransform()->SetPosition(ropePos + RIGHT_VECTOR * 100.0f);
+		else
+			rope->GetCollider()->GetTransform()->SetPosition(ropePos - RIGHT_VECTOR * 100.0f);
+	}
+	else
+		rope->GetCollider()->GetTransform()->SetPosition({ MathUtility::GetGridPosition(pos).x, pos.y });
+
 	rope->IsActive() = true;
 }

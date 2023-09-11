@@ -30,8 +30,6 @@ public:
 	virtual void PebbleRight() {}
 	virtual void PebbleLeft() {}
 
-
-
 	shared_ptr<RectCollider> GetCollider() { return _col; }
 	Type GetType() { return _type; }
 	bool& CanGrab() { return _canGrab; }

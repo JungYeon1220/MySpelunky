@@ -75,7 +75,7 @@ void Player::Input()
 
 	if (KEY_DOWN('D'))
 	{
-		ITEMMANAGER->ThrowRope(_col->GetWorldPos());
+		ITEMMANAGER->ThrowRope(_col->GetWorldPos(), _isLaying, _isLeft);
 	}
 
 	if (_isClimb == true && _canClimb == true)
