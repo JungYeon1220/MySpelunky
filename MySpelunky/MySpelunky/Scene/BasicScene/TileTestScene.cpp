@@ -458,6 +458,8 @@ void TileTestScene::Update()
 			if (rope->IsActive() == false)
 				continue;
 
+			rope->Update();
+
 			for (auto tiles : _map->GetTiles())
 			{
 				for (auto tile : tiles)

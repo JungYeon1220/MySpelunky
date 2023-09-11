@@ -285,6 +285,8 @@ void Map::PostRender()
 
 int Map::GetRopeLength(Vector2 pos)
 {
+	if (pos.x == NAN || pos.y == NAN)
+		return 0;
 	int count = 0;
 	Vector2 index = MathUtility::GetGridIndex(pos);
 	for (int i = 1; i <= 4; i++)
