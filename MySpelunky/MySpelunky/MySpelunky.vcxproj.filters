@@ -207,9 +207,6 @@
     <ClInclude Include="Object\Obj\Item\ItemManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MonsterManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MySpelunky.cpp">
@@ -386,9 +383,6 @@
     <ClCompile Include="Object\Obj\Item\ItemManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MonsterManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MySpelunky.rc">
@@ -442,6 +436,12 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="Resource\Texture\items.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Resource\Texture\floor_cave_end.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Resource\Texture\floor_cave_start.png">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

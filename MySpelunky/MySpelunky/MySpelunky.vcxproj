@@ -142,7 +142,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="MonsterManager.h" />
     <ClInclude Include="Object\Obj\Item\Bomb.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Framework\Animation\Action.h" />
@@ -209,7 +208,6 @@
     <ClInclude Include="Object\Obj\Tile\Wooden.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MonsterManager.cpp" />
     <ClCompile Include="Object\Obj\Item\Bomb.cpp" />
     <ClCompile Include="framework.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -284,6 +282,8 @@
     <Image Include="Resource\Texture\floormisc.png" />
     <Image Include="Resource\Texture\floorstyled_wood.png" />
     <Image Include="Resource\Texture\floor_cave.png" />
+    <Image Include="Resource\Texture\floor_cave_end.png" />
+    <Image Include="Resource\Texture\floor_cave_start.png" />
     <Image Include="Resource\Texture\horned_lizard.png" />
     <Image Include="Resource\Texture\items.png" />
     <Image Include="Resource\Texture\mole.png" />
