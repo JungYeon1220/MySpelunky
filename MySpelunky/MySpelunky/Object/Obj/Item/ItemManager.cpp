@@ -28,8 +28,6 @@ ItemManager::~ItemManager()
 
 void ItemManager::Update()
 {
-	for (auto bomb : _bombs)
-		bomb->Update();
 	for (auto item : _items)
 		item->Update();
 }

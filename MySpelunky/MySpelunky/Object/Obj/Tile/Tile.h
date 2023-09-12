@@ -21,6 +21,7 @@ public:
 	void SetType(Type value);
 	void SetPosition(Vector2 pos) { _pos = pos; }
 	virtual bool Block(shared_ptr<Collider> col);
+	virtual void Destroy() {}
 
 	virtual void Update();
 	virtual void Render();
@@ -32,6 +33,7 @@ public:
 
 	shared_ptr<RectCollider> GetCollider() { return _col; }
 	Type GetType() { return _type; }
+	Vector2& GetIndex() { return _index; }
 	bool& CanGrab() { return _canGrab; }
 	bool& LedgeRight() { return _cliffR; }
 	bool& LedgeLeft() { return _cliffL; }
@@ -53,5 +55,7 @@ protected:
 
 	bool _cliffR = false;
 	bool _cliffL = false;
+
+	Vector2 _index;
 };
 

@@ -1,14 +1,5 @@
 #include "framework.h"
 #include "Map.h"
-#include "Tile/Normal.h"
-#include "Tile/Unbreakable.h"
-#include "Tile/Ladder.h"
-#include "Tile/OneWay.h"
-#include "Tile/Spike.h"
-#include "Tile/Skeleton.h"
-#include "Tile/Wooden.h"
-#include "Tile/Movable.h"
-#include "Tiles.h"
 
 Map::Map()
 {
@@ -24,7 +15,7 @@ Map::Map()
 	CreateStage();
 
 
-    _bgTrans->SetPosition(Vector2(_tileMap[0][_poolCountX - 1]->GetCollider()->GetWorldPos().x / 2, _tileMap[0][_poolCountX - 1]->GetCollider()->GetWorldPos().y / 2));
+    _bgTrans->SetPosition(Vector2( 100.0f * _poolCountX / 2, 100.0f * _poolCountY / 2));
 	_bgTrans->Update();
 }
 
@@ -38,20 +29,17 @@ void Map::Update()
     {
 		_types["Movable"][i]->Update();
         bool check = false;
-        for (auto tileArr : _tileMap)
-        {
-            for (auto tile : tileArr)
-            {
-                if (tile == nullptr)
-                    continue;
+		for (auto pair : _types)
+		{
+			if (pair.first == "Movable")
+				continue;
 
+			for (auto tile : pair.second)
+			{
 				float x = _types["Movable"][i]->GetCollider()->GetWorldPos().x - tile->GetCollider()->GetWorldPos().x;
 				float y = _types["Movable"][i]->GetCollider()->GetWorldPos().y - tile->GetCollider()->GetWorldPos().y;
 				if (x * x + y * y > 40000.0f)
 					continue;
-
-                if (tile->GetType() == Tile::Type::MOVABLE)
-                    continue;
 
 				if (tile->GetCollider()->IsCollision(dynamic_pointer_cast<Movable>(_types["Movable"][i])->GetMovableCollider()))
 				{
@@ -61,8 +49,8 @@ void Map::Update()
 							check = true;
 					}
 				}
-            }
-        }
+			}
+		}
 
 		for (int j = 0; j < _types["Movable"].size(); j++)
 		{
@@ -134,7 +122,6 @@ int Map::GetRopeLength(Vector2 pos)
 	Vector2 index = MathUtility::GetGridIndex(pos);
 	for (int i = 1; i <= 4; i++)
 	{
-		shared_ptr<Tile> tile = GetTile(index.x,(_poolCountY - 1 - index.y) + i);
 		if (_layout[(_poolCountY - 1 - index.y) + i][index.x] == 1
 		||  _layout[(_poolCountY - 1 - index.y) + i][index.x] == 11
 		||  _layout[(_poolCountY - 1 - index.y) + i][index.x] == 9
@@ -478,6 +465,11 @@ void Map::CreateRoomLayout()
 
 void Map::CreateLevelLayout()
 {
+	for (auto& arr : _layout)
+	{
+		arr.clear();
+	}
+
 	_layout.resize(_poolCountY);
 	for (int i = 0; i < _poolCountY; i++)
 	{
@@ -578,29 +570,25 @@ void Map::CreateStage()
 	CreateRoomLayout();
 	CreateLevelLayout();
 
-	for (auto &tiles : _tileMap)
+	for (auto& pair : _types)
 	{
-		tiles.clear();
+		pair.second.clear();
 	}
 
-	_tileMap.resize(_poolCountY);
 	for (int i = 0; i < _poolCountY; i++)
 	{
-		_tileMap[i].reserve(_poolCountX);
 		for (int j = 0; j < _poolCountX; j++)
 		{
 			int type = _layout[i][j];
 
 			if (type == 0 || type == 3 || type == 6 || type == 7)
 			{
-				_tileMap[i].push_back(nullptr);
 				continue;
 			}
 
 			if (type == 99)
 			{
 				ITEMMANAGER->SetItem("JumpShoes", Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
-				_tileMap[i].push_back(nullptr);
 				continue;
 			}
 
@@ -743,8 +731,8 @@ void Map::CreateStage()
 				_types["Movable"].push_back(tile);
 			}
 
+			tile->GetIndex() = Vector2(j, i);
 			tile->Update();
-			_tileMap[i].push_back(tile);
 		}
 	}
 

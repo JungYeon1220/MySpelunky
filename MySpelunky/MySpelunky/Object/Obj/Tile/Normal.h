@@ -9,6 +9,8 @@ public:
 	virtual void Update() override;
 	virtual void Render() override;
 
+	virtual void Destroy() { _isActive = false; }
+
 	virtual void PebbleUp() { _upPebble = true; }
 	virtual void PebbleDown() { _downPebble = true; }
 	virtual void PebbleRight() { _rightPebble = true; }

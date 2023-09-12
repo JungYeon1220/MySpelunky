@@ -12,6 +12,16 @@ public:
 
 	int GetRopeLength(Vector2 pos);
 
+	map<string, vector<shared_ptr<Tile>>>& GetTypeTiles() { return _types; }
+	vector<vector<int>> GetLayout() { return _layout; }
+	vector<shared_ptr<Tile>>& GetMovables() { return _types["Movable"]; }
+	Vector2 GetStartPos() { return _startPos->GetWorldPos(); }
+	Vector2 GetEndPos() { return _endPos->GetWorldPos(); }
+
+	Vector2 PoolCount() { return Vector2(_poolCountX, _poolCountY); }
+	void CreateStage();
+
+private:
 	vector<vector<int>> GetStartRoom() { return _startRooms[rand() % (_startRooms.size())]; }
 	vector<vector<int>> GetEndRoom() { return _endRooms[rand() % (_endRooms.size())]; }
 	vector<vector<int>> GetRightRoom() { return _rightRooms[rand() % (_rightRooms.size())]; }
@@ -19,20 +29,9 @@ public:
 	vector<vector<int>> GetUpRoom() { return _upRooms[rand() % (_upRooms.size())]; }
 	vector<vector<int>> GetDownRoom() { return _downRooms[rand() % (_downRooms.size())]; }
 
-	shared_ptr<class Tile> GetTile(int x, int y) { return _tileMap[y][x]; }
-	vector<vector<shared_ptr<class Tile>>>& GetTiles() { return _tileMap; }
-	map<string, vector<shared_ptr<class Tile>>>& GetTypeTiles() { return _types; }
-	vector<shared_ptr<class Tile>>& GetMovables() { return _types["Movable"]; }
-	Vector2 GetStartPos() { return _startPos->GetWorldPos(); }
-	Vector2 GetEndPos() { return _endPos->GetWorldPos(); }
-
-	Vector2 PoolCount() { return Vector2(_poolCountX, _poolCountY); }
-	void CreateStage();
-private:
 	void CreateRooms();
 	void CreateRoomLayout();
 	void CreateLevelLayout();
-
 
 	shared_ptr<Transform> _bgTrans;
 	shared_ptr<Quad> _bg;
@@ -45,7 +44,7 @@ private:
 
 	vector<vector<int>> _roomLayout;
 	vector<vector<int>> _layout;
-	vector<vector<shared_ptr<class Tile>>> _tileMap;
+	//vector<vector<shared_ptr<class Tile>>> _tileMap;
 
 	map<string, vector<shared_ptr<class Tile>>> _types;
 
@@ -58,7 +57,5 @@ private:
 	vector<vector<vector<int>>> _wrongRooms;
 	vector<vector<vector<int>>> _upRooms;
 	vector<vector<vector<int>>> _downRooms;
-	
-
 };
 

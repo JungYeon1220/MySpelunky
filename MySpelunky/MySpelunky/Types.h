@@ -42,6 +42,8 @@
 
 #define CAMERA		Camera::GetInstance()
 
+#define EFFECT		EffectManager::GetInstance()
+
 #define SPRITEMANAGER	SpriteManager::GetInstance()
 #define ITEMMANAGER		ItemManager::GetInstance()
 
