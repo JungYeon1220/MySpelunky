@@ -11,7 +11,7 @@ Bomb::Bomb()
 	_transform = make_shared<Transform>();
 	_transform->SetParent(_offsetTrans);
 	_transform->SetPosition(Vector2(-0.5f, 2.5f));
-	_range = make_shared<CircleCollider>(200.0f);
+	_range = make_shared<CircleCollider>(150.0f);
 	_range->GetTransform()->SetParent(_col->GetTransform());
 	_name = "Bomb";
 }
@@ -24,6 +24,7 @@ void Bomb::Update()
 {
 	if (_isActive == false)
 	{
+		_boom = false;
 		return;
 	}
 
@@ -44,6 +45,8 @@ void Bomb::Update()
 		_speed = 0.0f;
 		_jumpPower = 0.0f;
 		_boom = true;
+		CAMERA->ShakeStart(2.0f, 1.0f);
+		EFFECT->Play("Explosion", _col->GetWorldPos());
 	}
 
 	_time += DELTA_TIME;
@@ -52,6 +55,7 @@ void Bomb::Update()
 	_offsetTrans->AddAngle(_rotation);
 
 	_offsetTrans->Update();
+	_range->Update();
 	Item::Update();
 }
 
@@ -60,13 +64,16 @@ void Bomb::Rander()
 	Item::Render();
 }
 
-void Bomb::DestroyTile(shared_ptr<Tile> tile)
+bool Bomb::DestroyTile(shared_ptr<Tile> tile)
 {
 	if (_boom == false)
-		return;
+		return false;
 
 	if (_range->IsCollision(tile->GetCollider()))
 	{
 		tile->Destroy();
+		return true;
 	}
+
+	return false;
 }

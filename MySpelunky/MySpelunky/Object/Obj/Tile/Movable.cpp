@@ -30,6 +30,8 @@ Movable::~Movable()
 
 void Movable::Update()
 {
+	if (_isActive == false)
+		return;
 	Tile::Update();
 	if (_isFalling == true)
 		_jumpPower -= GRAVITY * 8;
@@ -50,6 +52,8 @@ void Movable::Update()
 
 void Movable::Render()
 {
+	if (_isActive == false)
+		return;
 	if (CAMERA->GetViewCollider()->IsCollision(_col) == false)
 		return;
 

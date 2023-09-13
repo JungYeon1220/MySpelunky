@@ -21,11 +21,15 @@ Skeleton::~Skeleton()
 
 void Skeleton::Update()
 {
+	if (_isActive == false)
+		return;
 	_col->Update();
 }
 
 void Skeleton::Render()
 {
+	if (_isActive == false)
+		return;
 	if (CAMERA->GetViewCollider()->IsCollision(_col) == false)
 		return;
 

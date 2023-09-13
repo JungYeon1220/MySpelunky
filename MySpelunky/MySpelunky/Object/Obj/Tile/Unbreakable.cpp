@@ -39,11 +39,15 @@ void Unbreakable::SetRandomTile(int x, int y)
 
 void Unbreakable::Update()
 {
+	if (_isActive == false)
+		return;
 	_col->Update();
 }
 
 void Unbreakable::Render()
 {
+	if (_isActive == false)
+		return;
 	if (CAMERA->GetViewCollider()->IsCollision(_col) == false)
 		return;
 

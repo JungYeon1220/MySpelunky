@@ -73,6 +73,7 @@ bool ItemManager::ThrowBomb(Vector2 pos, float speedX, float speedY)
 
 	bomb->IsFalling() = true;
 	bomb->IsActive() = true;
+	bomb->_boom = false;
 	bomb->GetCollider()->GetTransform()->SetPosition(pos);
 
 	bomb->GetSpeed() = speedX;

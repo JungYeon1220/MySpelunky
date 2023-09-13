@@ -138,6 +138,8 @@ void Camera::Shake()
 		_duration = 0.0f;
 	}
 
+	_originPos = -_view->GetWorldPos();
+
 	Vector2 randomPos;
 	randomPos.x = _originPos.x + MathUtility::RandomFloat(-_magnitude, _magnitude);
 	randomPos.y = _originPos.y + MathUtility::RandomFloat(-_magnitude, _magnitude);

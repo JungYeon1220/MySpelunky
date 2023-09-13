@@ -69,8 +69,41 @@ void TileTestScene::Update()
 	bool ladderCheck = false;
 	_player->IsOnOneWay() = false;
 
+	vector<vector<int>> layout = _map->GetLayout();
 	for (auto normal : _map->GetTypeTiles()["Normal"])
 	{
+		int Xindex = normal->GetIndex().x;
+		int Yindex = normal->GetIndex().y;
+
+		for (auto index : _map->_distroyedTileIndex)
+		{
+			if (normal->GetIndex() == index + Vector2(0, 1))
+			{
+				normal->PebbleUp();
+				normal->CanGrab() = true;
+			}
+			if (normal->GetIndex() == index + Vector2(0, -1))
+				normal->PebbleDown();
+			if (normal->GetIndex() == index + Vector2(-1, 0))
+			{
+				normal->PebbleRight();
+				if (normal->CanGrab() == true)
+				{
+					dynamic_pointer_cast<Normal>(normal)->PebbleGrabRight();
+					normal->LedgeRight() = true;
+				}
+			}
+			if (normal->GetIndex() == index + Vector2(1, 0))
+			{
+				normal->PebbleLeft();
+				if (normal->CanGrab() == true)
+				{
+					dynamic_pointer_cast<Normal>(normal)->PebbleGrabLeft();
+					normal->LedgeLeft() = true;
+				}
+			}
+		}
+
 		float x = _player->GetCollider()->GetWorldPos().x - normal->GetCollider()->GetWorldPos().x;
 		float y = _player->GetCollider()->GetWorldPos().y - normal->GetCollider()->GetWorldPos().y;
 		if (x * x + y * y > 40000.0f)
@@ -85,9 +118,10 @@ void TileTestScene::Update()
 
 			Vector2 tilePos = normal->GetCollider()->GetWorldPos();
 
-			if (dynamic_pointer_cast<Normal>(normal)->CanGrab() == true)
+			if (normal->CanGrab() == true)
 			{
-				if (_player->GetGrabCollider()->IsCollision(tilePos + Vector2(50.0f, 50.0f)) || _player->GetGrabCollider()->IsCollision(tilePos + Vector2(-50.0f, 50.0f)))
+				if (_player->GetGrabCollider()->IsCollision(tilePos + Vector2(50.0f, 50.0f)) 
+				 || _player->GetGrabCollider()->IsCollision(tilePos + Vector2(-50.0f, 50.0f)))
 				{
 					if (_player->GetJumpPower() <= 0.0f)
 					{
@@ -221,6 +255,21 @@ void TileTestScene::Update()
 	}
 	for (auto skeleton : _map->GetTypeTiles()["Skeleton"])
 	{
+		if (_player->GetWhip()->IsActive() == true && _player->GetWhip()->GetCollider()->IsCollision(skeleton->GetCollider()))
+			skeleton->IsActive() = false;
+
+		int Xindex = skeleton->GetIndex().x;
+		int Yindex = skeleton->GetIndex().y;
+
+		for (auto index : _map->_distroyedTileIndex)
+		{
+			if (skeleton->GetIndex() == index + Vector2(0, 1))
+			{
+				skeleton->PebbleUp();
+				skeleton->CanGrab() = true;
+			}
+		}
+
 		float x = _player->GetCollider()->GetWorldPos().x - skeleton->GetCollider()->GetWorldPos().x;
 		float y = _player->GetCollider()->GetWorldPos().y - skeleton->GetCollider()->GetWorldPos().y;
 		if (x * x + y * y > 40000.0f)
@@ -253,6 +302,9 @@ void TileTestScene::Update()
 	}
 	for (auto spike : _map->GetTypeTiles()["Spike"])
 	{
+		if (layout[spike->GetIndex().y + 1][spike->GetIndex().x] == 0)
+			spike->IsActive() = false;
+
 		float x = _player->GetCollider()->GetWorldPos().x - spike->GetCollider()->GetWorldPos().x;
 		float y = _player->GetCollider()->GetWorldPos().y - spike->GetCollider()->GetWorldPos().y;
 		if (x * x + y * y > 40000.0f)
@@ -345,6 +397,8 @@ void TileTestScene::Update()
 
 	}
 
+	_map->_distroyedTileIndex.clear();
+
 	for (auto monster : _monsters)
 	{
 		bool check = false;
@@ -405,7 +459,7 @@ void TileTestScene::Update()
 	{
 		for (auto bomb : ITEMMANAGER->GetBombs())
 		{
-			if (bomb->IsActive() == false)
+			if (bomb->IsActive() == false && bomb->_boom == false)
 				continue;
 
 			bool check = false;
@@ -416,12 +470,16 @@ void TileTestScene::Update()
 					if (tile == nullptr)
 						continue;
 
-					bomb->DestroyTile(tile);
+					if (bomb->DestroyTile(tile))
+					{
+						_map->GetLayout()[tile->GetIndex().y][tile->GetIndex().x] = 0;
+						_map->_distroyedTileIndex.push_back(tile->GetIndex());
+					}
 
 					if (tile->Block(bomb->GetCollider()))
 					{
 						if (bomb->GetCollider()->GetWorldPos().y + bomb->GetSize().y * 0.5f > tile->GetCollider()->GetWorldPos().y - 50.0f
-							&& bomb->GetCollider()->GetWorldPos().y - bomb->GetSize().y * 0.5f < tile->GetCollider()->GetWorldPos().y + 50.0f)
+						 && bomb->GetCollider()->GetWorldPos().y - bomb->GetSize().y * 0.5f < tile->GetCollider()->GetWorldPos().y + 50.0f)
 						{
 							bomb->GetRotation() = 0.0f;
 							bomb->GetSpeed() = 0.0f;
@@ -557,12 +615,12 @@ void TileTestScene::Update()
 		{
 			for (int j = 0; j < _map->PoolCount().x; j++)
 			{
-				if (_map->GetLayout()[i][j] == 0)
+				if (layout[i][j] == 0)
 					continue;
 
-				if (_map->GetLayout()[i][j] == 1)
+				if (layout[i][j] == 1)
 				{
-					if (_map->GetLayout()[i - 1][j] == 0)
+					if (layout[i - 1][j] == 0)
 					{
 						int random = MathUtility::RandomInt(0, 30);
 
@@ -587,6 +645,9 @@ void TileTestScene::Update()
 	}
 
 	m = true;
+
+	if (KEY_DOWN(VK_LBUTTON))
+		EFFECT->Play("Explosion", WIN_MOUSE_POS);
 }
 
 void TileTestScene::Render()

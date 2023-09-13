@@ -15,7 +15,7 @@ Map::Map()
 	CreateStage();
 
 
-    _bgTrans->SetPosition(Vector2( 100.0f * _poolCountX / 2, 100.0f * _poolCountY / 2));
+    _bgTrans->SetPosition(Vector2( 100.0f * (_poolCountX - 1) / 2, 100.0f * _poolCountY / 2));
 	_bgTrans->Update();
 }
 

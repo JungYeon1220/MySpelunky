@@ -21,12 +21,16 @@ Normal::~Normal()
 
 void Normal::Update()
 {
+	if (_isActive == false)
+		return;
 	_col->Update();
 	_transform->Update();
 }
 
 void Normal::Render()
 {
+	if (_isActive == false)
+		return;
 	if (CAMERA->GetViewCollider()->IsCollision(_col) == false)
 		return;
 
@@ -65,6 +69,11 @@ void Normal::Render()
 		SPRITEMANAGER->Render("Cave", "SidePebble" + to_string(_leftPebbleNum));
 		SPRITEMANAGER->GetSprite("Cave")->SetRight();
 	}
+}
+
+void Normal::Destroy()
+{
+	_isActive = false;
 }
 
 void Normal::SetSpikePebble()

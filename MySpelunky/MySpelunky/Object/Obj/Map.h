@@ -13,13 +13,15 @@ public:
 	int GetRopeLength(Vector2 pos);
 
 	map<string, vector<shared_ptr<Tile>>>& GetTypeTiles() { return _types; }
-	vector<vector<int>> GetLayout() { return _layout; }
+	vector<vector<int>>& GetLayout() { return _layout; }
 	vector<shared_ptr<Tile>>& GetMovables() { return _types["Movable"]; }
 	Vector2 GetStartPos() { return _startPos->GetWorldPos(); }
 	Vector2 GetEndPos() { return _endPos->GetWorldPos(); }
 
 	Vector2 PoolCount() { return Vector2(_poolCountX, _poolCountY); }
 	void CreateStage();
+
+	vector<Vector2> _distroyedTileIndex;
 
 private:
 	vector<vector<int>> GetStartRoom() { return _startRooms[rand() % (_startRooms.size())]; }
@@ -44,7 +46,6 @@ private:
 
 	vector<vector<int>> _roomLayout;
 	vector<vector<int>> _layout;
-	//vector<vector<shared_ptr<class Tile>>> _tileMap;
 
 	map<string, vector<shared_ptr<class Tile>>> _types;
 
@@ -57,5 +58,6 @@ private:
 	vector<vector<vector<int>>> _wrongRooms;
 	vector<vector<vector<int>>> _upRooms;
 	vector<vector<vector<int>>> _downRooms;
+
 };
 

@@ -9,7 +9,7 @@ public:
 	virtual void Update() override;
 	virtual void Render() override;
 
-	virtual void Destroy() { _isActive = false; }
+	virtual void Destroy();
 
 	virtual void PebbleUp() { _upPebble = true; }
 	virtual void PebbleDown() { _downPebble = true; }

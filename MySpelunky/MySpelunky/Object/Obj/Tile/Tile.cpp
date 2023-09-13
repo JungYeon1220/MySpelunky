@@ -30,6 +30,8 @@ void Tile::SetType(Tile::Type value)
 
 bool Tile::Block(shared_ptr<Collider> col)
 {
+	if (_isActive == false)
+		return false;
 	if (_type == Type::EMPTY)
 		return false;
 
@@ -48,6 +50,8 @@ bool Tile::Block(shared_ptr<Collider> col)
 
 void Tile::Update()
 {
+	if (_isActive == false)
+		return;
 	if (_type == EMPTY)
 		return;
 
@@ -57,6 +61,8 @@ void Tile::Update()
 
 void Tile::Render()
 {
+	if (_isActive == false)
+		return;
 	if (_type == EMPTY)
 		return;
 

@@ -21,6 +21,9 @@ Ladder::~Ladder()
 
 bool Ladder::Block(shared_ptr<Collider> col)
 {
+	if (_isActive == false)
+		return false;
+
 	if (_isOneWay == false)
 		return false;
 
@@ -42,11 +45,15 @@ bool Ladder::Block(shared_ptr<Collider> col)
 
 void Ladder::Update()
 {
+	if (_isActive == false)
+		return;
 	Tile::Update();
 }
 
 void Ladder::Render()
 {
+	if (_isActive == false)
+		return;
 	if (CAMERA->GetViewCollider()->IsCollision(_col) == false)
 		return;
 

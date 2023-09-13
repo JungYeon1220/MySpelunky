@@ -286,6 +286,7 @@
     <Image Include="Resource\Texture\floor_cave.png" />
     <Image Include="Resource\Texture\floor_cave_end.png" />
     <Image Include="Resource\Texture\floor_cave_start.png" />
+    <Image Include="Resource\Texture\hit_4x2.png" />
     <Image Include="Resource\Texture\horned_lizard.png" />
     <Image Include="Resource\Texture\items.png" />
     <Image Include="Resource\Texture\mole.png" />

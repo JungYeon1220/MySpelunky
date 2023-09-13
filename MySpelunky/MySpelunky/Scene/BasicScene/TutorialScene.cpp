@@ -35,10 +35,9 @@ TutorialScene::TutorialScene()
 		_monsters.push_back(monster);
 	}
 
-	for (int i = 0; i < 44 * 38; i++)
+	for (int i = 0; i < 44; i++)
 	{
 		shared_ptr<Tile> tile = make_shared<Normal>(Vector2((i + 0.5f) * 100.0f, 50.0f) - CENTER);
-		tile->IsActive() = false;
 		_tiles.push_back(tile);
 	}
 
@@ -478,6 +477,9 @@ void TutorialScene::Update()
 		}
 
 	}
+
+	if (KEY_DOWN(VK_LBUTTON))
+		EFFECT->Play("Explosion", WIN_MOUSE_POS);
 }
 
 void TutorialScene::Render()

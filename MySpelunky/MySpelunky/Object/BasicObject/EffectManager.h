@@ -40,8 +40,5 @@ private:
 	static EffectManager* _instance;
 
 	unordered_map<string, vector<shared_ptr<Effect>>> _effectTable;
-
-	shared_ptr<CircleCollider> _bombRange;
-
 };
 

@@ -4,7 +4,7 @@
 EffectManager* EffectManager::_instance = nullptr;
 EffectManager::EffectManager()
 {
-	_bombRange = make_shared<CircleCollider>(200.0f);
+	AddEffect("Explosion", L"Resource/Texture/hit_4x2.png", Vector2(4, 2), Vector2(300.0f, 300.0f));
 }
 
 EffectManager::~EffectManager()

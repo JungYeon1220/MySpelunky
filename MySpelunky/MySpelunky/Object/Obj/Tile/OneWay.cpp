@@ -21,6 +21,8 @@ OneWay::~OneWay()
 
 bool OneWay::Block(shared_ptr<Collider> col)
 {
+	if (_isActive == false)
+		return false;
 	if (_canStand == false)
 		return false;
 	Vector2 colPos = col->GetWorldPos();
@@ -38,12 +40,16 @@ bool OneWay::Block(shared_ptr<Collider> col)
 
 void OneWay::Update()
 {
+	if (_isActive == false)
+		return;
 	_col->Update();
 	_transform->Update();
 }
 
 void OneWay::Render()
 {
+	if (_isActive == false)
+		return;
 	if (CAMERA->GetViewCollider()->IsCollision(_col) == true)
 	{
 		_transform->SetPosition(Vector2(0.0f, 0.0f));

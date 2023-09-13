@@ -40,12 +40,16 @@ bool Spike::Block(shared_ptr<Collider> col)
 
 void Spike::Update()
 {
+	if (_isActive == false)
+		return;
 	_col->Update();
 	_spikeCol->Update();
 }
 
 void Spike::Render()
 {
+	if (_isActive == false)
+		return;
 	if (CAMERA->GetViewCollider()->IsCollision(_col) == false)
 		return;
 
