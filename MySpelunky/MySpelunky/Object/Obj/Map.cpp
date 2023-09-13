@@ -43,9 +43,9 @@ void Map::Update()
 
 				if (tile->GetCollider()->IsCollision(dynamic_pointer_cast<Movable>(_types["Movable"][i])->GetMovableCollider()))
 				{
-					if (tile->GetCollider()->Block(_types["Movable"][i]->GetCollider()))
+					if (tile->GetCollider()->GetWorldPos().y < _types["Movable"][i]->GetCollider()->GetWorldPos().y)
 					{
-						if (tile->GetCollider()->GetWorldPos().y < _types["Movable"][i]->GetCollider()->GetWorldPos().y)
+						if (tile->Block(_types["Movable"][i]->GetCollider()))
 							check = true;
 					}
 				}
@@ -581,7 +581,7 @@ void Map::CreateStage()
 		{
 			int type = _layout[i][j];
 
-			if (type == 0 || type == 3 || type == 6 || type == 7)
+			if (type == 0 || type == 3 || type == 6 || type == 7 || type == 8)
 			{
 				continue;
 			}

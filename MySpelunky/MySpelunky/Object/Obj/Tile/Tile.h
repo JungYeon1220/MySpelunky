@@ -33,6 +33,7 @@ public:
 
 	shared_ptr<RectCollider> GetCollider() { return _col; }
 	Type GetType() { return _type; }
+	const string& GetName() { return _name; }
 	Vector2& GetIndex() { return _index; }
 	bool& CanGrab() { return _canGrab; }
 	bool& LedgeRight() { return _cliffR; }

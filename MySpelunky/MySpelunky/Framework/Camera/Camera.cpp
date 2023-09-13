@@ -33,13 +33,12 @@ void Camera::Update()
 		FollowMode();
 
 	Shake();
-
 	_view->Update();
 }
 
 void Camera::PostRender()
 {
-	_viewCol->Render();
+	//_viewCol->Render();
 	Vector2 temp = GetWorldMousePos();
 	ImGui::Text("World_mousePos: { %.0f, %.0f }", temp.x, temp.y);
 	ImGui::Text("Win_mousePos: { %.0f, %.0f }", WIN_MOUSE_POS.x, WIN_MOUSE_POS.y);
@@ -88,7 +87,11 @@ void Camera::SetPosition(Vector2 pos)
 
 void Camera::SetScale(Vector2 scale)
 {
+	_scale = scale;
+	_invScale = Vector2(1 / scale.x, 1 / scale.y);
 	_view->SetScale(scale);
+	Vector2 temp = Vector2(1 / scale.x, 1 / scale.y);
+	_viewCol->GetTransform()->SetScale(temp);
 }
 
 void Camera::SetAngle(float angle)
@@ -182,21 +185,25 @@ void Camera::FollowMode()
 {
 	Vector2 targetPos = _target.lock()->GetWorldPos() - _offset;
 
-	if (targetPos.x < _leftBottom.x + WIN_WIDTH * 0.5f)
-		targetPos.x = _leftBottom.x + WIN_WIDTH * 0.5f;
+	if (targetPos.x < _leftBottom.x + WIN_WIDTH * _invScale.x * 0.5f)
+		targetPos.x = _leftBottom.x + WIN_WIDTH * _invScale.x * 0.5f;
 
-	if (targetPos.x > _rightTop.x - WIN_WIDTH * 0.5f)
-		targetPos.x = _rightTop.x - WIN_WIDTH * 0.5f;
+	if (targetPos.x > _rightTop.x - WIN_WIDTH * _invScale.x * 0.5f)
+		targetPos.x = _rightTop.x - WIN_WIDTH * _invScale.x * 0.5f;
 
-	if (targetPos.y < _leftBottom.y + WIN_HEIGHT * 0.5f)
-		targetPos.y = _leftBottom.y + WIN_HEIGHT * 0.5f;
+	if (targetPos.y < _leftBottom.y + WIN_HEIGHT * _invScale.y * 0.5f)
+		targetPos.y = _leftBottom.y + WIN_HEIGHT * _invScale.y * 0.5f;
 
-	if (targetPos.y > _rightTop.y - WIN_HEIGHT * 0.5f)
-		targetPos.y = _rightTop.y - WIN_HEIGHT * 0.5f;
+	if (targetPos.y > _rightTop.y - WIN_HEIGHT * _invScale.y * 0.5f)
+		targetPos.y = _rightTop.y - WIN_HEIGHT * _invScale.y * 0.5f;
+
+	_viewCol->GetTransform()->SetPosition(LERP(_viewCol->GetWorldPos(), targetPos, 0.04f));
+
+	targetPos.x *= _scale.x;
+	targetPos.y *= _scale.y;
 
 	Vector2 temp = LERP(-_view->GetWorldPos(), targetPos, 0.04f);
 
 	SetPosition(temp);
 
-	_viewCol->GetTransform()->SetPosition(LERP(_viewCol->GetWorldPos(), targetPos, 0.04f));
 }

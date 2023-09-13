@@ -61,10 +61,10 @@ void OneWay::Render()
 	for (int i = 0; i < _legCount; i++)
 	{
 		_transform->SetPosition(Vector2(0.0f, -100.0f * (i + 1)));
-		if (CAMERA->GetViewCollider()->GetWorldPos().y + WIN_HEIGHT * 0.5f < _transform->GetWorldPos().y - 50.0f
-			|| CAMERA->GetViewCollider()->GetWorldPos().y - WIN_HEIGHT * 0.5f > _transform->GetWorldPos().y + 50.0f
-			|| CAMERA->GetViewCollider()->GetWorldPos().x + WIN_WIDTH * 0.5f < _transform->GetWorldPos().x - 50.0f
-			|| CAMERA->GetViewCollider()->GetWorldPos().x - WIN_WIDTH * 0.5f > _transform->GetWorldPos().x + 50.0f)
+		if (CAMERA->GetViewCollider()->GetWorldPos().y + WIN_HEIGHT * CAMERA->_invScale.y * 0.5f < _transform->GetWorldPos().y - 50.0f
+			|| CAMERA->GetViewCollider()->GetWorldPos().y - WIN_HEIGHT * CAMERA->_invScale.y * 0.5f > _transform->GetWorldPos().y + 50.0f
+			|| CAMERA->GetViewCollider()->GetWorldPos().x + WIN_WIDTH * CAMERA->_invScale.x * 0.5f < _transform->GetWorldPos().x - 50.0f
+			|| CAMERA->GetViewCollider()->GetWorldPos().x - WIN_WIDTH * CAMERA->_invScale.x * 0.5f > _transform->GetWorldPos().x + 50.0f)
 			continue;
 		_transform->Update();
 		_transform->SetWorldBuffer(0);

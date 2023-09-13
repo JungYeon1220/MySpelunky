@@ -62,10 +62,11 @@ public:
 	void FreeMode();
 	void FollowMode();
 
+	Vector2 _scale = { 1.0f, 1.0f };
+	Vector2 _invScale = { 1.0f, 1.0f };
 private:
 	void Shake();
 	static Camera* _instance;
-
 	shared_ptr<Transform> _view;
 	shared_ptr<Transform> _uiView;
 

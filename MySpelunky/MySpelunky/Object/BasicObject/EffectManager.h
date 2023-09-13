@@ -29,7 +29,7 @@ public:
 	void Update();
 	void Render();
 
-	void AddEffect(string name, wstring file, Vector2 maxFrame, Vector2 size, float speed = 0.03f,
+	void AddEffect(string name, wstring file, Vector2 maxFrame, Vector2 size, float speed = 0.05f,
 		Action::Type type = Action::Type::END);
 
 	void Play(string name, Vector2 pos);

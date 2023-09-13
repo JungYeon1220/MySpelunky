@@ -453,6 +453,9 @@
     <Image Include="Resource\Texture\hit_4x2.png">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="Resource\Texture\fx_explosion.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\ActionFilterPS.hlsl" />

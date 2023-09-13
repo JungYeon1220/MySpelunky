@@ -23,7 +23,7 @@ public:
 		PINGPONG
 	};
 
-	Action(vector<Clip> clips, string name = "", Type type = Type::LOOP, float speed = 0.1f);
+	Action(vector<Clip> clips, string name = "", Type type = Type::LOOP, float speed = 0.05f);
 	~Action();
 
 	void Update();

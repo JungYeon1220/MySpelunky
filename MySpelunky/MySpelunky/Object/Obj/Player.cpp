@@ -251,7 +251,7 @@ void Player::Jump()
 	else
 		_jumpPower = 0.0f;
 
-	_col->GetTransform()->AddVector2(Vector2(0.0f, _jumpPower * DELTA_TIME));
+	_col->GetTransform()->AddVector2(Vector2(0.0f, _jumpPower * (Timer::GetInstance()->GetFPS() / 60.0f) * DELTA_TIME));
 
 	if (_jumpPower < -_maxFalling)
 		_jumpPower = -_maxFalling;
@@ -440,19 +440,8 @@ void Player::GrabLedge()
 	if (KEY_DOWN('Z'))
 	{
 		_isGrabLedge = false;
-		Jump();
-	}
-	else if (KEY_PRESS(VK_DOWN))
-	{
-		_isGrabLedge = false;
-	}
-	else if (_isLeft == true && KEY_DOWN(VK_RIGHT))
-	{
-		_isGrabLedge = false;
-	}
-	else if (_isLeft == false && KEY_DOWN(VK_LEFT))
-	{
-		_isGrabLedge = false;
+		if(KEY_PRESS(VK_DOWN) == false)
+			Jump();
 	}
 }
 
@@ -533,6 +522,10 @@ void Player::Update()
 			SetAction(State::STUN_GROUND);
 		}
 	}
+
+	if (_isFalling == false &&KEY_PRESS(VK_DOWN))
+		_isClimb = false;
+
 	Input();
 	Jump();
 	if (_canClimb == false)

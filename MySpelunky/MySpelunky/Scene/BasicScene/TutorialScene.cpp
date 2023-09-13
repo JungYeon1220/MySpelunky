@@ -51,6 +51,7 @@ TutorialScene::TutorialScene()
 	_item = make_shared<Item>();
 
 	CAMERA->SetTarget(_player->GetCollider()->GetTransform());
+	CAMERA->SetScale(Vector2(0.5f, 0.5f));
 	CAMERA->SetLeftBottom(Vector2(-10000.0f, -10000.0f));
 	CAMERA->SetRightTop(Vector2(10000.0f, 10000.0f));
 }

@@ -16,6 +16,7 @@ public:
 	float& GetJumpPower() { return _jumpPower; }
 	float& GetSpeed() { return _speed; }
 	Vector2 GetSize() { return _size; }
+	const string& GetName() { return _name; }
 
 	bool& IsFalling() { return _isFalling; }
 	bool& IsActive() { return _isActive; }

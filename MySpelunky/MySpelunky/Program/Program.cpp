@@ -9,7 +9,7 @@ Program::Program()
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
 
-	_curScene = make_shared<TutorialScene>();
+	_curScene = make_shared<TileTestScene>();
 
 	Timer::GetInstance()->LockFPS(60);
 }
@@ -24,6 +24,7 @@ void Program::Update()
 	InputManager::GetInstance()->Update();
 	CAMERA->Update();
 	_curScene->Update();
+	EFFECT->Update();
 }
 
 void Program::Render()
