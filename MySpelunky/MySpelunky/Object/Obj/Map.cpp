@@ -118,14 +118,14 @@ int Map::GetRopeLength(Vector2 pos)
 {
 	if (pos.x == NAN || pos.y == NAN)
 		return 0;
-	int count = 0;
+	int count = 1;
 	Vector2 index = MathUtility::GetGridIndex(pos);
 	for (int i = 1; i <= 4; i++)
 	{
-		if (_layout[(_poolCountY - 1 - index.y) + i][index.x] == 1
-		||  _layout[(_poolCountY - 1 - index.y) + i][index.x] == 11
-		||  _layout[(_poolCountY - 1 - index.y) + i][index.x] == 9
-		||  _layout[(_poolCountY - 1 - index.y) + i][index.x] == 50)
+		if (_layout[index.y + i][index.x] == 1
+		||  _layout[index.y + i][index.x] == 11
+		||  _layout[index.y + i][index.x] == 9
+		||  _layout[index.y + i][index.x] == 50)
 		{
 			break;
 		}

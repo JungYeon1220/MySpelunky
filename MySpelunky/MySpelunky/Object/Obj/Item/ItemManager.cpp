@@ -1,8 +1,5 @@
 #include "framework.h"
 #include "ItemManager.h"
-#include "Item.h"
-#include "Bomb.h"
-#include "Rope.h"
 
 ItemManager* ItemManager::_instance = nullptr;
 
@@ -48,8 +45,7 @@ void ItemManager::RopeRender()
 
 void ItemManager::SetItem(string name, Vector2 pos)
 {
-	shared_ptr<Item> item = make_shared<Item>();
-	item->SetName(name);
+	shared_ptr<Item> item = make_shared<Item>(name);
 	item->GetCollider()->GetTransform()->SetPosition(pos);
 	item->IsActive() = true;
 	_items.push_back(item);

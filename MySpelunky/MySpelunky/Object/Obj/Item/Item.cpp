@@ -6,8 +6,14 @@ Item::Item()
 	_col = make_shared<RectCollider>(Vector2(50.0f, 50.0f));
 	_transform = make_shared<Transform>();
 	_transform->SetParent(_col->GetTransform());
+}
 
-	_name = "JumpShoes";
+Item::Item(string name)
+	:_name(name)
+{
+	_col = make_shared<RectCollider>(Vector2(50.0f, 50.0f));
+	_transform = make_shared<Transform>();
+	_transform->SetParent(_col->GetTransform());
 }
 
 Item::~Item()

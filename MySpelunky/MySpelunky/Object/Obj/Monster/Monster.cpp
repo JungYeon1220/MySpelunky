@@ -1,6 +1,5 @@
 #include "framework.h"
 #include "Monster.h"
-#include "../Player.h"
 
 Monster::Monster()
 {

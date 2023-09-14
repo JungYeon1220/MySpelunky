@@ -77,7 +77,7 @@ private:
 	State _curState = State::IDLE;
 	State _oldState = State::IDLE;
 
-	Vector2 _playerSize = Vector2(60.0f, 80.0f);
+	Vector2 _playerSize = Vector2(50.0f, 80.0f);
 
 	shared_ptr<RectCollider> _col;
 	shared_ptr<RectCollider> _layDownCol;

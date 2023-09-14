@@ -6,11 +6,11 @@ Rope::Rope()
 	_transform = make_shared<Transform>();
 	_col = make_shared<RectCollider>(Vector2(20.0f, 100.0f));
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		shared_ptr<RectCollider> col = make_shared<RectCollider>(Vector2(20.0f, 100.0f));
 		col->GetTransform()->SetParent(_col->GetTransform());
-		col->GetTransform()->SetPosition(Vector2(0.0f, -100.0f * (i + 1)));
+		col->GetTransform()->SetPosition(Vector2(0.0f, -100.0f * (i)));
 		_ropeCols.push_back(col);
 
 	}
@@ -43,10 +43,6 @@ void Rope::Update()
 		_col->GetTransform()->SetPosition({ _col->GetWorldPos().x, MathUtility::GetGridPosition(_col->GetWorldPos()).y });
 		_transform->Update();
 		_col->Update();
-		if (_length == 0)
-			_name = "Hook3";
-		else
-			_name = "Hook2";
 		_hooked = true;
 	}
 }
@@ -55,7 +51,7 @@ void Rope::Render()
 {
 	if (_isActive == false)
 		return;
-	if (_col->IsCollision(CAMERA->GetViewCollider()) == true)
+	if (_col->IsCollision(CAMERA->GetViewCollider()) == true && _hooked == false)
 	{
 		_transform->SetPosition(Vector2(0.0f, 0.0f));
 		_transform->Update();
@@ -63,28 +59,38 @@ void Rope::Render()
 		SPRITEMANAGER->Render("Rope", _name);
 	}
 
-	if (_hooked == true && _length != 0)
+	if (_hooked == true)
 	{
 		for (int i = 0; i < _curLength; i++)
 		{
-			_transform->SetPosition(Vector2(0.0f, -100.0f * (i + 1)));
+			_transform->SetPosition(Vector2(0.0f, -100.0f * (i)));
 			if (CAMERA->GetViewCollider()->IsCollision(_ropeCols[i]) == false)
 				continue;
 			_transform->Update();
 			_transform->SetWorldBuffer(0);
 
-			if (i == _curLength - 1)
+			if (i == 0)
 			{
-				if(i == _length - 1 && _dropEnd == true)
-					SPRITEMANAGER->Render("Rope", "RopeEnd");
+				if (_length == 1)
+					SPRITEMANAGER->Render("Rope", "Hook3");
 				else
-					SPRITEMANAGER->Render("Rope", _action->GetCurClip());
+					SPRITEMANAGER->Render("Rope", "Hook2");
+			}
+			else if (i == _curLength - 1)
+			{
+				if (_length != 1)
+				{
+					if (i == _length - 1 && _dropEnd == true)
+						SPRITEMANAGER->Render("Rope", "RopeEnd");
+					else
+						SPRITEMANAGER->Render("Rope", _action->GetCurClip());
+				}
 			}
 			else
 				SPRITEMANAGER->Render("Rope", "Rope");
 		}
 	}
-	//_col->Render();
+	_col->Render();
 }
 
 void Rope::DropRope()

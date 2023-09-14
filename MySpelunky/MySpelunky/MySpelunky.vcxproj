@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Object\Obj\Monster\MonsterManager.h" />
     <ClInclude Include="Object\BasicObject\EffectManager.h" />
     <ClInclude Include="Object\Obj\Item\Bomb.h" />
     <ClInclude Include="framework.h" />
@@ -209,6 +210,7 @@
     <ClInclude Include="Object\Obj\Tile\Wooden.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Object\Obj\Monster\MonsterManager.cpp" />
     <ClCompile Include="Object\BasicObject\EffectManager.cpp" />
     <ClCompile Include="Object\Obj\Item\Bomb.cpp" />
     <ClCompile Include="framework.cpp">

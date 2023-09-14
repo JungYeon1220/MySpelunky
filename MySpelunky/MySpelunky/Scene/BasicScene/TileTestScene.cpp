@@ -7,16 +7,17 @@ TileTestScene::TileTestScene()
 	_player = make_shared<Player>();
 	_player->GetCollider()->GetTransform()->SetPosition(_map->GetStartPos());
 
+	vector<vector<int>> layout = _map->GetLayout();
 	for (int i = 0; i < _map->PoolCount().y; i++)
 	{
 		for (int j = 0; j < _map->PoolCount().x; j++)
 		{
-			if (_map->GetLayout()[i][j] == 0)
+			if (layout[i][j] == 0)
 				continue;
 
-			if (_map->GetLayout()[i][j] == 1)
+			if (layout[i][j] == 1)
 			{
-				if (_map->GetLayout()[i - 1][j] == 0)
+				if (layout[i - 1][j] == 0)
 				{
 					int random = MathUtility::RandomInt(0, 30);
 
@@ -68,6 +69,7 @@ void TileTestScene::Update()
 
 	_player->IsFalling() = true;
 	_player->IsOnOneWay() = false;
+	//_player->IsClimb() = false;
 	Vector2 playerGrid = MathUtility::GetGridIndex(_player->GetCollider()->GetWorldPos());
 
 	vector<vector<int>> layout = _map->GetLayout();
@@ -105,12 +107,12 @@ void TileTestScene::Update()
 			}
 		}
 
-		float x = _player->GetCollider()->GetWorldPos().x - normal->GetCollider()->GetWorldPos().x;
-		float y = _player->GetCollider()->GetWorldPos().y - normal->GetCollider()->GetWorldPos().y;
-		if (x * x + y * y > 40000.0f)
+		Vector2 playerIdx = MathUtility::GetGridIndex(_player->GetCollider()->GetWorldPos());
+		Vector2 tileIdx = normal->GetIndex();
+		if (tileIdx.x > playerIdx.x + 1 || tileIdx.x < playerIdx.x - 1)
 			continue;
-
-
+		if (tileIdx.y > playerIdx.y + 1 || tileIdx.y < playerIdx.y - 1)
+			continue;
 
 		if (normal->Block(_player->GetCollider()))
 		{
@@ -123,8 +125,8 @@ void TileTestScene::Update()
 
 			if (normal->CanGrab() == true)
 			{
-				if (_player->GetGrabCollider()->IsCollision(tilePos + Vector2(50.0f, 50.0f)) 
-				 || _player->GetGrabCollider()->IsCollision(tilePos + Vector2(-50.0f, 50.0f)))
+				if (_player->GetGrabCollider()->IsCollision(tilePos + Vector2(50.0f, 50.0f))
+					|| _player->GetGrabCollider()->IsCollision(tilePos + Vector2(-50.0f, 50.0f)))
 				{
 					if (_player->GetJumpPower() <= 0.0f)
 					{
@@ -140,12 +142,15 @@ void TileTestScene::Update()
 	}
 	for (auto unbreakable : _map->GetTypeTiles()["Unbreakable"])
 	{
+		Vector2 playerIdx = MathUtility::GetGridIndex(_player->GetCollider()->GetWorldPos());
+		Vector2 tileIdx = unbreakable->GetIndex();
+		if (tileIdx.x > playerIdx.x + 1 || tileIdx.x < playerIdx.x - 1)
+			continue;
+		if (tileIdx.y > playerIdx.y + 1 || tileIdx.y < playerIdx.y - 1)
+			continue;
+
 		if (unbreakable->Block(_player->GetCollider()))
 		{
-			float x = _player->GetCollider()->GetWorldPos().x - unbreakable->GetCollider()->GetWorldPos().x;
-			float y = _player->GetCollider()->GetWorldPos().y - unbreakable->GetCollider()->GetWorldPos().y;
-			if (x * x + y * y > 40000.0f)
-				continue;
 
 			if (unbreakable->GetCollider()->IsCollision(_player->GetFeetCollider()))
 				_player->IsFalling() = false;
@@ -156,9 +161,11 @@ void TileTestScene::Update()
 	}
 	for (auto oneway : _map->GetTypeTiles()["Oneway"])
 	{
-		float x = _player->GetCollider()->GetWorldPos().x - oneway->GetCollider()->GetWorldPos().x;
-		float y = _player->GetCollider()->GetWorldPos().y - oneway->GetCollider()->GetWorldPos().y;
-		if (x * x + y * y > 40000.0f)
+		Vector2 playerIdx = MathUtility::GetGridIndex(_player->GetCollider()->GetWorldPos());
+		Vector2 tileIdx = oneway->GetIndex();
+		if (tileIdx.x > playerIdx.x + 1 || tileIdx.x < playerIdx.x - 1)
+			continue;
+		if (tileIdx.y > playerIdx.y + 1 || tileIdx.y < playerIdx.y - 1)
 			continue;
 
 		if ((_player->GetJumpPower() <= 0.0f) && _player->IsClimb() == false)
@@ -180,18 +187,27 @@ void TileTestScene::Update()
 	}
 	for (auto ladder : _map->GetTypeTiles()["Ladder"])
 	{
-		float x = _player->GetCollider()->GetWorldPos().x - ladder->GetCollider()->GetWorldPos().x;
-		float y = _player->GetCollider()->GetWorldPos().y - ladder->GetCollider()->GetWorldPos().y;
-		if (x * x + y * y > 40000.0f)
+		Vector2 playerIdx = MathUtility::GetGridIndex(_player->GetCollider()->GetWorldPos());
+		Vector2 tileIdx = ladder->GetIndex();
+		if (tileIdx.x > playerIdx.x + 1 || tileIdx.x < playerIdx.x - 1)
 			continue;
+		if (tileIdx.y > playerIdx.y + 1 || tileIdx.y < playerIdx.y - 1)
+			continue;
+		float tileX = ladder->GetCollider()->GetWorldPos().x;
+		float tileY = ladder->GetCollider()->GetWorldPos().y;
+		float playerX = _player->GetCollider()->GetWorldPos().x;
+		float playerY = _player->GetCollider()->GetWorldPos().y;
+		float playerXHalfSize = _player->GetSize().x * 0.5f;
+		float playerYHalfSize = _player->GetSize().y * 0.5f;
+
+		if (ladder->GetName() == "BottomLadder")
+		{
+			if (tileY - 50.0f > playerY + playerYHalfSize)
+				_player->IsClimb() = false;
+		}
 
 		if (ladder->GetCollider()->IsCollision(_player->GetCollider()))
 		{
-			float tileX = ladder->GetCollider()->GetWorldPos().x;
-			float tileY = ladder->GetCollider()->GetWorldPos().y;
-			float playerX = _player->GetCollider()->GetWorldPos().x;
-			float playerY = _player->GetCollider()->GetWorldPos().y;
-			float playerXHalfSize = _player->GetSize().x * 0.5f;
 			if (tileX < playerX + playerXHalfSize && tileX > playerX - playerXHalfSize)
 			{
 				if (KEY_DOWN(VK_UP) || KEY_PRESS(VK_UP))
@@ -210,6 +226,7 @@ void TileTestScene::Update()
 				}
 			}
 		}
+
 		if (_player->IsClimb() == false)
 		{
 			if (dynamic_pointer_cast<Ladder>(ladder)->IsOneWay() == true)
@@ -235,9 +252,11 @@ void TileTestScene::Update()
 	}
 	for (auto wooden : _map->GetTypeTiles()["Wooden"])
 	{
-		float x = _player->GetCollider()->GetWorldPos().x - wooden->GetCollider()->GetWorldPos().x;
-		float y = _player->GetCollider()->GetWorldPos().y - wooden->GetCollider()->GetWorldPos().y;
-		if (x * x + y * y > 40000.0f)
+		Vector2 playerIdx = MathUtility::GetGridIndex(_player->GetCollider()->GetWorldPos());
+		Vector2 tileIdx = wooden->GetIndex();
+		if (tileIdx.x > playerIdx.x + 1 || tileIdx.x < playerIdx.x - 1)
+			continue;
+		if (tileIdx.y > playerIdx.y + 1 || tileIdx.y < playerIdx.y - 1)
 			continue;
 
 		if (wooden->Block(_player->GetCollider()))
@@ -282,9 +301,11 @@ void TileTestScene::Update()
 			}
 		}
 
-		float x = _player->GetCollider()->GetWorldPos().x - skeleton->GetCollider()->GetWorldPos().x;
-		float y = _player->GetCollider()->GetWorldPos().y - skeleton->GetCollider()->GetWorldPos().y;
-		if (x * x + y * y > 40000.0f)
+		Vector2 playerIdx = MathUtility::GetGridIndex(_player->GetCollider()->GetWorldPos());
+		Vector2 tileIdx = skeleton->GetIndex();
+		if (tileIdx.x > playerIdx.x + 1 || tileIdx.x < playerIdx.x - 1)
+			continue;
+		if (tileIdx.y > playerIdx.y + 1 || tileIdx.y < playerIdx.y - 1)
 			continue;
 
 		if (skeleton->Block(_player->GetCollider()))
@@ -317,9 +338,11 @@ void TileTestScene::Update()
 		if (layout[spike->GetIndex().y + 1][spike->GetIndex().x] == 0)
 			spike->IsActive() = false;
 
-		float x = _player->GetCollider()->GetWorldPos().x - spike->GetCollider()->GetWorldPos().x;
-		float y = _player->GetCollider()->GetWorldPos().y - spike->GetCollider()->GetWorldPos().y;
-		if (x * x + y * y > 40000.0f)
+		Vector2 playerIdx = MathUtility::GetGridIndex(_player->GetCollider()->GetWorldPos());
+		Vector2 tileIdx = spike->GetIndex();
+		if (tileIdx.x > playerIdx.x + 1 || tileIdx.x < playerIdx.x - 1)
+			continue;
+		if (tileIdx.y > playerIdx.y + 1 || tileIdx.y < playerIdx.y - 1)
 			continue;
 
 		if ((_player->GetJumpPower() < 0.0f))
@@ -348,9 +371,11 @@ void TileTestScene::Update()
 	}
 	for (auto movable : _map->GetTypeTiles()["Movable"])
 	{
-		float x = _player->GetCollider()->GetWorldPos().x - movable->GetCollider()->GetWorldPos().x;
-		float y = _player->GetCollider()->GetWorldPos().y - movable->GetCollider()->GetWorldPos().y;
-		if (x * x + y * y > 40000.0f)
+		Vector2 playerIdx = MathUtility::GetGridIndex(_player->GetCollider()->GetWorldPos());
+		Vector2 tileIdx = movable->GetIndex();
+		if (tileIdx.x > playerIdx.x + 1 || tileIdx.x < playerIdx.x - 1)
+			continue;
+		if (tileIdx.y > playerIdx.y + 1 || tileIdx.y < playerIdx.y - 1)
 			continue;
 
 		if (movable->Block(_player->GetCollider()))
@@ -474,7 +499,7 @@ void TileTestScene::Update()
 			if (bomb->IsActive() == false && bomb->_boom == false)
 				continue;
 
-			bool check = false;
+			bomb->IsFalling() = true;
 			for (auto pair : _map->GetTypeTiles())
 			{
 				for (auto tile : pair.second)
@@ -482,10 +507,30 @@ void TileTestScene::Update()
 					if (tile == nullptr)
 						continue;
 
-					if (bomb->DestroyTile(tile))
+					if (_player->GetState() == Player::State::CRAWL || _player->GetState() == Player::State::LAY_DOWN)
 					{
-						_map->GetLayout()[tile->GetIndex().y][tile->GetIndex().x] = 0;
-						_map->_distroyedTileIndex.push_back(tile->GetIndex());
+
+					}
+
+					if (bomb->_boom == true)
+					{
+						if (bomb->DestroyTile(tile))
+						{
+							_map->GetLayout()[tile->GetIndex().y][tile->GetIndex().x] = 0;
+							_map->_distroyedTileIndex.push_back(tile->GetIndex());
+						}
+
+						if (bomb->GetRangeCol()->IsCollision(_player->GetHitCollider()))
+						{
+							_player->KnockBack(bomb->GetCollider()->GetWorldPos(), 1000.0f);
+							_player->TakeDamage(3);
+						}
+
+						for (auto monster : _monsters)
+						{
+							if (bomb->GetRangeCol()->IsCollision(monster->GetCollider()))
+								monster->TakeDamage(3);
+						}
 					}
 
 					if (tile->Block(bomb->GetCollider()))
@@ -498,16 +543,11 @@ void TileTestScene::Update()
 						}
 						else
 						{
-							check = true;
+							bomb->IsFalling() = false;
 						}
 					}
 				}
 			}
-
-			if (check == true)
-				bomb->IsFalling() = false;
-			else
-				bomb->IsFalling() = true;
 
 			bomb->Update();
 		}
@@ -521,6 +561,13 @@ void TileTestScene::Update()
 				continue;
 
 			rope->Update();
+
+			float tileX = rope->GetCollider()->GetWorldPos().x;
+			float tileY = rope->GetCollider()->GetWorldPos().y;
+			float playerX = _player->GetCollider()->GetWorldPos().x;
+			float playerY = _player->GetCollider()->GetWorldPos().y;
+			float playerXHalfSize = _player->GetSize().x * 0.5f;
+			float playerYHalfSize = _player->GetSize().y * 0.5f;
 
 			for (auto pair : _map->GetTypeTiles())
 			{
@@ -540,15 +587,25 @@ void TileTestScene::Update()
 			if (rope->IsHooked() == true && rope->DropEnd() == false)
 				rope->GetLength() = _map->GetRopeLength(rope->GetCollider()->GetWorldPos());
 
+			if (rope->GetLength() == 1)
+			{
+				if (rope->GetCollider()->IsCollision(_player->GetCollider()))
+				{
+					if (tileY > playerY + playerYHalfSize)
+						_player->IsClimb() = false;
+				}
+
+			}
+
 			for (int i = 0; i < rope->GetCurLength(); i++)
 			{
 				if (rope->GetColliders()[i]->IsCollision(_player->GetCollider()))
 				{
-					float tileX = rope->GetCollider()->GetWorldPos().x;
-					float tileY = rope->GetCollider()->GetWorldPos().y;
-					float playerX = _player->GetCollider()->GetWorldPos().x;
-					float playerY = _player->GetCollider()->GetWorldPos().y;
-					float playerXHalfSize = _player->GetSize().x * 0.5f;
+					if (i == rope->GetColliders().size())
+					{
+						if (rope->GetColliders()[i]->GetWorldPos().y - 50.0f > playerY + playerYHalfSize)
+							_player->IsClimb() = false;
+					}
 					if (tileX < playerX + playerXHalfSize && tileX > playerX - playerXHalfSize)
 					{
 						if (KEY_DOWN(VK_UP) || KEY_PRESS(VK_UP))
@@ -556,7 +613,8 @@ void TileTestScene::Update()
 							if (_player->CanClimb() == true)
 							{
 								_player->GetCollider()->GetTransform()->SetPosition(Vector2(tileX, _player->GetCollider()->GetWorldPos().y));
-								if (rope->GetName() == "Hook2" || rope->GetName() == "Hook3")
+
+								if (i == 0)
 								{
 									if (_player->GetCollider()->GetWorldPos().y >= rope->GetCollider()->GetWorldPos().y)
 										_player->GetCollider()->GetTransform()->SetPosition(Vector2(playerX, tileY));

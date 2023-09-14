@@ -1,6 +1,5 @@
 #include "framework.h"
 #include "Mosquito.h"
-#include "../Player.h"
 
 Mosquito::Mosquito()
 {

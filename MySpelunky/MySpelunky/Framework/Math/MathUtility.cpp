@@ -32,5 +32,5 @@ Vector2 MathUtility::GetGridIndex(Vector2 pos)
 	pos.x = round(pos.x);
 	pos.y = round(pos.y);
 
-	return Vector2((int)pos.x, 38 - (int)pos.y);
+	return Vector2((int)pos.x, 35 - (int)pos.y);
 }

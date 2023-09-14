@@ -19,7 +19,7 @@ public:
 private:
 	void CreateAction();
 	int _length = 2;
-	int _curLength = 0;
+	int _curLength = 1;
 	bool _hooked = false;
 	bool _dropEnd = false;
 

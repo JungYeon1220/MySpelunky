@@ -1,15 +1,12 @@
 #include "framework.h"
 #include "Player.h"
-#include "Whip.h"
-#include "Item/Bomb.h"
-#include "Item/Rope.h"
 
 Player::Player()
 {
 	_col = make_shared<RectCollider>(_playerSize);
-	_layDownCol = make_shared<RectCollider>(Vector2(60.0f, 40.0f));
-	_feetCol = make_shared<CircleCollider>(15.0f);
-	_headCol = make_shared<CircleCollider>(10.0f);
+	_layDownCol = make_shared<RectCollider>(Vector2(50.0f, 40.0f));
+	_feetCol = make_shared<CircleCollider>(20.0f);
+	_headCol = make_shared<CircleCollider>(20.0f);
 	_grabCol = make_shared<CircleCollider>(10.0f);
 	_handCol = make_shared<CircleCollider>(10.0f);
 
@@ -520,6 +517,9 @@ void Player::Update()
 		else
 		{
 			SetAction(State::STUN_GROUND);
+			_curSpeed *= 0.9f;
+			if (_curSpeed < 10.0f && _curSpeed > -10.0f)
+				_curSpeed = 0.0f;
 		}
 	}
 
@@ -723,8 +723,6 @@ void Player::TakeDamage(int value)
 
 void Player::KnockBack(Vector2 pos, float value)
 {
-	if (_isDead == true)
-		return;
 	if (_isDamaged == true)
 		return;
 
@@ -756,7 +754,6 @@ void Player::Dead()
 {
 	_isStun = true;
 	_isDead = true;
-	_curSpeed = 0.0f;
 	_hp = 0;
 }
 

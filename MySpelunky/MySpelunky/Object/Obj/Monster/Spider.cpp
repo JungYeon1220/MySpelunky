@@ -1,6 +1,5 @@
 #include "framework.h"
 #include "Spider.h"
-#include "../Player.h"
 
 Spider::Spider()
 {

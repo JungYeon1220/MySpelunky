@@ -110,16 +110,17 @@ using namespace Microsoft::WRL;
 #include "Object/Obj/Monster/Mosquito.h"
 #include "Object/Obj/Monster/Snake.h"
 #include "Object/Obj/Monster/Spider.h"
+#include "Object/Obj/Monster/MonsterManager.h"
 
 #include "Object/Obj/Item/Item.h"
 #include "Object/Obj/Item/Bomb.h"
 #include "Object/Obj/Item/Rope.h"
+#include "Object/Obj/Item/ItemManager.h"
 
 #include "Object/Obj/Whip.h"
 #include "Object/Obj/Player.h"
 
 #include "Object/Obj/SpriteManager.h"
-#include "Object/Obj/Item/ItemManager.h"
 
 // Scene
 #include "Scene/Scene.h"

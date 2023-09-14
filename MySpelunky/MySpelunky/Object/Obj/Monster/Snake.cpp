@@ -1,6 +1,5 @@
 #include "framework.h"
 #include "Snake.h"
-#include "../Player.h"
 
 Snake::Snake()
 {
