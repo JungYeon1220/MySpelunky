@@ -19,7 +19,7 @@ public:
 
 	void Move();
 
-	virtual void SetTarget(shared_ptr<class Player> player);
+	virtual bool SetTarget(shared_ptr<class Player> player);
 
 	void SetAction(State state);
 private:

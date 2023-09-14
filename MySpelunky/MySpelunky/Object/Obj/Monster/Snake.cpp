@@ -60,7 +60,7 @@ void Snake::Update()
 		return;
 
 	Move();
-
+	
 	_actions[_curState]->Update();
 	Monster::Update();
 }
@@ -203,7 +203,7 @@ void Snake::Move()
 	}
 }
 
-void Snake::SetTarget(shared_ptr<class Player> player)
+bool Snake::SetTarget(shared_ptr<class Player> player)
 {
 	if (_rangeCol->IsCollision(player->GetHitCollider()))
 	{
@@ -218,6 +218,8 @@ void Snake::SetTarget(shared_ptr<class Player> player)
 	}
 	else
 		_inRange = false;
+
+	return _inRange;
 }
 
 void Snake::EndAttack()

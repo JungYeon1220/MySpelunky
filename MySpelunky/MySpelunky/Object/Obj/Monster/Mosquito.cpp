@@ -149,7 +149,7 @@ void Mosquito::Move()
 
 }
 
-void Mosquito::SetTarget(shared_ptr<class Player> player)
+bool Mosquito::SetTarget(shared_ptr<class Player> player)
 {
 	if (_rangeCol->IsCollision(player->GetHitCollider()))
 	{
@@ -173,6 +173,8 @@ void Mosquito::SetTarget(shared_ptr<class Player> player)
 	}
 	else
 		_inRange = false;
+
+	return _inRange;
 }
 
 void Mosquito::SetAction(State state)

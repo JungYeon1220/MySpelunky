@@ -150,7 +150,7 @@ void Spider::Jump()
 	}
 }
 
-void Spider::SetTarget(shared_ptr<Player> player)
+bool Spider::SetTarget(shared_ptr<Player> player)
 {
 	if (_rangeCol->IsCollision(player->GetCollider()))
 	{
@@ -174,6 +174,8 @@ void Spider::SetTarget(shared_ptr<Player> player)
 	{
 		_inRange = false;
 	}
+
+	return _inRange;
 }
 
 void Spider::CreateAction()

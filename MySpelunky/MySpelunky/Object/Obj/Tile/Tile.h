@@ -21,6 +21,7 @@ public:
 	void SetType(Type value);
 	void SetPosition(Vector2 pos) { _pos = pos; }
 	virtual bool Block(shared_ptr<Collider> col);
+	virtual void InteractPlayer(shared_ptr<class Player> player);
 	virtual void Destroy() {}
 
 	virtual void Update();

@@ -1,5 +1,6 @@
 #include "framework.h"
 #include "Unbreakable.h"
+#include "../Player.h"
 
 Unbreakable::Unbreakable()
 	:Tile()
@@ -17,6 +18,38 @@ Unbreakable::Unbreakable(Vector2 pos)
 
 Unbreakable::~Unbreakable()
 {
+}
+
+void Unbreakable::InteractPlayer(shared_ptr<class Player> player)
+{
+	Vector2 playerIdx = MathUtility::GetGridIndex(player->GetCollider()->GetWorldPos());
+	if (_index.x > playerIdx.x + 1 || _index.x < playerIdx.x - 1)
+		return;
+	if (_index.y > playerIdx.y + 1 || _index.y < playerIdx.y - 1)
+		return;
+
+	if (Block(player->GetCollider()))
+	{
+		if (_col->IsCollision(player->GetFeetCollider()))
+			player->IsFalling() = false;
+
+		if (_col->IsCollision(player->GetHeadCollider()))
+			player->GetJumpPower() = 0.0f;
+
+		if (player->_hasGloves == true)
+		{
+			if (player->GetGrabCollider()->IsCollision(_col))
+			{
+				if (player->GetJumpPower() < 0.0f)
+				{
+					if (KEY_PRESS(VK_LEFT) || KEY_PRESS(VK_RIGHT))
+					{
+						player->IsGrab() = true;
+					}
+				}
+			}
+		}
+	}
 }
 
 void Unbreakable::SetRandomTile(int x, int y)

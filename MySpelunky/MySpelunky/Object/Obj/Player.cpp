@@ -5,8 +5,8 @@ Player::Player()
 {
 	_col = make_shared<RectCollider>(_playerSize);
 	_layDownCol = make_shared<RectCollider>(Vector2(50.0f, 40.0f));
-	_feetCol = make_shared<CircleCollider>(20.0f);
-	_headCol = make_shared<CircleCollider>(20.0f);
+	_feetCol = make_shared<CircleCollider>(15.0f);
+	_headCol = make_shared<CircleCollider>(10.0f);
 	_grabCol = make_shared<CircleCollider>(10.0f);
 	_handCol = make_shared<CircleCollider>(10.0f);
 
@@ -110,9 +110,9 @@ void Player::Input()
 	}
 
 	if (_isLaying == true)
-		_handCol->GetTransform()->SetPosition(Vector2(_handCol->GetTransform()->GetPos().x, -40.0f));
+		_handCol->GetTransform()->SetPosition(Vector2(_handCol->GetTransform()->GetPos().x, -30.0f));
 	else
-		_handCol->GetTransform()->SetPosition(Vector2(_handCol->GetTransform()->GetPos().x, -15.0f));
+		_handCol->GetTransform()->SetPosition(Vector2(_handCol->GetTransform()->GetPos().x, -10.0f));
 
 	if (KEY_PRESS(VK_LEFT))
 	{
@@ -469,6 +469,8 @@ void Player::DropItem()
 
 bool Player::HoldItem(shared_ptr<Item> item)
 {
+	if (_isStun == true)
+		return false;
 	if (item->IsActive() == false)
 		return false;
 
@@ -611,8 +613,6 @@ void Player::Update()
 
 	_sprite->SetCurClip(_actions[_curState]->GetCurClip());
 	_sprite->Update();
-
-
 }
 
 void Player::Render()
@@ -626,7 +626,7 @@ void Player::Render()
 	//_feetCol->Render();
 	//_headCol->Render();
 	//_grabCol->Render();
-	//_handCol->Render();
+	_handCol->Render();
 	//_col->Render();
 	//_viewCol->Render();
 }

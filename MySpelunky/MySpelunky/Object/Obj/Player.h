@@ -72,6 +72,7 @@ public:
 	bool& IsDead() {return _isDead;}
 	bool& IsPush() { return _isPush; }
 
+	bool _hasGloves = false;
 private:
 	void CreateAction();
 	State _curState = State::IDLE;
@@ -121,7 +122,7 @@ private:
 	bool _isPush = false;
 
 	float _curStunTime = 0.0f;
-	float _stunCoolTime = 0.5f;
+	float _stunCoolTime = 3.0f;
 
 	bool _canClimb = true;
 	float _climbTime = 0.0f;
@@ -130,11 +131,12 @@ private:
 
 	bool _isGrabLedge = false;
 
-	int _hp = 3;
+	int _hp = 300;
 	bool _isDamaged = false;
 	float _curDamagedTime = 0.0f;
 	float _damagedCoolTime = 2.0f;
 
-	int _bombCount = 5;
+	int _bombCount = 100;
+	int _ropeCount = 3;
 };
 

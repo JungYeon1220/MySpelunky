@@ -6,6 +6,8 @@ public:
 	Unbreakable(Vector2 pos);
 	virtual ~Unbreakable();
 
+	virtual void InteractPlayer(shared_ptr<class Player> player);
+
 	void SetRandomTile(int x, int y);
 
 	virtual void PebbleUp() { _upPebble = true; }

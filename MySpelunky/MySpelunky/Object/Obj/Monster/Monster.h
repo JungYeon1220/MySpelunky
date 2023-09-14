@@ -22,7 +22,7 @@ public:
 
 	void TakeDamage(int value);
 
-	virtual void SetTarget(shared_ptr<class Player> player) {}
+	virtual bool SetTarget(shared_ptr<class Player> player) { return false; }
 
 	shared_ptr<RectCollider> GetCollider() { return _col; }
 	shared_ptr<RectCollider> GetRangeCol() { return _rangeCol; }

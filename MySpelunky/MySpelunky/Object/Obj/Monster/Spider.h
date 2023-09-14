@@ -21,7 +21,7 @@ public:
 	void SetAction(State state);
 
 	void Jump();
-	void SetTarget(shared_ptr<class Player> player);
+	bool SetTarget(shared_ptr<class Player> player);
 
 	bool& IsJumping() { return _isJumping; }
 	bool& CanJump() { return _canJump; }

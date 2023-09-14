@@ -1,5 +1,6 @@
 #include "framework.h"
 #include "Tile.h"
+#include "../Player.h"
 
 Tile::Tile()
 {
@@ -46,6 +47,10 @@ bool Tile::Block(shared_ptr<Collider> col)
 	}
 
 	return false;
+}
+
+void Tile::InteractPlayer(shared_ptr<Player> player)
+{
 }
 
 void Tile::Update()

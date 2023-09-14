@@ -25,6 +25,7 @@ public:
 	void InteractPlayer(shared_ptr<class Player> player);
 
 protected:
+
 	shared_ptr<Transform> _transform;
 	shared_ptr<RectCollider> _col;
 

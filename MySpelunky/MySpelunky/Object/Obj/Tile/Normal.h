@@ -10,6 +10,7 @@ public:
 	virtual void Render() override;
 
 	virtual void Destroy();
+	virtual void InteractPlayer(shared_ptr<class Player> player);
 
 	virtual void PebbleUp() { _upPebble = true; }
 	virtual void PebbleDown() { _downPebble = true; }
