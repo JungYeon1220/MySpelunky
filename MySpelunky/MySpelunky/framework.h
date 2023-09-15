@@ -31,6 +31,12 @@
 #pragma comment(lib,"d3d11.lib")
 #pragma comment(lib,"d3dcompiler.lib")
 
+#include <d2d1_2.h>
+#include <dwrite.h>
+
+#pragma comment(lib,"d2d1.lib")
+#pragma comment(lib,"dwrite.lib")
+
 //DirectXTex
 #include "../DXTex/DirectXTex.h"
 
@@ -43,6 +49,8 @@ using namespace std;
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
+typedef XMMATRIX Matrix;
+
 // Framework
 #include "Framework/Device/Device.h"
 
@@ -52,9 +60,12 @@ using namespace Microsoft::WRL;
 #include "Framework/Math/Transform.h"
 
 // Utility
+#include "Framework/Utility/Singleton.h"
+#include "Framework/Utility/Vector3.h"
 #include "Framework/Utility/Timer.h"
 #include "Framework/Utility/InputManager.h"
 #include "Framework/Utility/tinyxml2.h"
+#include "Framework/Utility/Font.h"
 
 // Render
 #include "Framework/Render/ConstantBuffer.h"

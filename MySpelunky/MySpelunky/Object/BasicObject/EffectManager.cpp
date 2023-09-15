@@ -4,7 +4,7 @@
 EffectManager* EffectManager::_instance = nullptr;
 EffectManager::EffectManager()
 {
-	AddEffect("Explosion", L"Resource/Texture/fx_explosion.png", Vector2(4, 4), Vector2(400.0f, 400.0f));
+	AddEffect("Explosion", L"Resource/Texture/fx_explosion.png", Vector2(4, 4), Vector2(450.0f, 450.0f));
 }
 
 EffectManager::~EffectManager()

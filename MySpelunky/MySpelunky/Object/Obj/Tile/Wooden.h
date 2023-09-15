@@ -6,6 +6,7 @@ public:
 	Wooden(Vector2 pos);
 	virtual ~Wooden();
 
+	virtual void InteractPlayer(shared_ptr<class Player> player);
 	virtual void Destroy() { _isActive = false; }
 
 	virtual void Update() override;

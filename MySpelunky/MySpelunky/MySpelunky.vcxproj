@@ -142,6 +142,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Framework\Utility\Font.h" />
+    <ClInclude Include="Framework\Utility\Singleton.h" />
+    <ClInclude Include="Framework\Utility\Vector3.h" />
     <ClInclude Include="Object\Obj\Monster\MonsterManager.h" />
     <ClInclude Include="Object\BasicObject\EffectManager.h" />
     <ClInclude Include="Object\Obj\Item\Bomb.h" />
@@ -210,6 +213,8 @@
     <ClInclude Include="Object\Obj\Tile\Wooden.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Framework\Utility\Font.cpp" />
+    <ClCompile Include="Framework\Utility\Vector3.cpp" />
     <ClCompile Include="Object\Obj\Monster\MonsterManager.cpp" />
     <ClCompile Include="Object\BasicObject\EffectManager.cpp" />
     <ClCompile Include="Object\Obj\Item\Bomb.cpp" />

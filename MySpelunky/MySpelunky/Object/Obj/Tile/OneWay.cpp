@@ -38,6 +38,35 @@ bool OneWay::Block(shared_ptr<Collider> col)
 	return false;
 }
 
+void OneWay::InteractPlayer(shared_ptr<class Player> player)
+{
+	if (_isActive == false)
+		return;
+
+	Vector2 playerIdx = MathUtility::GetGridIndex(player->GetCollider()->GetWorldPos());
+	if (_index.x > playerIdx.x + 1 || _index.x < playerIdx.x - 1)
+		return;
+	if (_index.y > playerIdx.y + 1 || _index.y < playerIdx.y - 1)
+		return;
+
+	if ((player->GetJumpPower() <= 0.0f) && player->IsClimb() == false)
+	{
+		if (Block(player->GetCollider()))
+		{
+			player->IsFalling() = false;
+			player->IsOnOneWay() = true;
+
+			if (KEY_PRESS(VK_DOWN) && KEY_DOWN('Z'))
+			{
+				_canStand = false;
+			}
+		}
+
+		if (_col->IsCollision(player->GetCollider()) == false)
+			_canStand = true;
+	}
+}
+
 void OneWay::Update()
 {
 	if (_isActive == false)

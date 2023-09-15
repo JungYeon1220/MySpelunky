@@ -1,22 +1,6 @@
 #include "framework.h"
 #include "TutorialScene.h"
-#include "../../Object/Obj/Player.h"
-#include "../../Object/Obj/Whip.h"
-#include "../../Object/Obj/Item/Bomb.h"
-#include "../../Object/Obj/Monster/Monster.h"
-#include "../../Object/Obj/Monster/Spider.h"
-#include "../../Object/Obj/Monster/Snake.h"
-#include "../../Object/Obj/Monster/Mosquito.h"
-#include "../../Object/Obj/Tile/Tile.h"
-#include "../../Object/Obj/Tile/Normal.h"
-#include "../../Object/Obj/Tile/Ladder.h"
-#include "../../Object/Obj/Tile/OneWay.h"
-#include "../../Object/Obj/Tile/Unbreakable.h"
-#include "../../Object/Obj/Tile/Wooden.h"
-#include "../../Object/Obj/Tile/Skeleton.h"
-#include "../../Object/Obj/Tile/Spike.h"
-#include "../../Object/Obj/Tile/Movable.h"
-#include "../../Object/Obj/Map.h"
+
 
 TutorialScene::TutorialScene()
 {
@@ -495,8 +479,8 @@ void TutorialScene::Render()
 
 void TutorialScene::PostRender()
 {
-	_player->PostRender();
-	ImGui::Text("mosnter falling : %d", _spider->IsFalling());
-	ImGui::Text("mosnter speed : %f", _spider->GetSpeed());
-	ImGui::Text("item is falling : %d", _item->IsFalling());
+	//_player->PostRender();
+	//ImGui::Text("mosnter falling : %d", _spider->IsFalling());
+	//ImGui::Text("mosnter speed : %f", _spider->GetSpeed());
+	//ImGui::Text("item is falling : %d", _item->IsFalling());
 }

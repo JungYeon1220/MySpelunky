@@ -28,6 +28,7 @@ public:
 
 	ComPtr<ID3D11Device> GetDevice() { return device; }
 	ComPtr<ID3D11DeviceContext> GetDC() { return deviceContext; }
+	ComPtr<IDXGISwapChain> GetSwapChain() { return swapChain; }
 
 	void Clear();
 	void Present();

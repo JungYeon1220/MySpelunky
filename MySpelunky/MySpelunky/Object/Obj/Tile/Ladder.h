@@ -7,6 +7,7 @@ public:
 	virtual ~Ladder();
 
 	virtual bool Block(shared_ptr<Collider> col) override;
+	virtual void InteractPlayer(shared_ptr<class Player> player);
 
 	virtual void Update() override;
 	virtual void Render() override;

@@ -47,4 +47,6 @@
 #define SPRITEMANAGER	SpriteManager::GetInstance()
 #define ITEMMANAGER		ItemManager::GetInstance()
 
+#define FONT Font::GetInstance()
+
 using CallBack = function<void()>;

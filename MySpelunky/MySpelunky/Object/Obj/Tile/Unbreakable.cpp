@@ -22,6 +22,9 @@ Unbreakable::~Unbreakable()
 
 void Unbreakable::InteractPlayer(shared_ptr<class Player> player)
 {
+	if (_isActive == false)
+		return;
+
 	Vector2 playerIdx = MathUtility::GetGridIndex(player->GetCollider()->GetWorldPos());
 	if (_index.x > playerIdx.x + 1 || _index.x < playerIdx.x - 1)
 		return;

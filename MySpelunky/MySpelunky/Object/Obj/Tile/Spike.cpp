@@ -38,6 +38,43 @@ bool Spike::Block(shared_ptr<Collider> col)
     return false;
 }
 
+void Spike::InteractPlayer(shared_ptr<class Player> player)
+{
+	if (_isActive == false)
+		return;
+	Vector2 playerIdx = MathUtility::GetGridIndex(player->GetCollider()->GetWorldPos());
+
+	if (_index.x > playerIdx.x + 1 || _index.x < playerIdx.x - 1)
+		return;
+	if (_index.y > playerIdx.y + 1 || _index.y < playerIdx.y - 1)
+		return;
+
+	if ((player->GetJumpPower() < 0.0f))
+	{
+		if (_col->IsCollision(player->GetCollider()) == true)
+		{
+			if (player->GetCollider()->GetWorldPos().y > _col->GetWorldPos().y)
+			{
+				if (player->GetCollider()->GetWorldPos().x >= _col->GetWorldPos().x - 50.0f
+					&& player->GetCollider()->GetWorldPos().x <= _col->GetWorldPos().x + 50.0f)
+				{
+					if (_CanSpike == true)
+					{
+						player->Dead();
+						SetBlood();
+						Update();
+					}
+
+					_CanSpike = false;
+				}
+			}
+		}
+
+		if (_col->IsCollision(player->GetCollider()) == false)
+			_CanSpike = true;
+	}
+}
+
 void Spike::Update()
 {
 	if (_isActive == false)

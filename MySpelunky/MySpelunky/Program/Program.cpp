@@ -9,6 +9,8 @@ Program::Program()
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
 
+	FONT->Add("D2Coding", L"D2Coding");
+
 	_curScene = make_shared<TileTestScene>();
 
 	Timer::GetInstance()->LockFPS(60);
@@ -16,6 +18,7 @@ Program::Program()
 
 Program::~Program()
 {
+	Font::Delete();
 }
 
 void Program::Update()
@@ -38,6 +41,8 @@ void Program::Render()
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
+	FONT->GetDC()->BeginDraw();
+
 	ALPHA->SetState();
 	_curScene->Render();
 	EFFECT->Render();
@@ -47,6 +52,8 @@ void Program::Render()
 	//ImGui::Text("RunTime : %1f", Timer::GetInstance()->GetRunTime());
 	ImGui::Text("mousePos X: %f, Y: %f", WIN_MOUSE_POS.x, WIN_MOUSE_POS.y);
 	CAMERA->PostRender();
+
+	FONT->GetDC()->EndDraw();
 
 	CAMERA->SetUIViewBuffer();
 	_curScene->PostRender();

@@ -9,6 +9,7 @@ public:
 	virtual void Update() override;
 	virtual void Render() override;
 
+	virtual void InteractPlayer(shared_ptr<class Player> player);
 	virtual void Destroy() { _isActive = false; }
 	shared_ptr<RectCollider> GetMovableCollider() { return _movableCol; }
 

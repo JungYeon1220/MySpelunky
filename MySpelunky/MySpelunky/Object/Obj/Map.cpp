@@ -36,10 +36,12 @@ void Map::Update()
 
 			for (auto tile : pair.second)
 			{
-				float x = _types["Movable"][i]->GetCollider()->GetWorldPos().x - tile->GetCollider()->GetWorldPos().x;
-				float y = _types["Movable"][i]->GetCollider()->GetWorldPos().y - tile->GetCollider()->GetWorldPos().y;
-				if (x * x + y * y > 40000.0f)
-					continue;
+				Vector2 tileIdx = MathUtility::GetGridIndex(tile->GetCollider()->GetWorldPos());
+				Vector2 posIdx = MathUtility::GetGridIndex(_types["Movable"][i]->GetCollider()->GetWorldPos());
+				if (posIdx.x > tileIdx.x + 1 || posIdx.x < tileIdx.x - 1)
+					return;
+				if (posIdx.y > tileIdx.y + 1 || posIdx.y < tileIdx.y - 1)
+					return;
 
 				if (tile->GetCollider()->IsCollision(dynamic_pointer_cast<Movable>(_types["Movable"][i])->GetMovableCollider()))
 				{
@@ -56,6 +58,13 @@ void Map::Update()
 		{
 			if (i == j)
 				continue;
+
+			Vector2 tileIdx = MathUtility::GetGridIndex(_types["Movable"][j]->GetCollider()->GetWorldPos());
+			Vector2 posIdx = MathUtility::GetGridIndex(_types["Movable"][i]->GetCollider()->GetWorldPos());
+			if (posIdx.x > tileIdx.x + 1 || posIdx.x < tileIdx.x - 1)
+				return;
+			if (posIdx.y > tileIdx.y + 1 || posIdx.y < tileIdx.y - 1)
+				return;
 
 			if (_types["Movable"][j]->GetCollider()->IsCollision(dynamic_pointer_cast<Movable>(_types["Movable"][i])->GetMovableCollider()))
 			{
@@ -581,7 +590,7 @@ void Map::CreateStage()
 		{
 			int type = _layout[i][j];
 
-			if (type == 0 || type == 3 || type == 6 || type == 7 || type == 8)
+			if (type == 0 || type == 3 || type == 6 || type == 7)
 			{
 				continue;
 			}

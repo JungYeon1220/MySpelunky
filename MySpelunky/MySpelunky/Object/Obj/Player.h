@@ -73,6 +73,10 @@ public:
 	bool& IsPush() { return _isPush; }
 
 	bool _hasGloves = false;
+
+	int _bombCount = 99;
+	int _ropeCount = 99;
+
 private:
 	void CreateAction();
 	State _curState = State::IDLE;
@@ -136,7 +140,5 @@ private:
 	float _curDamagedTime = 0.0f;
 	float _damagedCoolTime = 2.0f;
 
-	int _bombCount = 100;
-	int _ropeCount = 3;
 };
 
