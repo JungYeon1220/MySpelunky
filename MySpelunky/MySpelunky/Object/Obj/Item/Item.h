@@ -2,6 +2,7 @@
 class Item
 {
 public:
+
 	Item();
 	Item(string name);
 	virtual ~Item();

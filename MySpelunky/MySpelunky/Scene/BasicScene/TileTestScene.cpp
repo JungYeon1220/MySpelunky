@@ -399,7 +399,9 @@ void TileTestScene::Update()
 
 	if (KEY_DOWN('P'))
 	{
+		_player->GetSpeed() = 0.0f;
 		_monsters.clear();
+		ITEMMANAGER->Init();
 		_map->CreateStage();
 		_player->GetCollider()->GetTransform()->SetPosition(_map->GetStartPos());
 
@@ -446,11 +448,17 @@ void TileTestScene::Render()
 	_player->Render();
 	for (auto monster : _monsters)
 		monster->Render();
-	ITEMMANAGER->BombRender();
+	ITEMMANAGER->Render();
 	_map->FrontRender();
 
-	wstring str = L"AAAAAA";
-	FONT->RenderText(str, "D2Coding", Vector2(0.0f, 20.0f));
+	wstring wstr;
+	string str = to_string(_player->_bombCount);
+	wstr.assign(str.begin(), str.end());
+	FONT->RenderText(wstr, "D2Coding", Vector2(0.0f, 20.0f));
+
+	str = to_string(_player->_ropeCount);
+	wstr.assign(str.begin(), str.end());
+	FONT->RenderText(wstr, "D2Coding", Vector2(0.0f, 40.0f));
 }
 
 void TileTestScene::PostRender()

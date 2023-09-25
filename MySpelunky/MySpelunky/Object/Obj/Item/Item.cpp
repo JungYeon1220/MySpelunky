@@ -65,9 +65,14 @@ void Item::InteractPlayer(shared_ptr<class Player> player)
 	if (_col->IsCollision(player->GetCollider()))
 	{
 		_isActive = false;
+
 		if (_name == "JumpShoes")
 			player->GetJumpMax() = 1500.0f;
 		else if (_name == "Gloves")
 			player->_hasGloves = true;
+		else if (_name == "BombBox")
+			player->_bombCount += 3;
+		else if (_name == "Ropes")
+			player->_ropeCount += 3;
 	}
 }

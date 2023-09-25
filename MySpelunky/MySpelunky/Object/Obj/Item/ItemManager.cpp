@@ -29,7 +29,7 @@ void ItemManager::Update()
 		item->Update();
 }
 
-void ItemManager::BombRender()
+void ItemManager::Render()
 {
 	for (auto item : _items)
 		item->Render();
@@ -43,6 +43,15 @@ void ItemManager::RopeRender()
 		rope->Render();
 }
 
+void ItemManager::Init()
+{
+	for (auto bomb : _bombs)
+		bomb->Reset();
+	for (auto rope : _ropes)
+		rope->Reset();
+	_items.clear();
+}
+
 void ItemManager::SetItem(string name, Vector2 pos)
 {
 	shared_ptr<Item> item = make_shared<Item>(name);
@@ -50,6 +59,31 @@ void ItemManager::SetItem(string name, Vector2 pos)
 	item->IsActive() = true;
 	_items.push_back(item);
 
+}
+
+void ItemManager::SetRandomItem(Vector2 pos)
+{
+	int temp = MathUtility::RandomInt(0, 3);
+	string str;
+	switch (temp)
+	{
+	case 0:
+		str = "JumpShoes";
+		break;
+	case 1:
+		str = "Gloves";
+		break;
+	case 2:
+		str = "BombBox";
+		break;
+	case 3:
+		str = "Ropes";
+		break;
+	default:
+		break;
+	}
+
+	SetItem(str, pos);
 }
 
 bool ItemManager::ThrowBomb(Vector2 pos, float speedX, float speedY)

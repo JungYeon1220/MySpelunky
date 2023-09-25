@@ -597,7 +597,7 @@ void Map::CreateStage()
 
 			if (type == 99)
 			{
-				ITEMMANAGER->SetItem("Gloves", Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
+				ITEMMANAGER->SetRandomItem(Vector2(j * 100.0f, (_poolCountY - 1 - i) * 100.0f));
 				continue;
 			}
 

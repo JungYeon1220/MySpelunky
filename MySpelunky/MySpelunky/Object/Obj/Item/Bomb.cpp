@@ -77,6 +77,14 @@ void Bomb::Render()
 	SPRITEMANAGER->Render("Item", _actions[_curState]->GetCurClip());
 }
 
+void Bomb::Reset()
+{
+	_isActive = false;
+	_boom = false;
+	SetAction(IDLE);
+	_time = 0.0f;
+}
+
 bool Bomb::DestroyTile(shared_ptr<Tile> tile)
 {
 	if (_boom == false)

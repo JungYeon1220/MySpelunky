@@ -27,10 +27,14 @@ public:
 	}
 
 	void Update();
-	void BombRender();
+
+	void Render();
 	void RopeRender();
 
+	void Init();
+
 	void SetItem(string name, Vector2 pos);
+	void SetRandomItem(Vector2 pos);
 
 	bool ThrowBomb(Vector2 pos, float speedX, float speedY);
 	void ThrowRope(Vector2 pos, bool laying = false, bool left = false);
@@ -47,6 +51,5 @@ private:
 	vector<shared_ptr<class Rope>> _ropes;
 
 	vector<shared_ptr<Item>> _items;
-
 };
 

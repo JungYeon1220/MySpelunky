@@ -149,6 +149,7 @@ void SpriteManager::CreateSprite()
 		data.frame["Bomb"] = Vector2(0, 5);
 		data.frame["BombBox"] = Vector2(1, 2);
 		data.frame["Gloves"] = Vector2(4, 2);
+		data.frame["Ropes"] = Vector2(0, 6);
 
 		_sprites["Item"] = data;
 	}

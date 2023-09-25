@@ -15,6 +15,8 @@ public:
 	virtual void Update();
 	virtual void Render();
 
+	void Reset();
+
 	bool DestroyTile(shared_ptr<Tile> tile);
 
 	float& GetRotation() { return _rotation; }

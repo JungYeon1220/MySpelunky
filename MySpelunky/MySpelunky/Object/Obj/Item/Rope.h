@@ -8,6 +8,8 @@ public:
 	void Update();
 	void Render();
 
+	void Reset();
+
 	void DropRope();
 
 	vector<shared_ptr<RectCollider>> GetColliders();
@@ -18,7 +20,7 @@ public:
 	bool& IsHooked() { return _hooked; }
 private:
 	void CreateAction();
-	int _length = 2;
+	int _length = 5;
 	int _curLength = 1;
 	bool _hooked = false;
 	bool _dropEnd = false;

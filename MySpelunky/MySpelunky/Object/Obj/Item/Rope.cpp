@@ -93,6 +93,15 @@ void Rope::Render()
 	_col->Render();
 }
 
+void Rope::Reset()
+{
+	_isActive = false;
+	_hooked = false;
+	_dropEnd = false;
+	_length = 5;
+	_curLength = 1;
+}
+
 void Rope::DropRope()
 {
 	if (_curLength >= _length)

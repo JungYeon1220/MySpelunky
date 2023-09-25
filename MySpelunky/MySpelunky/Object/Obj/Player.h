@@ -74,8 +74,8 @@ public:
 
 	bool _hasGloves = false;
 
-	int _bombCount = 99;
-	int _ropeCount = 99;
+	int _bombCount = 3;
+	int _ropeCount = 3;
 
 private:
 	void CreateAction();
@@ -135,7 +135,7 @@ private:
 
 	bool _isGrabLedge = false;
 
-	int _hp = 300;
+	int _hp = 3;
 	bool _isDamaged = false;
 	float _curDamagedTime = 0.0f;
 	float _damagedCoolTime = 2.0f;
