@@ -43,16 +43,16 @@ TileTestScene::TileTestScene()
 		}
 	}
 
-	CAMERA->SetScale(Vector2(0.3f, 0.3f));
+	CAMERA->SetScale(Vector2(0.8f, 0.8f));
 	CAMERA->SetPosition(_player->GetCollider()->GetWorldPos() * 0.8f);
 	CAMERA->GetViewCollider()->GetTransform()->SetPosition(_player->GetCollider()->GetWorldPos());
 	CAMERA->SetTarget(_player->GetCollider()->GetTransform());
-	//CAMERA->SetLeftBottom(Vector2(0,0));
-	//CAMERA->SetRightTop(Vector2((_map->PoolCount().x - 1) * 100.0f, (_map->PoolCount().y - 1) * 100.0f));
-	CAMERA->SetLeftBottom(Vector2(-10000,-10000));
-	CAMERA->SetRightTop(Vector2(10000, 10000));
+	CAMERA->SetLeftBottom(Vector2(0,0));
+	CAMERA->SetRightTop(Vector2((_map->PoolCount().x - 1) * 100.0f, (_map->PoolCount().y - 1) * 100.0f));
+	//CAMERA->SetLeftBottom(Vector2(-10000,-10000));
+	//CAMERA->SetRightTop(Vector2(10000, 10000));
 
-	//SOUND->Play("BGM");
+	SOUND->Play("BGM");
 	 
 	//CAMERA->FreeMode();
 	//CAMERA->SetScale(Vector2(0.5f, 0.5f));

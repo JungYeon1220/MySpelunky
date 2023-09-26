@@ -7,7 +7,7 @@ MonsterManager::MonsterManager()
 	for (int i = 0; i < _poolCount; i++)
 	{
 		shared_ptr<Monster> monster = make_shared<Snake>();
-		monster->SetPosition(Vector2(-1000, 1000));
+		monster->SetPosition(Vector2(-1000, -1000));
 		monster->Deactive();
 		_monsters["Snake"].push_back(monster);
 	}
@@ -15,7 +15,7 @@ MonsterManager::MonsterManager()
 	for (int i = 0; i < _poolCount; i++)
 	{
 		shared_ptr<Monster> monster = make_shared<Spider>();
-		monster->SetPosition(Vector2(-1000, 1000));
+		monster->SetPosition(Vector2(-1000, -1000));
 		monster->Deactive();
 		_monsters["Spider"].push_back(monster);
 	}
@@ -23,7 +23,7 @@ MonsterManager::MonsterManager()
 	for (int i = 0; i < _poolCount; i++)
 	{
 		shared_ptr<Monster> monster = make_shared<Mosquito>();
-		monster->SetPosition(Vector2(-1000, 1000));
+		monster->SetPosition(Vector2(-1000, -1000));
 		monster->Deactive();
 		_monsters["Mosquito"].push_back(monster);
 	}
@@ -78,7 +78,7 @@ void MonsterManager::Init()
 	{
 		for (auto monster : pair.second)
 		{
-			monster->SetPosition(Vector2(-1000, 1000));
+			monster->SetPosition(Vector2(-1000, -1000));
 			monster->Deactive();
 		}
 	}
