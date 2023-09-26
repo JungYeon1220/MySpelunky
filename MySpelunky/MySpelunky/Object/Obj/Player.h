@@ -27,6 +27,7 @@ public:
 	void Jump();
 	void Attack();
 	void ThrowBomb();
+	void ThrowRope();
 	void ClimbLadder();
 	void ClimbRope();
 	void GrabLedge();

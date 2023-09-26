@@ -367,6 +367,15 @@
       <Project>{8d71d3c5-b285-4fbb-b65f-799fd4fabb80}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resource\Sound\BGM_Basecamp_B.ogg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Resource\Sound\explosion_d01.wav" />
+    <Media Include="Resource\Sound\snake_atk.wav" />
+    <Media Include="Resource\Sound\snake_die01.wav" />
+    <Media Include="Resource\Sound\spider01.wav" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

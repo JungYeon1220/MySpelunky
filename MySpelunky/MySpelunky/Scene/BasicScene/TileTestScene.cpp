@@ -15,6 +15,9 @@ TileTestScene::TileTestScene()
 			if (layout[i][j] == 0)
 				continue;
 
+			if (_monsters.size() >= 23)
+				continue;
+
 			if (layout[i][j] == 1)
 			{
 				if (layout[i - 1][j] == 0)
@@ -272,7 +275,7 @@ void TileTestScene::Update()
 				else
 				{
 					_player->KnockBack(monster->GetCollider()->GetWorldPos(), 300.0f);
-					_player->TakeDamage(0);
+					_player->TakeDamage(1);
 				}
 			}
 		}
@@ -454,11 +457,15 @@ void TileTestScene::Render()
 	wstring wstr;
 	string str = to_string(_player->_bombCount);
 	wstr.assign(str.begin(), str.end());
-	FONT->RenderText(wstr, "D2Coding", Vector2(0.0f, 20.0f));
+	FONT->RenderText(L"Bombs : " + wstr, "D2Coding", Vector2(0.0f, 60.0f));
 
 	str = to_string(_player->_ropeCount);
 	wstr.assign(str.begin(), str.end());
-	FONT->RenderText(wstr, "D2Coding", Vector2(0.0f, 40.0f));
+	FONT->RenderText(L"Ropes : " + wstr, "D2Coding", Vector2(0.0f, 40.0f));
+
+	str = to_string(_player->GetHp());
+	wstr.assign(str.begin(), str.end());
+	FONT->RenderText(L"HP : " + wstr, "D2Coding", Vector2(0.0f, 20.0f));
 }
 
 void TileTestScene::PostRender()

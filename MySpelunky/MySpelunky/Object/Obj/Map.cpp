@@ -590,7 +590,7 @@ void Map::CreateStage()
 		{
 			int type = _layout[i][j];
 
-			if (type == 0 || type == 3 || type == 6 || type == 7)
+			if (type == 0 || type == 3 || type == 6 || type == 7 || type == 8)
 			{
 				continue;
 			}

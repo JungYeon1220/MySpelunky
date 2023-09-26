@@ -490,4 +490,21 @@
     <FxCompile Include="Shader\TutorialShader.hlsl" />
     <FxCompile Include="Shader\PlayerPS.hlsl" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resource\Sound\BGM_Basecamp_B.ogg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Resource\Sound\explosion_d01.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+    <Media Include="Resource\Sound\snake_atk.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+    <Media Include="Resource\Sound\snake_die01.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+    <Media Include="Resource\Sound\spider01.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+  </ItemGroup>
 </Project>

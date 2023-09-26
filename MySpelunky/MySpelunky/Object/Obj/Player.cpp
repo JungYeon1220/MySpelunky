@@ -72,7 +72,7 @@ void Player::Input()
 
 	if (KEY_DOWN('D'))
 	{
-		ITEMMANAGER->ThrowRope(_col->GetWorldPos(), _isLaying, _isLeft);
+		ThrowRope();
 	}
 
 	if (_isClimb == true && _canClimb == true)
@@ -334,6 +334,15 @@ void Player::ThrowBomb()
 	}
 	SetAction(State::THROW);
 	_isThrow = true;
+}
+
+void Player::ThrowRope()
+{
+	if (_ropeCount <= 0)
+		return;
+
+	ITEMMANAGER->ThrowRope(_col->GetWorldPos(), _isLaying, _isLeft);
+	_ropeCount -= 1;
 }
 
 void Player::ClimbLadder()
@@ -626,7 +635,7 @@ void Player::Render()
 	//_feetCol->Render();
 	//_headCol->Render();
 	//_grabCol->Render();
-	_handCol->Render();
+	//_handCol->Render();
 	//_col->Render();
 	//_viewCol->Render();
 }

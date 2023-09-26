@@ -90,7 +90,7 @@ void Rope::Render()
 				SPRITEMANAGER->Render("Rope", "Rope");
 		}
 	}
-	_col->Render();
+	//_col->Render();
 }
 
 void Rope::Reset()
