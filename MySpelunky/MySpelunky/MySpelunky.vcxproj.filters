@@ -222,6 +222,33 @@
     <ClInclude Include="Framework\Utility\Vector3.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Library\FMOD\inc\fmod.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\FMOD\inc\fmod.hpp">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\FMOD\inc\fmod_codec.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\FMOD\inc\fmod_common.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\FMOD\inc\fmod_dsp.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\FMOD\inc\fmod_dsp_effects.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\FMOD\inc\fmod_errors.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\FMOD\inc\fmod_output.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Utility\SoundManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MySpelunky.cpp">
@@ -410,6 +437,9 @@
     <ClCompile Include="Framework\Utility\Vector3.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\Utility\SoundManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MySpelunky.rc">
@@ -492,6 +522,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resource\Sound\BGM_Basecamp_B.ogg" />
+    <None Include="Library\FMOD\inc\fmod.cs" />
+    <None Include="Library\FMOD\inc\fmod_dsp.cs" />
+    <None Include="Library\FMOD\inc\fmod_errors.cs" />
+    <None Include="fmod.dll" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Resource\Sound\explosion_d01.wav">
@@ -506,5 +540,8 @@
     <Media Include="Resource\Sound\spider01.wav">
       <Filter>리소스 파일</Filter>
     </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Library\FMOD\fmod_vc.lib" />
   </ItemGroup>
 </Project>

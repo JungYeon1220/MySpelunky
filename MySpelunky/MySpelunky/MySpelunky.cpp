@@ -59,6 +59,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	SpriteManager::Create();
 	ItemManager::Create();
 	EffectManager::Create();
+	SoundManager::Create();
+	MonsterManager::Create();
 
     shared_ptr<Program> program = make_shared<Program>();
 
@@ -92,6 +94,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	SpriteManager::Delete();
 	ItemManager::Delete();
 	EffectManager::Delete();
+	SoundManager::Delete();
+	MonsterManager::Delete();
 
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();

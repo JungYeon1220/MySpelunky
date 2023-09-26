@@ -16,6 +16,8 @@ public:
 	virtual void Update();
 	virtual void Render();
 
+	virtual void TakeDamage(int value);
+
 	virtual bool TileInteract(shared_ptr<Tile> tile);
 	virtual void Land(bool check);
 

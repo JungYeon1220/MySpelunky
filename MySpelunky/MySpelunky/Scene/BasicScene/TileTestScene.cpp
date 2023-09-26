@@ -29,11 +29,11 @@ TileTestScene::TileTestScene()
 						shared_ptr<Monster> monster;
 
 						if (random == 0)
-							monster = make_shared<Spider>(Vector2(j * 100.0f, (_map->PoolCount().y - 1 - i) * 100.0f) + Vector2(0.0f, 100.0f));
+							monster = MONSTER->SetMonster("Spider", Vector2(j * 100.0f, (_map->PoolCount().y - 1 - i) * 100.0f) + Vector2(0.0f, 100.0f));
 						else if (random == 1)
-							monster = make_shared<Snake>(Vector2(j * 100.0f, (_map->PoolCount().y - 1 - i) * 100.0f) + Vector2(0.0f, 100.0f));
+							monster = MONSTER->SetMonster("Snake", Vector2(j * 100.0f, (_map->PoolCount().y - 1 - i) * 100.0f) + Vector2(0.0f, 100.0f));
 						else if (random == 2)
-							monster = make_shared<Mosquito>(Vector2(j * 100.0f, (_map->PoolCount().y - 1 - i) * 100.0f) + Vector2(0.0f, 100.0f));
+							monster = MONSTER->SetMonster("Mosquito", Vector2(j * 100.0f, (_map->PoolCount().y - 1 - i) * 100.0f) + Vector2(0.0f, 100.0f));
 
 						_monsters.push_back(monster);
 					}
@@ -43,12 +43,16 @@ TileTestScene::TileTestScene()
 		}
 	}
 
-	CAMERA->SetScale(Vector2(0.8f, 0.8f));
+	CAMERA->SetScale(Vector2(0.3f, 0.3f));
 	CAMERA->SetPosition(_player->GetCollider()->GetWorldPos() * 0.8f);
 	CAMERA->GetViewCollider()->GetTransform()->SetPosition(_player->GetCollider()->GetWorldPos());
 	CAMERA->SetTarget(_player->GetCollider()->GetTransform());
-	CAMERA->SetLeftBottom(Vector2(0,0));
-	CAMERA->SetRightTop(Vector2((_map->PoolCount().x - 1) * 100.0f, (_map->PoolCount().y - 1) * 100.0f));
+	//CAMERA->SetLeftBottom(Vector2(0,0));
+	//CAMERA->SetRightTop(Vector2((_map->PoolCount().x - 1) * 100.0f, (_map->PoolCount().y - 1) * 100.0f));
+	CAMERA->SetLeftBottom(Vector2(-10000,-10000));
+	CAMERA->SetRightTop(Vector2(10000, 10000));
+
+	//SOUND->Play("BGM");
 	 
 	//CAMERA->FreeMode();
 	//CAMERA->SetScale(Vector2(0.5f, 0.5f));
@@ -247,6 +251,8 @@ void TileTestScene::Update()
 
 	for (auto monster : _monsters)
 	{
+		if (monster->_isActive == false)
+			continue;
 		if (_player->GetWhip()->IsActive() == true)
 		{
 			if (_player->GetWhip()->GetCollider()->IsCollision(monster->GetCollider()))
@@ -400,11 +406,15 @@ void TileTestScene::Update()
 		}
 	}
 
+	m = true;
+
 	if (KEY_DOWN('P'))
 	{
+		m = false;
 		_player->GetSpeed() = 0.0f;
 		_monsters.clear();
 		ITEMMANAGER->Init();
+		MONSTER->Init();
 		_map->CreateStage();
 		_player->GetCollider()->GetTransform()->SetPosition(_map->GetStartPos());
 
@@ -426,11 +436,11 @@ void TileTestScene::Update()
 							shared_ptr<Monster> monster;
 
 							if (random == 0)
-								monster = make_shared<Spider>(Vector2(j * 100.0f, (_map->PoolCount().y - 1 - i) * 100.0f) + Vector2(0.0f, 100.0f));
+								monster = MONSTER->SetMonster("Spider", Vector2(j * 100.0f, (_map->PoolCount().y - 1 - i) * 100.0f) + Vector2(0.0f, 100.0f));
 							else if (random == 1)
-								monster = make_shared<Snake>(Vector2(j * 100.0f, (_map->PoolCount().y - 1 - i) * 100.0f) + Vector2(0.0f, 100.0f));
+								monster = MONSTER->SetMonster("Snake", Vector2(j * 100.0f, (_map->PoolCount().y - 1 - i) * 100.0f) + Vector2(0.0f, 100.0f));
 							else if (random == 2)
-								monster = make_shared<Mosquito>(Vector2(j * 100.0f, (_map->PoolCount().y - 1 - i) * 100.0f) + Vector2(0.0f, 100.0f));
+								monster = MONSTER->SetMonster("Mosquito", Vector2(j * 100.0f, (_map->PoolCount().y - 1 - i) * 100.0f) + Vector2(0.0f, 100.0f));
 
 							_monsters.push_back(monster);
 						}
@@ -441,7 +451,6 @@ void TileTestScene::Update()
 		}
 	}
 
-	m = true;
 }
 
 void TileTestScene::Render()

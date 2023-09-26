@@ -144,7 +144,16 @@
   <ItemGroup>
     <ClInclude Include="Framework\Utility\Font.h" />
     <ClInclude Include="Framework\Utility\Singleton.h" />
+    <ClInclude Include="Framework\Utility\SoundManager.h" />
     <ClInclude Include="Framework\Utility\Vector3.h" />
+    <ClInclude Include="Library\FMOD\inc\fmod.h" />
+    <ClInclude Include="Library\FMOD\inc\fmod.hpp" />
+    <ClInclude Include="Library\FMOD\inc\fmod_codec.h" />
+    <ClInclude Include="Library\FMOD\inc\fmod_common.h" />
+    <ClInclude Include="Library\FMOD\inc\fmod_dsp.h" />
+    <ClInclude Include="Library\FMOD\inc\fmod_dsp_effects.h" />
+    <ClInclude Include="Library\FMOD\inc\fmod_errors.h" />
+    <ClInclude Include="Library\FMOD\inc\fmod_output.h" />
     <ClInclude Include="Object\Obj\Monster\MonsterManager.h" />
     <ClInclude Include="Object\BasicObject\EffectManager.h" />
     <ClInclude Include="Object\Obj\Item\Bomb.h" />
@@ -214,6 +223,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Utility\Font.cpp" />
+    <ClCompile Include="Framework\Utility\SoundManager.cpp" />
     <ClCompile Include="Framework\Utility\Vector3.cpp" />
     <ClCompile Include="Object\Obj\Monster\MonsterManager.cpp" />
     <ClCompile Include="Object\BasicObject\EffectManager.cpp" />
@@ -368,6 +378,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="fmod.dll" />
+    <None Include="Library\FMOD\inc\fmod.cs" />
+    <None Include="Library\FMOD\inc\fmod_dsp.cs" />
+    <None Include="Library\FMOD\inc\fmod_errors.cs" />
     <None Include="Resource\Sound\BGM_Basecamp_B.ogg" />
   </ItemGroup>
   <ItemGroup>
@@ -375,6 +389,9 @@
     <Media Include="Resource\Sound\snake_atk.wav" />
     <Media Include="Resource\Sound\snake_die01.wav" />
     <Media Include="Resource\Sound\spider01.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Library\FMOD\fmod_vc.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

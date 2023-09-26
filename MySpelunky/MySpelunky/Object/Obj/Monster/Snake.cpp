@@ -16,6 +16,7 @@ Snake::Snake()
 
 	SetAction(State::IDLE);
 
+	_maxHp = 1;
 	_hp = 1;
 	_moveSpeed = 80.0f;
 	_maxDuration = (float)(rand() % 2) + rand() / static_cast<float>(RAND_MAX);
@@ -41,6 +42,7 @@ Snake::Snake(Vector2 pos)
 
 	SetAction(State::IDLE);
 
+	_maxHp = 1;
 	_hp = 1;
 	_moveSpeed = 80.0f;
 	_maxDuration = (float)(rand() % 2) + rand() / static_cast<float>(RAND_MAX);
@@ -56,6 +58,8 @@ Snake::~Snake()
 
 void Snake::Update()
 {
+	if (_isActive == false)
+		return;
 	if (_isDead == true)
 		return;
 
@@ -67,6 +71,8 @@ void Snake::Update()
 
 void Snake::Render()
 {
+	if (_isActive == false)
+		return;
 	if (_isDead == true)
 		return;
 	if (CAMERA->GetViewCollider()->IsCollision(_col) == false)
@@ -78,6 +84,16 @@ void Snake::Render()
 	else
 		SPRITEMANAGER->GetSprite("Snake")->SetRight();
 	SPRITEMANAGER->Render("Snake", _actions[_curState]->GetCurClip());
+
+	_col->Render();
+
+}
+
+void Snake::TakeDamage(int value)
+{
+	Monster::TakeDamage(value);
+
+	SOUND->Play("SnakeDie");
 }
 
 bool Snake::TileInteract(shared_ptr<Tile> tile)
@@ -169,6 +185,7 @@ void Snake::Move()
 		if (_actions[State::ATTACK]->GetCurIndex() == 2)
 		{
 			_curSpeed = 500.0f;
+			SOUND->Play("SnakeAttack");
 		}
 
 		return;

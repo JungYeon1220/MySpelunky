@@ -11,6 +11,8 @@ Monster::~Monster()
 
 void Monster::Update()
 {
+	if (_isActive == false)
+		return;
 	if (_isDead == true)
 		return;
 
@@ -34,12 +36,21 @@ void Monster::Update()
 
 void Monster::Render()
 {
+	if (_isActive == false)
+		return;
 	if (_isDead == true)
 		return;
 
 	_transform->SetWorldBuffer(0);
 	//_rangeCol->Render();
 	//_col->Render();
+}
+
+void Monster::Deactive()
+{
+	_hp = _maxHp;
+	_isActive = false;
+	_isDead = false;
 }
 
 void Monster::SetPosition(Vector2 pos)

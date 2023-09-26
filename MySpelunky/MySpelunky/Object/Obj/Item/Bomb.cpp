@@ -52,6 +52,7 @@ void Bomb::Update()
 		_boom = true;
 		CAMERA->ShakeStart(2.0f, 1.0f);
 		EFFECT->Play("Explosion", _col->GetWorldPos());
+		SOUND->Play("Explosion");
 		SetAction(State::IDLE);
 	}
 

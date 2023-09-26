@@ -41,11 +41,12 @@
 #define ADD_PS(k)		ShaderManager::GetInstance()->Add_Ps(k)
 
 #define CAMERA		Camera::GetInstance()
-
+#define SOUND		SoundManager::GetInstance()
 #define EFFECT		EffectManager::GetInstance()
 
 #define SPRITEMANAGER	SpriteManager::GetInstance()
 #define ITEMMANAGER		ItemManager::GetInstance()
+#define MONSTER			MonsterManager::GetInstance()
 
 #define FONT Font::GetInstance()
 

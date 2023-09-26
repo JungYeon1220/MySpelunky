@@ -17,6 +17,7 @@ Mosquito::Mosquito()
 	_actions[_curState]->Play();
 
 	_hp = 1;
+	_maxHp = 1;
 	_moveSpeed = 80.0f;
 	_maxDuration = (float)(rand() % 2 + 1) + rand() / static_cast<float>(RAND_MAX);
 
@@ -42,6 +43,7 @@ Mosquito::Mosquito(Vector2 pos)
 	_actions[_curState]->Play();
 
 	_hp = 1;
+	_maxHp = 1;
 	_moveSpeed = 80.0f;
 	_maxDuration = (float)(rand() % 2 + 1) + rand() / static_cast<float>(RAND_MAX);
 
@@ -57,6 +59,8 @@ Mosquito::~Mosquito()
 
 void Mosquito::Update()
 {
+	if (_isActive == false)
+		return;
 	if (_isDead == true)
 		return;
 
@@ -73,6 +77,8 @@ void Mosquito::Update()
 
 void Mosquito::Render()
 {
+	if (_isActive == false)
+		return;
 	if (_isDead == true)
 		return;
 
@@ -85,6 +91,13 @@ void Mosquito::Render()
 	else
 		SPRITEMANAGER->GetSprite("Mosquito")->SetRight();
 	SPRITEMANAGER->Render("Mosquito", _actions[_curState]->GetCurClip());
+
+	_col->Render();
+}
+
+void Mosquito::TakeDamage(int value)
+{
+	Monster::TakeDamage(value);
 }
 
 bool Mosquito::TileInteract(shared_ptr<Tile> tile)

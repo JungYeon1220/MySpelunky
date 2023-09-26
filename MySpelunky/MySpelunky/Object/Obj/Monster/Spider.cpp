@@ -15,6 +15,7 @@ Spider::Spider()
 
 	SetAction(State::IDLE);
 
+	_maxHp = 1;
 	_hp = 1;
 	_moveSpeed = 200.0f;
 }
@@ -34,6 +35,7 @@ Spider::Spider(Vector2 pos)
 
 	SetAction(State::IDLE);
 
+	_maxHp = 1;
 	_hp = 1;
 	_moveSpeed = 200.0f;
 }
@@ -44,6 +46,8 @@ Spider::~Spider()
 
 void Spider::Update()
 {
+	if (_isActive == false)
+		return;
 	if (_isDead == true)
 		return;
 
@@ -73,6 +77,8 @@ void Spider::Update()
 
 void Spider::Render()
 {
+	if (_isActive == false)
+		return;
 	if (_isDead == true)
 		return;
 	if (CAMERA->GetViewCollider()->IsCollision(_col) == false)
@@ -84,6 +90,16 @@ void Spider::Render()
 	else
 		SPRITEMANAGER->GetSprite("Spider")->SetRight();
 	SPRITEMANAGER->Render("Spider", _actions[_curState]->GetCurClip());
+
+	_col->Render();
+
+}
+
+void Spider::TakeDamage(int value)
+{
+	Monster::TakeDamage(value);
+
+	SOUND->Play("Spider");
 }
 
 bool Spider::TileInteract(shared_ptr<Tile> tile)

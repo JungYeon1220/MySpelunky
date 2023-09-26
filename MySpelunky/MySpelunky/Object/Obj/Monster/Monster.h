@@ -8,6 +8,8 @@ public:
 	virtual void Update();
 	virtual void Render();
 
+	void Deactive();
+
 	virtual bool TileInteract(shared_ptr<Tile> tile) { return false; }
 	virtual void Land(bool check) {}
 
@@ -20,7 +22,7 @@ public:
 	virtual void Attack(shared_ptr<class Player> player) {}
 	virtual void EndAttack() {}
 
-	void TakeDamage(int value);
+	virtual void TakeDamage(int value);
 
 	virtual bool SetTarget(shared_ptr<class Player> player) { return false; }
 
@@ -32,18 +34,18 @@ public:
 	bool& IsFalling() { return _isFalling; }
 	bool& InRange() { return _inRange; }
 
+	bool _isActive = false;
 protected:
 	shared_ptr<Transform> _transform;
 	shared_ptr<RectCollider> _col;
 	shared_ptr<RectCollider> _rangeCol;
 	vector<shared_ptr<Action>> _actions;
 	Vector2 _size;
+
+
 	bool _isLeft = false;
-
 	bool _isDead = false;
-
 	bool _inRange = false;
-
 	bool _isAttack = false;
 
 	bool _isFalling = false;
@@ -55,5 +57,6 @@ protected:
 	Vector2 _dir = RIGHT_VECTOR;
 
 	int _hp;
+	int _maxHp;
 };
 

@@ -15,7 +15,7 @@ Map::Map()
 	CreateStage();
 
 
-    _bgTrans->SetPosition(Vector2( 100.0f * (_poolCountX - 1) / 2, 100.0f * _poolCountY / 2));
+    _bgTrans->SetPosition(Vector2( 100.0f * (_poolCountX - 1) / 2, 100.0f * (_poolCountY - 1) / 2));
 	_bgTrans->Update();
 }
 
@@ -474,15 +474,14 @@ void Map::CreateRoomLayout()
 
 void Map::CreateLevelLayout()
 {
-	for (auto& arr : _layout)
-	{
-		arr.clear();
-	}
-
 	_layout.resize(_poolCountY);
 	for (int i = 0; i < _poolCountY; i++)
 	{
 		_layout[i].resize(_poolCountX);
+	}
+
+	for (int i = 0; i < _poolCountY; i++)
+	{
 		for (int j = 0; j < _poolCountX; j++)
 		{
 			if (i < 2 || i > _poolCountY - 3 || j < 2 || j > _poolCountX - 3)

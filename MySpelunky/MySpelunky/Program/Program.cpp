@@ -11,6 +11,12 @@ Program::Program()
 
 	FONT->Add("D2Coding", L"D2Coding");
 
+	SOUND->Add("BGM", "Resource/Sound/BGM_Basecamp_B.ogg", true);
+	SOUND->Add("Explosion", "Resource/Sound/explosion_d01.wav");
+	SOUND->Add("SnakeAttack", "Resource/Sound/snake_atk.wav");
+	SOUND->Add("SnakeDie", "Resource/Sound/snake_die01.wav");
+	SOUND->Add("Spider", "Resource/Sound/spider01.wav");
+
 	_curScene = make_shared<TileTestScene>();
 
 	Timer::GetInstance()->LockFPS(60);
