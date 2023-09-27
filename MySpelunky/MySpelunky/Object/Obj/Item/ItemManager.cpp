@@ -8,13 +8,13 @@ ItemManager::ItemManager()
 	for (int i = 0; i < 10; i++)
 	{
 		shared_ptr<Bomb> bomb = make_shared<Bomb>();
-		bomb->GetCollider()->GetTransform()->SetPosition(Vector2(-10000.0f, 10000.0f));
+		bomb->GetCollider()->GetTransform()->SetPosition(Vector2(-10000.0f, -10000.0f));
 		_bombs.push_back(bomb);
 	}
 	for (int i = 0; i < 10; i++)
 	{
 		shared_ptr<Rope> rope = make_shared<Rope>();
-		rope->GetCollider()->GetTransform()->SetPosition(Vector2(-10000.0f, 10000.0f));
+		rope->GetCollider()->GetTransform()->SetPosition(Vector2(-10000.0f, -10000.0f));
 		_ropes.push_back(rope);
 	}
 }
@@ -63,7 +63,7 @@ void ItemManager::SetItem(string name, Vector2 pos)
 
 void ItemManager::SetRandomItem(Vector2 pos)
 {
-	int temp = MathUtility::RandomInt(0, 3);
+	int temp = MathUtility::RandomInt(0, 4);
 	string str;
 	switch (temp)
 	{
@@ -78,6 +78,9 @@ void ItemManager::SetRandomItem(Vector2 pos)
 		break;
 	case 3:
 		str = "Ropes";
+		break;
+	case 4:
+		str = "Chicken";
 		break;
 	default:
 		break;

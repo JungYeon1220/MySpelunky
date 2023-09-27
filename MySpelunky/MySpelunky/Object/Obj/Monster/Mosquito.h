@@ -27,6 +27,9 @@ public:
 private:
 	void CreateAction();
 
+	bool _isStuck = false;
+	float _stuckTime = 0.0f;
+
 	bool _isMoving = false;
 	float _duration = 0.0f;
 	float _maxDuration;

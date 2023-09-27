@@ -5,7 +5,7 @@ int MathUtility::RandomInt(int min, int max)
 {
     // 50 ~ 100
 
-    return rand() % (max - min) + min;
+    return rand() % (max - min + 1) + min;
 }
 
 float MathUtility::RandomFloat(float min, float max)

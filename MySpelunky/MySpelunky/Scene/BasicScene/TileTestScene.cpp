@@ -408,7 +408,7 @@ void TileTestScene::Update()
 
 	m = true;
 
-	if (KEY_DOWN('P'))
+	if (_player->GetCollider()->IsCollision(_map->GetEndPos()) && KEY_DOWN(VK_UP))
 	{
 		m = false;
 		_player->GetSpeed() = 0.0f;

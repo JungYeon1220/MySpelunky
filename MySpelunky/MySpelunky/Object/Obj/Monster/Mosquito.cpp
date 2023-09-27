@@ -64,7 +64,19 @@ void Mosquito::Update()
 	if (_isDead == true)
 		return;
 
-	Move();
+	if (_isStuck == true)
+	{
+		_stuckTime += DELTA_TIME;
+		if (_stuckTime >= 3.0f)
+		{
+			_isStuck = false;
+			_stuckTime = 0.0f;
+		}
+	}
+	else
+	{
+		Move();
+	}
 
 	_col->GetTransform()->AddVector2(_dir * _curSpeed * DELTA_TIME);
 
@@ -102,6 +114,11 @@ void Mosquito::TakeDamage(int value)
 
 bool Mosquito::TileInteract(shared_ptr<Tile> tile)
 {
+	if (_isAttack == true && tile->Block(_col))
+	{
+		_isStuck = true;
+	}
+
 	return tile->Block(_col);
 }
 

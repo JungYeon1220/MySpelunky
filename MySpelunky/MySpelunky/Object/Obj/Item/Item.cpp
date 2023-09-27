@@ -74,5 +74,7 @@ void Item::InteractPlayer(shared_ptr<class Player> player)
 			player->_bombCount += 3;
 		else if (_name == "Ropes")
 			player->_ropeCount += 3;
+		else if (_name == "Chicken")
+			player->GetHp() += 3;
 	}
 }

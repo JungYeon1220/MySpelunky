@@ -63,6 +63,8 @@ void Player::Input()
 			Attack();
 		else
 			ThrowItem();
+
+		DropItem();
 	}
 
 	if (KEY_DOWN('C'))
@@ -453,6 +455,8 @@ void Player::GrabLedge()
 
 void Player::ThrowItem()
 {
+	if (_isLaying == true)
+		return;
 	if (_isLeft == true)
 		_handItem.lock()->GetSpeed() = -15.0f + _curSpeed * DELTA_TIME;
 	else
@@ -474,10 +478,16 @@ void Player::ThrowItem()
 
 void Player::DropItem()
 {
+	if (_handItem.expired() == false && _isLaying == true && KEY_DOWN('X'))
+	{
+		_handItem.reset();
+	}
 }
 
 bool Player::HoldItem(shared_ptr<Item> item)
 {
+	if (_canHold == false)
+		return false;
 	if (_isStun == true)
 		return false;
 	if (item->IsActive() == false)
@@ -485,17 +495,13 @@ bool Player::HoldItem(shared_ptr<Item> item)
 
 	if (_isLaying == true && KEY_DOWN('X') && _handCol->IsCollision(item->GetCollider()))
 	{
-		if (_handItem.expired() == false)
-		{
-			_handItem.reset();
-			return true;
-		}
-		else
+		if (_handItem.expired() == true)
 		{
 			_handItem = item;
 			_handItem.lock()->GetJumpPower() = 0.0f;
 			_handItem.lock()->GetSpeed() = 0.0f;
 
+			_canHold = false;
 			return true;
 		}
 	}
@@ -536,6 +542,9 @@ void Player::Update()
 
 	if (_isFalling == false &&KEY_PRESS(VK_DOWN))
 		_isClimb = false;
+
+	if (_canHold == false && _handItem.expired() == true)
+		_canHold = true;
 
 	Input();
 	Jump();

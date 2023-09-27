@@ -61,7 +61,7 @@ public:
 	float& GetJumpPower() { return _jumpPower; }
 	float& GetJumpMax() { return _maxJump; }
 	float& GetSpeed() { return _curSpeed; }
-	int GetHp() { return _hp; }
+	int& GetHp() { return _hp; }
 
 	bool& IsFalling() { return _isFalling; }
 	bool& IsClimb() { return _isClimb; }
@@ -75,7 +75,7 @@ public:
 
 	bool _hasGloves = false;
 
-	int _bombCount = 3;
+	int _bombCount = 300;
 	int _ropeCount = 3;
 
 private:
@@ -125,6 +125,8 @@ private:
 	bool _isDead = false;
 	bool _isStun = false;
 	bool _isPush = false;
+
+	bool _canHold = true;
 
 	float _curStunTime = 0.0f;
 	float _stunCoolTime = 3.0f;
